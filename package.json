@@ -1,0 +1,24 @@
+{
+  "name": "mccarthy",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Welcome to the AI Marketplace — your go-to platform for discovering, showcasing, and accessing the most powerful and innovative AI tools and agents on the market. Whether you're a professional seeking domain-specific AI apps or a general user looking for creative and helpful AI utilities, we’ve got you covered.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon backend/index.js",
+    "start": "node backend/index.js",
+    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.14.1"
+  }
+}

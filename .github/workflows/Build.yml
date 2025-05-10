@@ -1,0 +1,18 @@
+name: McCarthy Build
+
+on:
+  push:
+     branches:
+           [ main,Development ]
+jobs:
+   build:
+     runs-on: ubuntu-latest
+     steps:
+     
+          # Code checkout
+        - name: codecheckout
+          uses: actions/checkout@v4.2.2
+
+          
+        
+          
