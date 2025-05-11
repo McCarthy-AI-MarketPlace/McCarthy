@@ -16,7 +16,7 @@ const Landing = () => {
         color: "#000",
         fontFamily: "Poppins, sans-serif",
         overflowX: "hidden",
-        position: "relative", 
+        position: "relative",
       }}
     >
       <Header />
