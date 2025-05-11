@@ -33,7 +33,7 @@ export default function Header() {
       </div>
 
       <Link to="/signin" className="text-dark text-decoration-none">
-        SIGNIN
+        SIGN IN
       </Link>
     </Container>
   );

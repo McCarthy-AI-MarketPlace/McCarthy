@@ -1,8 +1,10 @@
 import React from "react";
-import { Container, Button, Form, InputGroup } from "react-bootstrap";
+import { Container, Button, Form, InputGroup, Dropdown } from "react-bootstrap";
 import { FaSearch, FaSlidersH } from "react-icons/fa";
 import Header from "../components/Header";
 import FixedLogos from "../components/FixedLogos";
+import { Link } from "react-router-dom";
+import FilterDropdown from "../components/FilterDropdown";
 
 const Landing = () => {
   return (
@@ -35,7 +37,7 @@ const Landing = () => {
             background: "rgba(255, 255, 255, 0.5)",
             backdropFilter: "blur(10px)",
             boxShadow: "inset 0 0 5px rgba(255, 255, 255, 0.5)",
-            overflow: "hidden",
+            // overflow: "hidden",
           }}
         >
           <InputGroup.Text
@@ -57,7 +59,20 @@ const Landing = () => {
           <InputGroup.Text
             style={{ background: "transparent", border: "none", color: "#fff" }}
           >
+
+            <Dropdown>
+      <Dropdown.Toggle
+        as="span"
+        id="icon-dropdown"
+        style={{ cursor: 'pointer', position : "relative" }}
+        className="d-flex align-items-center"
+      >
             <FaSlidersH color="#000" />
+            </Dropdown.Toggle>
+            <FilterDropdown></FilterDropdown>
+            </Dropdown>
+
+
           </InputGroup.Text>
         </InputGroup>
 
@@ -71,7 +86,10 @@ const Landing = () => {
             boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           }}
         >
-          TRY NOW!
+            
+         <Link to = "/Signup"> TRY NOW!
+         </Link>
+         
         </Button>
       </Container>
 

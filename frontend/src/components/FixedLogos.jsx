@@ -1,10 +1,12 @@
 import React from "react";
 import { Image } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const FixedLogos = () => {
   return (
     <>
       {/* Top-left Logo */}
+      <Link to="https://www.copy.ai/">
       <Image
         src="https://thepixel.ai/wp-content/uploads/2024/04/Copy.ai-logo.jpg"
         alt="Copy.ai Logo"
@@ -17,8 +19,10 @@ const FixedLogos = () => {
           zIndex: 1000,
         }}
       />
+      </Link>
 
       {/* Top-right Logo */}
+      <Link to = "https://www.perplexity.ai/" >
       <Image
         src="https://programmaticseo.dk/wp-content/uploads/2025/01/perplexityai-logo.webp"
         alt="Perplexity AI Logo"
@@ -31,8 +35,10 @@ const FixedLogos = () => {
           zIndex: 1000,
         }}
       />
+      </Link>
 
       {/* Bottom-left Logo */}
+      <Link to = "https://openai.com/index/chatgpt/" >
       <Image
         src="https://www.edigitalagency.com.au/wp-content/uploads/chatgpt-logo-white-black-background-png-1-1200x1200.png"
         alt="ChatGPT Logo"
@@ -45,8 +51,10 @@ const FixedLogos = () => {
           zIndex: 1000,
         }}
       />
+      </Link>
 
       {/* Bottom-right Logo */}
+      <Link to = "https://gemini.google.com/app?hl=en-IN">
       <Image
         src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/7cf51e188450701.65b6d6991d38d.png"
         alt="Gemini Logo"
@@ -59,6 +67,7 @@ const FixedLogos = () => {
           zIndex: 1000,
         }}
       />
+      </Link>
     </>
   );
 };
