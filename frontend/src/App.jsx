@@ -1,44 +1,23 @@
-import './App.css'
-import { useEffect, useState } from 'react'
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Landing from './pages/Landing';
+import Tools from './pages/Tools';
+import Support from './pages/Support';
+import Signin from './pages/Signin';
 
 function App() {
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    fetch('http://localhost:3000/api/user/test')  
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-        return response.json() 
-      })
-      .then((data) => {
-        setData(data) 
-        setLoading(false)  
-      })
-      .catch((error) => {
-        setError(error)  
-        setLoading(false)
-      })
-  }, [])  
-
-  if (loading) {
-    return <div>Loading...</div>  
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>  
-  }
-
   return (
-    <div className="App">
-      <h1>McCarthy</h1>
-      <h2>Data from Backend:</h2>
-      <pre>{JSON.stringify(data, null, 2)}</pre> 
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/tools" element={<Tools />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/signin" element={<Signin />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

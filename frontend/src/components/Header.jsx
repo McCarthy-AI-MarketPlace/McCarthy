@@ -1,9 +1,40 @@
-import React from 'react'
+import { Link } from "react-router-dom";
+import { Container } from "react-bootstrap";
 
 export default function Header() {
   return (
-    <>
-      <h1>Header</h1>
-    </>
-  )
+    <Container
+      fluid
+      className="d-flex justify-content-between align-items-center px-4 py-3"
+    >
+      <Link
+        to="/"
+        className="text-decoration-none text-dark d-inline-flex align-items-center"
+        style={{
+          flexDirection: "column",
+          lineHeight: "1",
+        }}
+      >
+        <h3 className="fw-bold mb-1" style={{ margin: 0 }}>
+          McCarthy
+        </h3>
+        <p className="text-dark" style={{ fontSize: "0.75rem", margin: 0 }}>
+          An AI Marketplace.
+        </p>
+      </Link>
+
+      <div className="d-flex gap-4">
+        <Link to="/tools" className="text-dark text-decoration-none">
+          TOOLS
+        </Link>
+        <Link to="/support" className="text-dark text-decoration-none">
+          SUPPORT
+        </Link>
+      </div>
+
+      <Link to="/signin" className="text-dark text-decoration-none">
+        SIGNIN
+      </Link>
+    </Container>
+  );
 }

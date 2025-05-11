@@ -1,11 +1,11 @@
 import React from 'react'
 import Header from '../components/Header'
 
-export default function Signup() {
+export default function Signin() {
   return (
     <>
       <Header/>
-      <h1>Signup page</h1>
+      <h1 className='d-flex justify-content-center'>Sign in page</h1>
     </>
   )
 }
