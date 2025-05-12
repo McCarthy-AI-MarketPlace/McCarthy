@@ -6,6 +6,7 @@ import Landing from './pages/Landing';
 import Tools from './pages/Tools';
 import Support from './pages/Support';
 import Signin from './pages/Signin';
+import Signup from './pages/Signup';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/tools" element={<Tools />} />
         <Route path="/support" element={<Support />} />
         <Route path="/signin" element={<Signin />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </Router>
   );

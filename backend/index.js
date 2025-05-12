@@ -3,9 +3,21 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import userRoutes from "./routes/user.routes.js";
-import path from "path"
+import path from "path";
+import mongoose from "mongoose";
 
 dotenv.config();
+
+const mongoURI = process.env.MONGO_URI;
+(async () => {
+  try {
+    await mongoose.connect(`${mongoURI}/${process.env.DB_NAME}`);
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    process.exit(1);
+  }
+})();
 
 const app = express();
 

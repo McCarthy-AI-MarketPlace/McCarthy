@@ -1,4 +1,3 @@
-import React from "react";
 import { Container, Button, Form, InputGroup, Dropdown } from "react-bootstrap";
 import { FaSearch, FaSlidersH } from "react-icons/fa";
 import Header from "../components/Header";
@@ -53,26 +52,22 @@ const Landing = () => {
               background: "#ebe2f4",
               border: "none",
               borderRadius: "10px",
-              color: "#fff",
             }}
           />
           <InputGroup.Text
             style={{ background: "transparent", border: "none", color: "#fff" }}
           >
-
             <Dropdown>
-      <Dropdown.Toggle
-        as="span"
-        id="icon-dropdown"
-        style={{ cursor: 'pointer', position : "relative" }}
-        className="d-flex align-items-center"
-      >
-            <FaSlidersH color="#000" />
-            </Dropdown.Toggle>
-            <FilterDropdown></FilterDropdown>
+              <Dropdown.Toggle
+                as="span"
+                id="icon-dropdown"
+                style={{ cursor: "pointer", position: "relative" }}
+                className="d-flex align-items-center"
+              >
+                <FaSlidersH color="#000" />
+              </Dropdown.Toggle>
+              <FilterDropdown></FilterDropdown>
             </Dropdown>
-
-
           </InputGroup.Text>
         </InputGroup>
 
@@ -86,10 +81,9 @@ const Landing = () => {
             boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           }}
         >
-            
-         <Link to = "/Signup"> TRY NOW!
-         </Link>
-         
+          <Link to="/signup" style={{ textDecoration: "none",color:"inherit" }}>
+            TRY NOW!
+          </Link>
         </Button>
       </Container>
 

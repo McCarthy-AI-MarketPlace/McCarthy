@@ -1,3 +1,13 @@
 body {
-    background: radial-gradient(circle at center, #D000FF, #4B0082);
+  background: radial-gradient(circle at center, #d000ff, #4b0082);
+}
+
+.myBox {
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+
+@media (max-width: 768px) {
+  .myBox {
+    box-shadow: none;
+  }
 }
