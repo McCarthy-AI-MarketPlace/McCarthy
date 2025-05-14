@@ -5,7 +5,7 @@ export default function Header() {
   return (
     <Container
       fluid
-      className="d-flex justify-content-between align-items-center px-4 py-3"
+      className="d-flex justify-content-between align-items-center px-5 py-3 " style={{ backgroundColor: "#fff" }}
     >
       <Link
         to="/"
