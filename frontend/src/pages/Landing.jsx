@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import FixedLogos from "../components/FixedLogos";
 import { Link } from "react-router-dom";
 import FilterDropdown from "../components/FilterDropdown";
+import '@fontsource/jost';
 
 const Landing = () => {
   return (
@@ -22,8 +23,11 @@ const Landing = () => {
     >
       <Header />
 
+
+
       <Container className="text-center mt-5" style={{ flex: 1 }}>
-        <h1 className="fw-bold">
+
+        <h1 className="fw-bold" style={{ fontFamily: 'Jost, sans-serif' }}>  
           There’s an AI for <span className="text-uppercase">everything</span>
         </h1>
 
@@ -42,7 +46,22 @@ const Landing = () => {
           <InputGroup.Text
             style={{ background: "transparent", border: "none", color: "#fff" }}
           >
-            <FaSearch color="#000" />
+
+
+            <Dropdown>
+              <Dropdown.Toggle
+                as="span"
+                id="icon-dropdown"
+                style={{ cursor: "pointer", position: "relative" }}
+                className="d-flex align-items-center"
+              >
+                
+            <FaSlidersH color="#000" />
+
+              </Dropdown.Toggle>
+              <FilterDropdown></FilterDropdown>
+            </Dropdown>
+            
           </InputGroup.Text>
           <Form.Control
             className="mt-1 mb-1"
@@ -57,21 +76,13 @@ const Landing = () => {
           <InputGroup.Text
             style={{ background: "transparent", border: "none", color: "#fff" }}
           >
-            <Dropdown>
-              <Dropdown.Toggle
-                as="span"
-                id="icon-dropdown"
-                style={{ cursor: "pointer", position: "relative" }}
-                className="d-flex align-items-center"
-              >
-                <FaSlidersH color="#000" />
-              </Dropdown.Toggle>
-              <FilterDropdown></FilterDropdown>
-            </Dropdown>
+            <Link to="/signup" style={{ textDecoration: "none",color:"inherit" }}>
+            <FaSearch color="#000" />
+          </Link>
           </InputGroup.Text>
         </InputGroup>
 
-        <Button
+        {/* <Button
           className="mt-2 px-4 py-2"
           style={{
             backgroundColor: "#FFFACD",
@@ -84,7 +95,7 @@ const Landing = () => {
           <Link to="/signup" style={{ textDecoration: "none",color:"inherit" }}>
             TRY NOW!
           </Link>
-        </Button>
+        </Button> */}
       </Container>
 
       <FixedLogos />
@@ -118,9 +129,30 @@ const Landing = () => {
           }}
         >
           <h2 style={{ color: "#000", fontWeight: "600" }}>What we do</h2>
+          <h3>"We bring the world’s best AI tools together - so you can discover, compare, and use them in just one platform."</h3>
         </div>
       </div>
+      <Container className="text-center mt-5" style={{ flex: 1 }}>
+      <Button
+          className="mt-2 px-4 py-2"
+          style={{
+            backgroundColor: "#FFFACD",
+            color: "#000",
+            border: "none",
+            borderRadius: "10px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          }}
+        >
+
+          
+          
+          <Link to="/landing" style={{ textDecoration: "none",color:"inherit" }}>
+            TRY NOW!
+          </Link>
+        </Button>
+      </Container>
     </div>
+    
   );
 };
 
