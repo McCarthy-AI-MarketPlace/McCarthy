@@ -5,7 +5,7 @@ export default function Tools() {
   return (
     <>
       <div style={{ minHeight: "100vh", width: "100%", overflow: "hidden" }}>
-        <svg
+        {/* <svg
           viewBox="0 0 800 450"
           style={{
             display: "block",
@@ -27,7 +27,7 @@ export default function Tools() {
           "
             fill="#ebe2f4"
           />
-        </svg>
+        </svg> */}
       <h1 className="fw-bold text-center mt-5" style={{ fontFamily: "Jost, sans-serif" }}>
         Trending Tools
       </h1>

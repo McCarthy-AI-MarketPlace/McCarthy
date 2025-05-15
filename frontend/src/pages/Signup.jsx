@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 const Signup = () => {
   return (
     <div className="signup-page" style={{ minHeight: "100vh" }}>
-      <Header />
       <Container
         fluid
         className="vh-80 d-flex align-items-center justify-content-center mt-2"

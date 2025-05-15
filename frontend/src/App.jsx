@@ -7,10 +7,12 @@ import Tools from './pages/Tools';
 import Support from './pages/Support';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
+import Header from './components/Header';
 
 function App() {
   return (
     <Router>
+      <Header />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/tools" element={<Tools />} />

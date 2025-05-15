@@ -1,133 +1,74 @@
-import { Container, Button, Form, InputGroup, Dropdown } from "react-bootstrap";
-import { FaSearch, FaSlidersH } from "react-icons/fa";
-import Header from "../components/Header";
+import { Container, Button, Row, Col} from "react-bootstrap";
 import FixedLogos from "../components/FixedLogos";
 import { Link } from "react-router-dom";
 import Tools from "./Tools";
-import FilterDropdown from "../components/FilterDropdown";
 import Footer from "../components/Footer";
 import "@fontsource/jost";
+import SearchBar from "../components/SearchBar";
+import WaveAnimation from "../components/WaveAnimation";
 
 const Landing = () => {
+  const tools = [
+    "ChatGPT",
+    "Midjourney",
+    "Copy.ai",
+    "DALL-E",
+    "GitHub Copilot",
+  ];
   return (
     <>
-      <Header />
-
       <div
         style={{
-          minHeight: "100vh",
+          minHeight: "95vh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
           color: "#000",
           fontFamily: "Poppins, sans-serif",
-          overflowX: "hidden",
+          // overflowX: "hidden",
           position: "relative",
+          marginTop: "9vh",
         }}
       >
-        <Container
-          className="d-flex flex-column justify-content-center align-items-center"
-          style={{ flex: 1 }}
-        >
-          <h1 className="fw-bolder " style={{ fontFamily: "Jost, sans-serif",
-          fontSize:"56px",
-          marginTop:"80px"
-           }}>
-            There's an AI for Everything.
-            <span style={{
-              display:"flex",
-              justifyContent:"center",
-              alignItems: "center"
+        <section className="hero-gradient">
+          <Container>
+            <div className="text-center d-flex flex-column align-items-center gap-2">
+              <div className="animate-fade-up" style={{ maxWidth: "768px" }}>
+                <h1 className="display-4 fw-bold gradient-text">
+                  There's an AI for Everything. Find it. Use it. Instantly.
+                </h1>
+                <p className="lead text-muted mx-auto">
+                  McCarthy is your one-stop marketplace to discover, compare,
+                  and use the best AI tools for any task.
+                </p>
+              </div>
 
-            }}>
-            Find it. Use it. 
-            </span>
-            <span style={{
-              display:"flex",
-              justifyContent:"center",
-              alignItems: "center"
+              <SearchBar />
 
-            }}>
-            Instantly.
-            </span>
-          </h1>
-
-          <InputGroup
-            className="mx-auto my-4"
-            style={{
-              width: "60%",
-              maxWidth: "500px",
-              borderRadius: "15px",
-              background: "rgba(255, 255, 255, 0.5)",
-              backdropFilter: "blur(10px)",
-              boxShadow: "inset 0 0 5px rgba(255, 255, 255, 0.5)",
-              // overflow: "hidden",
-            }}
-          >
-            <InputGroup.Text
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "#fff",
-              }}
-            >
-              <Dropdown>
-                <Dropdown.Toggle
-                  as="span"
-                  id="icon-dropdown"
-                  style={{ cursor: "pointer", position: "relative" }}
-                  className="d-flex align-items-center"
-                >
-                  <FaSlidersH color="#000" />
-                </Dropdown.Toggle>
-                <FilterDropdown></FilterDropdown>
-              </Dropdown>
-            </InputGroup.Text>
-            <Form.Control
-              className="mt-1 mb-1"
-              type="text"
-              placeholder="Search"
-              style={{
-                background: "#ebe2f4",
-                border: "none",
-                borderRadius: "10px",
-              }}
-            />
-            <InputGroup.Text
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "#fff",
-              }}
-            >
-              <Link
-                to="/signup"
-                style={{ textDecoration: "none", color: "inherit" }}
+              <Button
+                className="mt-2 px-4 py-2"
+                style={{
+                  backgroundColor: "#FFFACD",
+                  color: "#000",
+                  border: "none",
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                }}
               >
-                <FaSearch color="#000" />
-              </Link>
-            </InputGroup.Text>
-          </InputGroup>
-
-          {/* <Button
-          className="mt-2 px-4 py-2"
-          style={{
-            backgroundColor: "#FFFACD",
-            color: "#000",
-            border: "none",
-            borderRadius: "10px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          }}
-        >
-          <Link to="/signup" style={{ textDecoration: "none",color:"inherit" }}>
-            TRY NOW!
-          </Link>
-        </Button> */}
-        </Container>
+                <Link
+                  to="/signup"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  TRY NOW!
+                </Link>
+              </Button>
+            </div>
+          </Container>
+        </section>
 
         <FixedLogos />
 
-        <div style={{ width: "100%", overflow: "hidden" }}>
+        {/* <div style={{ width: "100%", overflow: "hidden" }}>
           <svg
             viewBox="0 0 800 400"
             style={{
@@ -157,29 +98,25 @@ const Landing = () => {
           >
             <h2 style={{ color: "#000", fontWeight: "600" }}>What we do</h2>
           </div>
+        </div> */}
+        <div>
+          {/* Your existing content */}
+          <WaveAnimation />
+          <div
+            style={{
+              backgroundColor: "#ebe2f4",
+              opacity:"0.6",
+              textAlign: "center",
+              padding: "2rem 1rem",
+            }}
+          >
+            <h2 style={{ color: "#000", fontWeight: "600" }}>What we do</h2>
+          </div>
+             
         </div>
-        {/* <h3>"We bring the world’s best AI tools together - so you can discover, compare, and use them in just one platform."</h3> */}
       </div>
       <Tools />
-      <div className="d-flex justify-content-center align-items-center">
-        <Button
-          className="mt-2 px-4 py-2"
-          style={{
-            backgroundColor: "#FFFACD",
-            color: "#000",
-            border: "none",
-            borderRadius: "10px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-          }}
-        >
-          <Link
-            to="/signup"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            TRY NOW!
-          </Link>
-        </Button>
-      </div>
+
       <Footer />
     </>
   );
