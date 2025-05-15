@@ -29,8 +29,27 @@ const Landing = () => {
           className="d-flex flex-column justify-content-center align-items-center"
           style={{ flex: 1 }}
         >
-          <h1 className="fw-bold" style={{ fontFamily: "Jost, sans-serif" }}>
-            There’s an AI for <span className="text-uppercase">everything</span>
+          <h1 className="fw-bolder " style={{ fontFamily: "Jost, sans-serif",
+          fontSize:"56px",
+          marginTop:"80px"
+           }}>
+            There's an AI for Everything.
+            <span style={{
+              display:"flex",
+              justifyContent:"center",
+              alignItems: "center"
+
+            }}>
+            Find it. Use it. 
+            </span>
+            <span style={{
+              display:"flex",
+              justifyContent:"center",
+              alignItems: "center"
+
+            }}>
+            Instantly.
+            </span>
           </h1>
 
           <InputGroup

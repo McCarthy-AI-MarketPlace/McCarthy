@@ -7,40 +7,38 @@ export default function Header() {
       fluid
       className="d-flex justify-content-between align-items-center px-5 py-3 "
       style={{
-        backgroundColor: "rgba(229, 231, 235, 0.5)",
+        backgroundColor: "rgba(181, 138, 197, 0.5)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
         width: "100%",
         position: "fixed",
         height: "65px",
-        zIndex:"2000"
+        zIndex: "2000",
       }}
     >
+      {/* <div className="d-flex align-items-center gap-4"> */}
+      <Link
+        to="/"
+        className="text-decoration-none text-dark d-inline-flex align-items-center"
+        style={{
+          flexDirection: "column",
+          lineHeight: "1",
+        }}
+      >
+        <h3 className="fw-bold mb-1" style={{ margin: 0 }}>
+          McCarthy
+        </h3>
+        <p className="text-dark" style={{ fontSize: "0.75rem", margin: 0 }}>
+          An AI Marketplace.
+        </p>
+      </Link>
       <div className="d-flex align-items-center gap-4">
-        <Link
-          to="/"
-          className="text-decoration-none text-dark d-inline-flex align-items-center"
-          style={{
-            flexDirection: "column",
-            lineHeight: "1",
-          }}
-        >
-          <h3 className="fw-bold mb-1" style={{ margin: 0 }}>
-            McCarthy
-          </h3>
-          <p className="text-dark" style={{ fontSize: "0.75rem", margin: 0 }}>
-            An AI Marketplace.
-          </p>
+        <Link to="/tools" className="text-dark text-decoration-none">
+          Explore
         </Link>
-
-        <div className="d-flex gap-4">
-          <Link to="/tools" className="text-dark text-decoration-none">
-            TOOLS
-          </Link>
-          <Link to="/support" className="text-dark text-decoration-none">
-            SUPPORT
-          </Link>
-        </div>
+        <Link to="/support" className="text-dark text-decoration-none">
+          Developers
+        </Link>
       </div>
 
       <Link to="/signin" className="text-dark text-decoration-none">
