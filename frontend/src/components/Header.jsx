@@ -7,12 +7,13 @@ export default function Header() {
       fluid
       className="d-flex justify-content-between align-items-center px-5 py-3 "
       style={{
-        background: "rgba(235, 226, 244, 0.4)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-        borderRadius: "20px",
-        border: "1px solid rgba(255, 255, 255, 0.25)",
-        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.1)",
+        backgroundColor: "rgba(229, 231, 235, 0.5)",
+        backdropFilter: "blur(10px)",
+        WebkitBackdropFilter: "blur(10px)",
+        width: "100%",
+        position: "fixed",
+        height: "65px",
+        zIndex:"2000"
       }}
     >
       <div className="d-flex align-items-center gap-4">

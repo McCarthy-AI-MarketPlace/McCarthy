@@ -1,5 +1,7 @@
 # McCarthy- AI Marketplace
 
+testing git
+
 Welcome to the AI Marketplace — your go-to platform for discovering, showcasing, and accessing the most powerful and innovative AI tools and agents on the market. Whether you're a professional seeking domain-specific AI apps or a general user looking for creative and helpful AI utilities, we’ve got you covered.
 
 ## Overview
