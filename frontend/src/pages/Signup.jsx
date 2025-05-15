@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 
 const Signup = () => {
   return (
-    <div className="signup-page" style={{ minHeight: "100vh" }}>
-      <Header />
+    <div className="signup-page mt-5" style={{ minHeight: "100%" }}>
+     
       <Container
         fluid
         className="vh-80 d-flex align-items-center justify-content-center mt-2"
@@ -45,7 +45,7 @@ const Signup = () => {
             >
               <h3 className="fw-bold text-center mb-3">Create an account</h3>
 
-              <Form>
+              <Form className="p-4">
                 <Form.Group className="mb-3">
                   <Form.Label>Full Name</Form.Label>
                   <Form.Control type="text" placeholder="Enter full name" />

@@ -11,7 +11,7 @@ import "@fontsource/jost";
 const Landing = () => {
   return (
     <>
-      <Header />
+      
 
       <div
         style={{
