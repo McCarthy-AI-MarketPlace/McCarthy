@@ -1,10 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
   currentUser: null,
   error: null,
   loading: false,
 };
+
+export const logoutUser = createAsyncThunk(
+  'user/logoutUser',
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const res = await fetch('/api/user/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`Logout failed: ${res.status}`);
+      }
+
+      dispatch(signoutSuccess());
+      return true;
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: 'user',

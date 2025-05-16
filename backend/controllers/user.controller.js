@@ -2,6 +2,7 @@ import {User} from '../models/user.model.js';
 import {ApiError} from '../utils/ApiError.js';
 import {ApiResponse} from '../utils/ApiResponse.js';
 import {asyncHandler} from '../utils/asyncHandler.js';
+import bcrypt from "bcrypt";
 
 
 export const test = (req, res) => {
@@ -54,7 +55,8 @@ export const login = asyncHandler(async (req, res) => {
   if(!user){
     throw new ApiError(404,"user not found");
   }
-  const isPasswordCorrect = user.isPasswordCorrect(password)
+  const isPasswordCorrect = await user.isPasswordCorrect(password);
+
   if(!isPasswordCorrect){
     throw new ApiError(401,"Invalid password");
   }
@@ -115,4 +117,59 @@ export const deleteUser = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json(new ApiResponse(200, {}, "User deleted successfully"));
+});
+
+export const google = asyncHandler(async (req, res) => {
+  const { email, name, googlePhotoUrl } = req.body;
+
+  if (!email || !name) {
+    throw new ApiError(400, "Email and name are required");
+  }
+
+  let user = await User.findOne({ email });
+
+  if (user) {
+    const accessToken = user.generateAccessToken();
+
+    const { password, ...userWithoutPassword } = user._doc;
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    };
+
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, cookieOptions)
+      .json(new ApiResponse(200, userWithoutPassword, "Login successful"));
+  } else {
+    const generatedPassword =
+      Math.random().toString(36).slice(-8) +
+      Math.random().toString(36).slice(-8);
+
+    const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+
+    const newUser = new User({
+      fullName: name,
+      email,
+      password: hashedPassword,
+      avatar: googlePhotoUrl || undefined,
+    });
+
+    await newUser.save();
+
+    const accessToken = newUser.generateAccessToken();
+
+    const { password, ...newUserWithoutPassword } = newUser._doc;
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    };
+
+    return res
+      .status(201)
+      .cookie("accessToken", accessToken, cookieOptions)
+      .json(new ApiResponse(201, newUserWithoutPassword, "User created and logged in"));
+  }
 });

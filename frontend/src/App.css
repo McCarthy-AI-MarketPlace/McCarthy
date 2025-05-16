@@ -17,8 +17,9 @@ body {
   .custom-text {
     font-size: 1rem;
   }
-  .signup-modal {
+  .auth-modal {
     margin-top: 2%;
+     backdrop-filter: blur(8px);
   }
 }
 
@@ -54,10 +55,6 @@ body {
   opacity: 0;
   animation: fadeUp 0.8s ease-out forwards;
 }
-
-
-
-
 
 @keyframes logo-float {
   0%,

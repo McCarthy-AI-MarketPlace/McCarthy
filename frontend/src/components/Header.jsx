@@ -1,12 +1,20 @@
-import { useState } from "react";
-import { Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Container, Image } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../redux/user/userSlice";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
 
 export default function Header() {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleOpenLogin = () => {
     setShowSignup(false);
@@ -23,6 +31,28 @@ export default function Header() {
     setShowSignup(false);
   };
 
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser()).unwrap();
+      setDropdownOpen(false);
+      navigate("/");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
+
+  const toggleDropdown = () => setDropdownOpen((prev) => !prev);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <>
       <Container
@@ -38,7 +68,6 @@ export default function Header() {
           zIndex: "2",
         }}
       >
-        {/* Logo/Title */}
         <Link
           to="/"
           className="text-decoration-none text-dark d-inline-flex align-items-center"
@@ -55,7 +84,6 @@ export default function Header() {
           </p>
         </Link>
 
-        {/* Navigation Links */}
         <div className="d-flex align-items-center gap-4">
           <Link to="/tools" className="text-dark text-decoration-none">
             Explore
@@ -68,16 +96,80 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Login Button */}
-        <button
-          onClick={handleOpenLogin}
-          style={{ all: "unset", cursor: "pointer", fontWeight: "bold" }}
-        >
-          LOG IN
-        </button>
+        {!currentUser ? (
+          <button
+            onClick={handleOpenLogin}
+            style={{ all: "unset", cursor: "pointer", fontWeight: "bold" }}
+          >
+            LOG IN
+          </button>
+        ) : (
+          <div style={{ position: "relative" }} ref={dropdownRef}>
+            <Image
+              src={currentUser.data.avatar}
+              alt="profile"
+              roundedCircle
+              style={{ width: 40, height: 40, cursor: "pointer" }}
+              onClick={toggleDropdown}
+            />
+            {dropdownOpen && (
+              <div
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: "calc(100% + 10px)",
+                  backgroundColor: "white",
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                  borderRadius: "6px",
+                  padding: "0.5rem 0",
+                  zIndex: 10,
+                  minWidth: 120,
+                }}
+              >
+                <div
+                  onClick={() => {
+                    navigate("/profile");
+                    setDropdownOpen(false);
+                  }}
+                  style={{
+                    padding: "0.5rem 1rem",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Profile
+                </div>
+                {currentUser.isAdmin && (
+                  <div
+                    onClick={() => {
+                      navigate("/publish");
+                      setDropdownOpen(false);
+                    }}
+                    style={{
+                      padding: "0.5rem 1rem",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Publish
+                  </div>
+                )}
+                <div
+                  onClick={handleLogout}
+                  style={{
+                    padding: "0.5rem 1rem",
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Logout
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </Container>
 
-      {/* Modals */}
       <LoginModal
         show={showLogin}
         onClose={handleCloseModals}

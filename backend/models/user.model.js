@@ -20,7 +20,7 @@ const userSchema = new Schema({
     },
     avatar: {
         type:String, //cloudinary service
-        default: "https://as1.ftcdn.net/jpg/13/92/11/06/1000_F_1392110699_uwbQEAuQGEOIUaJAlZ0owWmOvPYDeliA.webp"
+        default: "https://as2.ftcdn.net/jpg/03/40/12/49/1000_F_340124934_bz3pQTLrdFpH92ekknuaTHy8JuXgG7fi.webp"
     },
     // toolsHistory: [
     //     {
