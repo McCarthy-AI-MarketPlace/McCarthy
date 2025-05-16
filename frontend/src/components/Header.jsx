@@ -67,8 +67,8 @@ export default function Header() {
             Explore
           </Link>
 
-          <Link to="/support" className="text-dark text-decoration-none">
-            Developers
+          <Link to="/developer" className="text-dark text-decoration-none">
+            Developer
           </Link>
         </div>
 
