@@ -1,86 +1,20 @@
-
 body {
-<<<<<<< HEAD
-
- background: "#B587AC5"
-
-=======
-  background: "#B587AC5"
->>>>>>> c5a6ecc0fb89505f81830eba885e878aa466fb42
+  background: "#B587AC5";
 }
 
 .myBox {
-
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-
 }
 
 @media (max-width: 768px) {
-<<<<<<< HEAD
-
- .myBox {
-
-  box-shadow: none;
-
- }
-
-}
-
-/* Fade-in + Floating animation */
-
-@keyframes logo-float {
-
- 0%,
-
- 100% {
-
-  transform: translateY(0px);
-
- }
-
- 50% {
-
-  transform: translateY(-8px);
-
- }
-
-}
-
-@keyframes fade-in {
-
- from {
-
-  opacity: 0;
-
-  transform: scale(0.9);
-
- }
-
- to {
-
-  opacity: 1;
-
-  transform: scale(1);
-
- }
-
-}
-
-.animated-logo {
-
- animation: fade-in 1s ease-out forwards, logo-float 3s ease-in-out infinite;
-
- transition: transform 0.3s ease;
-
-=======
   .myBox {
     box-shadow: none;
   }
 }
 
 /* Fade-in + Floating animation */
-@keyframes logo-float {
 
+@keyframes logo-float {
   0%,
   100% {
     transform: translateY(0px);
@@ -94,17 +28,19 @@ body {
 @keyframes fade-in {
   from {
     opacity: 0;
+
     transform: scale(0.9);
   }
 
   to {
     opacity: 1;
+
     transform: scale(1);
   }
 }
 
 .animated-logo {
   animation: fade-in 1s ease-out forwards, logo-float 3s ease-in-out infinite;
+
   transition: transform 0.3s ease;
->>>>>>> c5a6ecc0fb89505f81830eba885e878aa466fb42
 }
