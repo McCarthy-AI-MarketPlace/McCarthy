@@ -1,21 +1,19 @@
 import { useState, useEffect } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Spinner from 'react-bootstrap/Spinner';
+import Spinner from "react-bootstrap/Spinner";
 
 const SignupModal = ({ show, onClose, onSwitch }) => {
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
-  };
-
   };
 
   const handleSubmit = async (e) => {
@@ -82,6 +80,10 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
             />
           </Form.Group>
 
+          {errorMessage && (
+            <div className="text-danger mb-3">{errorMessage}</div>
+          )}
+
           <Button
             type="submit"
             className="w-100 text-white fw-bold"
@@ -90,7 +92,6 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
               border: "none",
               borderRadius: "25px",
             }}
-            onClick={handleSubmit}
             disabled={loading}
           >
             {loading ? <Spinner animation="border" size="sm" /> : "SIGN UP"}
@@ -113,22 +114,20 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
             <span>Google</span>
           </div>
 
-            {/* Switch to LOG In Link */}
-            <div className="text-center mt-4">
-              <small>
-                Already have an account?{" "}
-                <span
-                  onClick={onSwitch}
-                  style={{ color: "#7f4aca", cursor: "pointer" }}
-                >
-                  Log in
-                </span>
-              </small>
-            </div>
-          </Form>
-        </Modal.Body>
-      </Modal>
-    </>
+          <div className="text-center mt-4">
+            <small>
+              Already have an account?{" "}
+              <span
+                onClick={onSwitch}
+                style={{ color: "#7f4aca", cursor: "pointer" }}
+              >
+                Log in
+              </span>
+            </small>
+          </div>
+        </Form>
+      </Modal.Body>
+    </Modal>
   );
 };
 
