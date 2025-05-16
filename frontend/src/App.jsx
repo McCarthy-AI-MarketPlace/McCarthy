@@ -8,17 +8,25 @@ import Support from './pages/Support';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Header from './components/Header';
+// <<<<<<< master
+// =======
 
-// Wrapper to access location and conditionally render Header
-function AppWrapper() {
-  const location = useLocation();
-  const noHeaderRoutes = ['/signin', '/signup'];
+// // Wrapper to access location and conditionally render Header
+// function AppWrapper() {
+//   const location = useLocation();
+//   const noHeaderRoutes = ['/signin', '/signup'];
 
-  const showHeader = !noHeaderRoutes.includes(location.pathname.toLowerCase());
+//   const showHeader = !noHeaderRoutes.includes(location.pathname.toLowerCase());
+// >>>>>>> master
 
   return (
-    <>
-      {showHeader && <Header />}
+// <<<<<<< master
+//     <Router>
+//       <Header />
+// =======
+//     <>
+//       {showHeader && <Header />}
+// >>>>>>> master
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/tools" element={<Tools />} />

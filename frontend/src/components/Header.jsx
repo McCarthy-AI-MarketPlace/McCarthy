@@ -16,7 +16,6 @@ export default function Header() {
         zIndex: "2000",
       }}
     >
-      {/* <div className="d-flex align-items-center gap-4"> */}
       <Link
         to="/"
         className="text-decoration-none text-dark d-inline-flex align-items-center"
