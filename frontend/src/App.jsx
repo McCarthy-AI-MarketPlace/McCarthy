@@ -9,18 +9,20 @@ import Landing from "./pages/Landing";
 import Header from "./components/Header";
 
  import React from 'react'
+import Developer from "./pages/Developer";
  
  export default function App() {
    return (
-    <Router>
-      <Header />
+     <Router>
+       <Header />
 
-      <Routes>
-        <Route path="/" element={<Landing />} />
-      </Routes>
-      <Footer />
-    </Router>
-  );
+       <Routes>
+         <Route path="/" element={<Landing />} />
+         <Route path="/developer" element={<Developer />} />
+       </Routes>
+       <Footer />
+     </Router>
+   );
  }
   
 
