@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
-import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 
 const SignupModal = ({ show, onClose, onSwitch }) => {

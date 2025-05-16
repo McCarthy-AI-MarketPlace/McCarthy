@@ -10,6 +10,7 @@ import Header from "./components/Header";
 
  import React from 'react'
 import Developer from "./pages/Developer";
+import Dashboard from "./pages/Dashboard";
  
  export default function App() {
    return (
@@ -19,6 +20,7 @@ import Developer from "./pages/Developer";
        <Routes>
          <Route path="/" element={<Landing />} />
          <Route path="/developer" element={<Developer />} />
+         <Route path="/dashboard" element={<Dashboard />} />
        </Routes>
        <Footer />
      </Router>

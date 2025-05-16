@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
-import { Link } from "react-router-dom";
 
 export default function Header() {
   const [showLogin, setShowLogin] = useState(false);
@@ -30,62 +30,60 @@ export default function Header() {
         className="d-flex justify-content-between align-items-center"
         style={{
           backgroundColor: "rgba(181, 138, 197, 0.5)",
-
           backdropFilter: "blur(10px)",
-
           WebkitBackdropFilter: "blur(10px)",
-
           width: "100%",
-
           position: "fixed",
-
           height: "65px",
-
           zIndex: "2",
         }}
       >
+        {/* Logo/Title */}
         <Link
           to="/"
           className="text-decoration-none text-dark d-inline-flex align-items-center"
           style={{
             flexDirection: "column",
-
             lineHeight: "1",
           }}
         >
           <h3 className="fw-bold mb-1" style={{ margin: 0 }}>
             McCarthy
           </h3>
-
           <p className="text-dark" style={{ fontSize: "0.75rem", margin: 0 }}>
             An AI Marketplace.
           </p>
         </Link>
 
+        {/* Navigation Links */}
         <div className="d-flex align-items-center gap-4">
           <Link to="/tools" className="text-dark text-decoration-none">
             Explore
           </Link>
-
-          <Link to="/developer" className="text-dark text-decoration-none">
-            Developer
+          <Link to="/support" className="text-dark text-decoration-none">
+            Developers
+          </Link>
+          <Link to="/dashboard" className="text-dark text-decoration-none">
+            Dashboard
           </Link>
         </div>
 
+        {/* Login Button */}
         <button
           onClick={handleOpenLogin}
-          style={{ all: "unset", cursor: "pointer" }}
+          style={{ all: "unset", cursor: "pointer", fontWeight: "bold" }}
         >
           LOG IN
         </button>
       </Container>
 
+      {/* Modals */}
       <LoginModal
         show={showLogin}
         onClose={handleCloseModals}
         onSwitch={handleOpenSignup}
       />
-      <SignupModal className="mt-2"
+      <SignupModal
         show={showSignup}
         onClose={handleCloseModals}
         onSwitch={handleOpenLogin}
