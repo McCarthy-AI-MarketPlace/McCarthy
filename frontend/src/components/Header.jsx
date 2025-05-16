@@ -63,7 +63,7 @@ export default function Header() {
         </Link>
 
         <div className="d-flex align-items-center gap-4">
-          <Link to="/tools" className="text-dark text-decoration-none">
+          <Link to="/Explore" className="text-dark text-decoration-none">
             Explore
           </Link>
 
@@ -85,7 +85,8 @@ export default function Header() {
         onClose={handleCloseModals}
         onSwitch={handleOpenSignup}
       />
-      <SignupModal className="mt-2"
+      <SignupModal
+        className="mt-2"
         show={showSignup}
         onClose={handleCloseModals}
         onSwitch={handleOpenSignin}
