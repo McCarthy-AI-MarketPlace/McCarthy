@@ -6,6 +6,10 @@ import { Link } from "react-router-dom";
 const Signin = () => {
   return (
     <div style={{ minHeight: "100vh" }}>
+    <div className="mt-5 "  style={{ minHeight: "100%",
+      
+     }}>
+
       <Container
         fluid
         className="vh-80 d-flex align-items-center justify-content-center mt-2"
@@ -40,9 +44,9 @@ const Signin = () => {
               style={{ borderRadius: "25px" }}
               className="p-3 myBox"
             >
-              <h3 className="fw-bold text-center mb-1">Signin to your account</h3>
+              <h3 className="fw-bold text-center mb-1">Sign in to your account</h3>
 
-              <Form>
+              <Form className="p-5">
                 <Form.Group className="mb-3">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
