@@ -1,34 +1,39 @@
 import { useState, useEffect } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
+import { Link } from "react-router-dom"; // Import Link from React Router
 
-const SignupModal = ({ show, onClose, onSwitch }) => {
-  const [formData, setFormData] = useState({});
+const LoginModal = ({ show, onClose, onSwitch }) => {
+  // State management for form data
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
-    });
-  };
+  // Handle changes for the input fields and remember me checkbox
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleRememberMeChange = () => setRememberMe(!rememberMe);
 
-  const handleSubmit = async (e) => {
+  // Handle form submission
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic
-    console.log(formData);
+    console.log("Email:", email);
+    console.log("Password:", password);
+    console.log("Remember Me:", rememberMe);
   };
 
   useEffect(() => {
     const body = document.body;
-    // Lock body scroll when modal is open
+    // Lock the body scroll when the modal is open
     if (show) {
-      body.style.overflow = 'hidden';
+      body.style.overflow = 'hidden'; // Prevent background scrolling
     } else {
-      body.style.overflow = 'auto';
+      body.style.overflow = 'auto'; // Restore body scroll
     }
 
     return () => {
-      body.style.overflow = 'auto'; // Clean up
+      // Cleanup in case the modal is closed before the component unmounts
+      body.style.overflow = 'auto';
     };
   }, [show]);
 
@@ -44,39 +49,35 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
             left: 0,
             width: "100%",
             height: "100%",
-            background: "rgba(0, 0, 0, 0.3)", // Slight dark overlay
-            backdropFilter: "blur(4px)", // Subtle blur effect
+            background: "rgba(0, 0, 0, 0.3)", // Optional: Add slight darkening
+            backdropFilter: "blur(4px)", // Reduced the blur effect to 4px
             zIndex: 1040, // Below the modal
           }}
         ></div>
       )}
 
       {/* Modal from React-Bootstrap */}
-      <Modal show={show} onHide={onClose} centered>
+      <Modal
+        show={show}
+        onHide={onClose}
+        centered
+        style={{
+          zIndex: 1050, // Ensure the modal is above the overlay
+        }}
+      >
         <Modal.Header closeButton>
-          <Modal.Title>Create an account</Modal.Title>
+          <Modal.Title>Log in to your account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            {/* Full Name Input */}
-            <Form.Group className="mb-3">
-              <Form.Label>Full Name</Form.Label>
-              <Form.Control
-                onChange={handleChange}
-                id="fullName"
-                type="text"
-                placeholder="Enter full name"
-              />
-            </Form.Group>
-
             {/* Email Input */}
             <Form.Group className="mb-3">
               <Form.Label>Email</Form.Label>
               <Form.Control
-                onChange={handleChange}
-                id="email"
                 type="email"
                 placeholder="Enter email"
+                value={email}
+                onChange={handleEmailChange}
               />
             </Form.Group>
 
@@ -84,14 +85,27 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
             <Form.Group className="mb-4">
               <Form.Label>Password</Form.Label>
               <Form.Control
-                onChange={handleChange}
-                id="password"
                 type="password"
                 placeholder="Enter password"
+                value={password}
+                onChange={handlePasswordChange}
               />
             </Form.Group>
 
-            {/* Sign Up Button */}
+            {/* Remember Me and Forgot Password */}
+            <div className="d-flex justify-content-between mb-3">
+              <Form.Check
+                type="checkbox"
+                label="Always stay signed in"
+                checked={rememberMe}
+                onChange={handleRememberMeChange}
+              />
+              <Link to="/forgot-password" style={{ textDecoration: "none", color: "#7f4aca" }}>
+                Forgot Password?
+              </Link>
+            </div>
+
+            {/* Log In Button */}
             <Button
               type="submit"
               className="w-100 text-white fw-bold"
@@ -101,7 +115,7 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
                 borderRadius: "25px",
               }}
             >
-              SIGN UP
+              LOG IN
             </Button>
 
             <div className="text-center mt-4 mb-3 text-muted">OR CONTINUE WITH</div>
@@ -120,15 +134,15 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
               <span>Google</span>
             </div>
 
-            {/* Switch to LOG In Link */}
+            {/* Switch to Sign Up Link */}
             <div className="text-center mt-4">
               <small>
-                Already have an account?{" "}
+                Don’t have an account?{" "}
                 <span
                   onClick={onSwitch}
                   style={{ color: "#7f4aca", cursor: "pointer" }}
                 >
-                  Log in
+                  Sign up
                 </span>
               </small>
             </div>
@@ -139,4 +153,4 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
   );
 };
 
-export default SignupModal;
+export default LoginModal;

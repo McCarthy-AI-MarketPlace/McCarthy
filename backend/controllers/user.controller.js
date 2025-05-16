@@ -44,7 +44,7 @@ export const signup = asyncHandler(async (req, res) => {
   }
 });
 
-export const signin = asyncHandler(async (req, res) => {
+export const login = asyncHandler(async (req, res) => {
   const {email, password} = req.body;
   if(!email || !password || email === "" || password === ""){
     throw new ApiError(400,"all fields are required");
@@ -65,7 +65,7 @@ export const signin = asyncHandler(async (req, res) => {
   secure: true,
  }
 
-  res.status(200).cookie("accessToken",accessToken, options).json(new ApiResponse(200,user,"Signin successful"));
+  res.status(200).cookie("accessToken",accessToken, options).json(new ApiResponse(200,user,"Login successful"));
 });
 
 export const signout = asyncHandler(async (req,res) => {
