@@ -1,4 +1,5 @@
 .wave-container {
+<<<<<<< HEAD
 
   position: relative;
 
@@ -77,3 +78,48 @@
 }
 
 
+=======
+    position: relative;
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    line-height: 0;
+    background: transparent;
+}
+
+.wave {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    bottom: 0;
+}
+
+.wave1 {
+    animation: wave1 10s linear infinite;
+    z-index: 1;
+}
+
+.wave2 {
+    animation: wave2 15s linear infinite reverse;
+    z-index: 0;
+}
+
+@keyframes wave1 {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes wave2 {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-25%);
+    } }
+>>>>>>> c5a6ecc0fb89505f81830eba885e878aa466fb42
