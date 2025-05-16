@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { signup, signin, signout, updateUser, deleteUser } from "../controllers/user.controller.js";
+import { signup, login, signout, updateUser, deleteUser } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
 router.post("/signup", signup);
-router.post("/signin", signin);
+router.post("/login", login);
 
 // secure routes
 router.post("/signout", verifyJWT, signout);

@@ -1,4 +1,4 @@
-import { set } from "mongoose";
+import { useState, useEffect } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
@@ -14,6 +14,8 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
       ...formData,
       [e.target.id]: e.target.value,
     });
+  };
+
   };
 
   const handleSubmit = async (e) => {
@@ -111,20 +113,22 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
             <span>Google</span>
           </div>
 
-          <div className="text-center mt-4">
-            <small>
-              Already have an account?{" "}
-              <span
-                onClick={onSwitch}
-                style={{ color: "#7f4aca", cursor: "pointer" }}
-              >
-                Sign in
-              </span>
-            </small>
-          </div>
-        </Form>
-      </Modal.Body>
-    </Modal>
+            {/* Switch to LOG In Link */}
+            <div className="text-center mt-4">
+              <small>
+                Already have an account?{" "}
+                <span
+                  onClick={onSwitch}
+                  style={{ color: "#7f4aca", cursor: "pointer" }}
+                >
+                  Log in
+                </span>
+              </small>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 

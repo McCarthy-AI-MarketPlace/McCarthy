@@ -1,25 +1,25 @@
 import { useState } from "react";
 import { Container } from "react-bootstrap";
-import SigninModal from "./SigninModal";
+import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
 import { Link } from "react-router-dom";
 
 export default function Header() {
-  const [showSignin, setShowSignin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
 
-  const handleOpenSignin = () => {
+  const handleOpenLogin = () => {
     setShowSignup(false);
-    setShowSignin(true);
+    setShowLogin(true);
   };
 
   const handleOpenSignup = () => {
-    setShowSignin(false);
+    setShowLogin(false);
     setShowSignup(true);
   };
 
   const handleCloseModals = () => {
-    setShowSignin(false);
+    setShowLogin(false);
     setShowSignup(false);
   };
 
@@ -73,22 +73,22 @@ export default function Header() {
         </div>
 
         <button
-          onClick={handleOpenSignin}
+          onClick={handleOpenLogin}
           style={{ all: "unset", cursor: "pointer" }}
         >
-          SIGN IN
+          LOG IN
         </button>
       </Container>
 
-      <SigninModal
-        show={showSignin}
+      <LoginModal
+        show={showLogin}
         onClose={handleCloseModals}
         onSwitch={handleOpenSignup}
       />
       <SignupModal className="mt-2"
         show={showSignup}
         onClose={handleCloseModals}
-        onSwitch={handleOpenSignin}
+        onSwitch={handleOpenLogin}
       />
     </>
   );
