@@ -27,7 +27,7 @@ export default function Header() {
     <>
       <Container
         fluid
-        className="d-flex justify-content-between align-items-center px-5 py-3 "
+        className="d-flex justify-content-between align-items-center"
         style={{
           backgroundColor: "rgba(181, 138, 197, 0.5)",
 
@@ -85,7 +85,7 @@ export default function Header() {
         onClose={handleCloseModals}
         onSwitch={handleOpenSignup}
       />
-      <SignupModal
+      <SignupModal className="mt-2"
         show={showSignup}
         onClose={handleCloseModals}
         onSwitch={handleOpenSignin}

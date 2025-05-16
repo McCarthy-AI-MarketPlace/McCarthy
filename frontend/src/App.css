@@ -10,9 +10,18 @@ body {
   .myBox {
     box-shadow: none;
   }
+  .custom-main-text {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+  }
+  .custom-text {
+    font-size: 1rem;
+  }
+  .signup-modal {
+    margin-top: 5%;
+  }
 }
 
-/* Fade-in + Floating animation */
 
 @keyframes logo-float {
   0%,

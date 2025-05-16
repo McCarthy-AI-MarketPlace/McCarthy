@@ -16,7 +16,7 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
     
   };
   return (
-    <Modal show={show} onHide={onClose} centered>
+    <Modal show={show} onHide={onClose} centered className="signup-modal">
       <Modal.Header closeButton>
         <Modal.Title>Create an account</Modal.Title>
       </Modal.Header>

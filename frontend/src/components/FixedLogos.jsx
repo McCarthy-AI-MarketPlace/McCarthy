@@ -3,8 +3,6 @@ import { Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../../src/App.css"; // for animations
 
-import "../../src/App.css"; // for animations
-
 const FixedLogos = () => {
 
  return (
@@ -15,7 +13,7 @@ const FixedLogos = () => {
 
     position: "absolute",
 
-    bottom: "25%",
+    bottom: "18%",
 
     left: "50%",
 

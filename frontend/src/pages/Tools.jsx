@@ -9,14 +9,14 @@ export default function Tools() {
         style={{
           backgroundColor: "#ebe2f4",
 
-          opacity: "0.6",
+          opacity: "0.5255",
 
           textAlign: "center",
 
           padding: "2rem 1rem",
         }}
       >
-        <h2 style={{ color: "#000", fontWeight: "600" }}>What we do</h2>
+        <h2 style={{ color: "#000", fontWeight: "600", opacity:"1" }}>What we do</h2>
       </div>
       <WaveAnimation flip />
       <div style={{ minHeight: "100vh", width: "100%", overflow: "hidden" }}>
