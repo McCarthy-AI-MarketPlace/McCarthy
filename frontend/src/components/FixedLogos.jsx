@@ -23,8 +23,6 @@ const FixedLogos = () => {
 
     gap: "40px",
 
-    zIndex: 100,
-
    }}
 
   >

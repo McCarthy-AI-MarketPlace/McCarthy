@@ -51,12 +51,12 @@ const Landing = () => {
         <section className="hero-gradient">
           <Container>
             <div className="text-center d-flex flex-column align-items-center gap-2">
-              <div className="animate-fade-up" style={{ maxWidth: "768px" }}>
-                <h1 className="display-4 fw-bold gradient-text custom-main-text">
+              <div  style={{ maxWidth: "768px" }}>
+                <h1 className="fade-down display-4 fw-bold gradient-text custom-main-text">
                   There's an AI for Everything. Find it. Use it. Instantly.
                 </h1>
 
-                <p className="lead text-muted mx-auto custom-text">
+                <p className="animate-fade-up lead text-muted mx-auto custom-text">
                   McCarthy is your one-stop marketplace to discover, compare,
                   and use the best AI tools for any task.
                 </p>

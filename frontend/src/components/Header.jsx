@@ -41,7 +41,7 @@ export default function Header() {
 
           height: "65px",
 
-          zIndex: "2000",
+          zIndex: "2",
         }}
       >
         <Link
