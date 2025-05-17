@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import Landing from "./pages/Landing";
 import Header from "./components/Header";
+import Explore from "./pages/Explore";
+
 import Developer from "./pages/Developer";
 import Dashboard from "./pages/Dashboard";
 
@@ -10,13 +12,14 @@ export default function App() {
   return (
     <Router>
       <Header />
-
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/developer" element={<Developer />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-      <Footer />
-    </Router>
-  );
-}
+       <Routes>
+         <Route path="/" element={<Landing />} />
+         <Route path="/developer" element={<Developer />} />
+         <Route path="/dashboard" element={<Dashboard />} />
+         <Route path="/explore" element={<Explore />} />
+       </Routes>
+       <Footer />
+     </Router>
+   );
+ }
+  
