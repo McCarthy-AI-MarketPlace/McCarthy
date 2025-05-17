@@ -85,10 +85,10 @@ export default function Header() {
         </Link>
 
         <div className="d-flex align-items-center gap-4">
-          <Link to="/tools" className="text-dark text-decoration-none">
+          <Link to="/explore" className="text-dark text-decoration-none">
             Explore
           </Link>
-          <Link to="/support" className="text-dark text-decoration-none">
+          <Link to="/developer" className="text-dark text-decoration-none">
             Developers
           </Link>
           <Link to="/dashboard" className="text-dark text-decoration-none">
