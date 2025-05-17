@@ -1,41 +1,87 @@
-import { set } from "mongoose";
+import { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
-import { useState } from "react";
+import Spinner from "react-bootstrap/Spinner";
 
 const SignupModal = ({ show, onClose, onSwitch }) => {
-  const [formData, setFormData] = useState()
+  const [formData, setFormData] = useState({});
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
     });
-  }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    if (!formData.fullName || !formData.email || !formData.password) {
+      return setErrorMessage("Please fill out all fields.");
+    }
+    try {
+      setLoading(true);
+      setErrorMessage(null);
+      const res = await fetch("/api/user/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        return setErrorMessage(data.message);
+      }
+      setLoading(false);
+      if (res.ok) {
+        onSwitch();
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+      setLoading(false);
+    }
   };
+
   return (
     <Modal show={show} onHide={onClose} centered className="signup-modal">
       <Modal.Header closeButton>
         <Modal.Title>Create an account</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>Full Name</Form.Label>
-            <Form.Control onChange={handleChange} id="fullName" type="text" placeholder="Enter full name" />
+            <Form.Control
+              onChange={handleChange}
+              id="fullName"
+              type="text"
+              placeholder="Enter full name"
+            />
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Email</Form.Label>
-            <Form.Control onChange={handleChange} id="email" type="email" placeholder="Enter email" />
+            <Form.Control
+              onChange={handleChange}
+              id="email"
+              type="email"
+              placeholder="Enter email"
+            />
           </Form.Group>
 
           <Form.Group className="mb-4">
             <Form.Label>Password</Form.Label>
-            <Form.Control onChange={handleChange} id="password" type="password" placeholder="Enter password" />
+            <Form.Control
+              onChange={handleChange}
+              id="password"
+              type="password"
+              placeholder="Enter password"
+            />
           </Form.Group>
+
+          {errorMessage && (
+            <div className="text-danger mb-3">{errorMessage}</div>
+          )}
 
           <Button
             type="submit"
@@ -45,8 +91,9 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
               border: "none",
               borderRadius: "25px",
             }}
+            disabled={loading}
           >
-            SIGN UP
+            {loading ? <Spinner animation="border" size="sm" /> : "SIGN UP"}
           </Button>
 
           <div className="text-center mt-4 mb-3 text-muted">
@@ -73,7 +120,7 @@ const SignupModal = ({ show, onClose, onSwitch }) => {
                 onClick={onSwitch}
                 style={{ color: "#7f4aca", cursor: "pointer" }}
               >
-                Sign in
+                Log in
               </span>
             </small>
           </div>

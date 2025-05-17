@@ -1,9 +1,44 @@
 import { useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Spinner from 'react-bootstrap/Spinner';
 
 const SigninModal = ({ show, onClose, onSwitch }) => {
-  const [formData, setFormData] = useState()
+  const [formData, setFormData] = useState({});
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.email || !formData.password) {
+      return dispatch(signInFailure('Please fill all the fields'));
+    }
+    try {
+      dispatch(signInStart());
+      const res = await fetch('/api/user/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signInFailure(data.message));
+      }
+
+      if (res.ok) {
+        dispatch(signInSuccess(data));
+        navigate('/');
+      }
+    } catch (error) {
+      dispatch(signInFailure(error.message));
+    }
+  };
 
   return (
 
@@ -12,15 +47,15 @@ const SigninModal = ({ show, onClose, onSwitch }) => {
         <Modal.Title>Sign in to your account</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Control type="email" placeholder="Enter email" onChange={handleChange}/>
           </Form.Group>
 
           <Form.Group className="mb-4">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Enter password" />
+            <Form.Control type="password" placeholder="Enter password" onChange={handleChange}/>
           </Form.Group>
 
           <Button
@@ -31,8 +66,13 @@ const SigninModal = ({ show, onClose, onSwitch }) => {
               border: "none",
               borderRadius: "25px",
             }}
-          >
-            SIGN IN
+            disabled={loading}
+            onClick={handleSubmit}
+          > {loading ? (
+            <Spinner animation="border" size="sm" />
+          ) : (
+            "SIGN IN"
+          )}
           </Button>
 
           <div className="text-center mt-4 mb-3 text-muted">

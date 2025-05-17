@@ -8,18 +8,24 @@ import Explore from "./pages/Explore";
 
 import Header from "./components/Header";
 
-import React from "react";
 
-export default function App() {
-  return (
-    <Router>
-      <Header />
+import React from 'react'
+import Developer from "./pages/Developer";
+import Dashboard from "./pages/Dashboard";
+ 
+ export default function App() {
+   return (
+     <Router>
+       <Header />
 
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/Explore" element={<Explore />} />
-      </Routes>
-      <Footer />
-    </Router>
-  );
-}
+       <Routes>
+         <Route path="/" element={<Landing />} />
+         <Route path="/developer" element={<Developer />} />
+         <Route path="/dashboard" element={<Dashboard />} />
+         <Route path="/explore" element={<Explore />} />
+       </Routes>
+       <Footer />
+     </Router>
+   );
+ }
+  
