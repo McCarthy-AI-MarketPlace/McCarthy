@@ -36,6 +36,12 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    savedTools: [
+        {
+            type:Schema.Types.ObjectId,
+            ref:"Tool",
+        }
+    ],
 
 },{timestamps:true})
 

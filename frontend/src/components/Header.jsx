@@ -66,6 +66,7 @@ export default function Header() {
           position: "fixed",
           height: "65px",
           zIndex: "2",
+          borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
         }}
       >
         <Link
@@ -139,21 +140,37 @@ export default function Header() {
                 >
                   Profile
                 </div>
-                {currentUser.isAdmin && (
-                  <div
-                    onClick={() => {
-                      navigate("/publish");
-                      setDropdownOpen(false);
-                    }}
-                    style={{
-                      padding: "0.5rem 1rem",
-                      cursor: "pointer",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    Publish
-                  </div>
+                {currentUser.data.isAdmin && (
+                  <>
+                    <div
+                      onClick={() => {
+                        navigate("/publish");
+                        setDropdownOpen(false);
+                      }}
+                      style={{
+                        padding: "0.5rem 1rem",
+                        cursor: "pointer",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      Publish
+                    </div>
+                    <div
+                      onClick={() => {
+                        navigate("/my-tools");
+                        setDropdownOpen(false);
+                      }}
+                      style={{
+                        padding: "0.5rem 1rem",
+                        cursor: "pointer",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      My Tools
+                    </div>
+                  </>
                 )}
+
                 <div
                   onClick={handleLogout}
                   style={{
