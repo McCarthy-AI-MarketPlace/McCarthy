@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Card, Form, Button, Stack, Badge, Row, Col } from "react-bootstrap";
+import {
+  Card,
+  Form,
+  Button,
+  Stack,
+  Badge,
+  Row,
+  Col,
+  Collapse,
+} from "react-bootstrap";
 
 const categories = [
   "Text Generation",
@@ -23,17 +32,19 @@ const popularTags = [
   "Productivity",
 ];
 
-export default function FiltersSidebar({ onReset }) {
+export default function FiltersSidebar({
+  onReset,
+  isSidebarVisible,
+  onToggleSidebar,
+}) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedPricing, setSelectedPricing] = useState("");
   const [rating, setRating] = useState(0);
   const [selectedTags, setSelectedTags] = useState([]);
 
   const handleTagToggle = (tag) => {
-    setSelectedTags((prevTags) =>
-      prevTags.includes(tag)
-        ? prevTags.filter((t) => t !== tag)
-        : [...prevTags, tag]
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
@@ -46,109 +57,147 @@ export default function FiltersSidebar({ onReset }) {
   };
 
   return (
-    <Card
-      className="p-4 rounded-4 border-light"
-      style={{
-        backgroundColor: "#f8f9fa", 
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", 
-      }}
-    >
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h5 className="fw-bold mb-0 ">Filters</h5>
+    <>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h5 className="fw-bold mb-0">Filters</h5>
         <Button
-          variant="outline-primary"
+          onClick={onToggleSidebar}
           size="sm"
-          className="rounded-pill px-3 py-1"
-          onClick={handleReset}
+          className="rounded-pill px-4 py-2 fw-medium"
+          style={{
+            background: "linear-gradient(to right, #0d6efd, #3b8bff)",
+            color: "#fff",
+            border: "1px solid #0d6efd",
+            boxShadow: "0 4px 10px rgba(13, 110, 253, 0.2)",
+            transition: "all 0.3s ease-in-out",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background =
+              "linear-gradient(to right, #0b5ed7, #2c75f3)";
+            e.currentTarget.style.boxShadow =
+              "0 6px 14px rgba(13, 110, 253, 0.3)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background =
+              "linear-gradient(to right, #0d6efd, #3b8bff)";
+            e.currentTarget.style.boxShadow =
+              "0 4px 10px rgba(13, 110, 253, 0.2)";
+          }}
         >
-          Reset
+          {isSidebarVisible ? "Hide Filters" : "Show Filters"}
         </Button>
       </div>
 
-      {/* Category Filter */}
-      <div className="mb-4">
-        <h6 className="fw-bold text-black">Category</h6>
-        <Form>
-          <Stack gap={1}>
-            {categories.map((cat) => (
-              <Form.Check
-                type="radio"
-                id={`cat-${cat}`}
-                name="category"
-                label={cat}
-                key={cat}
-                checked={selectedCategory === cat}
-                onChange={() => setSelectedCategory(cat)}
-                className="text-muted"
+      <Collapse in={isSidebarVisible}>
+        <div>
+          <Card
+            className="p-4 rounded-4 border-light"
+            style={{
+              backgroundColor: "#f8f9fa",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            {/* Category Filter */}
+            <div className="mb-4">
+              <h6 className="fw-bold text-black">Category</h6>
+              <Form>
+                <Stack gap={1}>
+                  {categories.map((cat) => (
+                    <Form.Check
+                      type="radio"
+                      key={cat}
+                      id={`cat-${cat}`}
+                      name="category"
+                      label={cat}
+                      checked={selectedCategory === cat}
+                      onChange={() => setSelectedCategory(cat)}
+                      className="text-muted"
+                    />
+                  ))}
+                </Stack>
+              </Form>
+            </div>
+
+            <hr className="my-4" />
+
+            {/* Pricing Filter */}
+            <div className="mb-4">
+              <h6 className="fw-semibold text-black">Pricing</h6>
+              <Form>
+                <Stack gap={1}>
+                  {pricingOptions.map((option) => (
+                    <Form.Check
+                      type="radio"
+                      key={option}
+                      id={`price-${option}`}
+                      name="pricing"
+                      label={option}
+                      checked={selectedPricing === option}
+                      onChange={() => setSelectedPricing(option)}
+                      className="text-muted"
+                    />
+                  ))}
+                </Stack>
+              </Form>
+            </div>
+
+            <hr className="my-4" />
+
+            {/* Rating Slider */}
+            <div className="mb-4">
+              <h6 className="fw-semibold text-black">Minimum Rating</h6>
+              <Form.Range
+                min={0}
+                max={5}
+                step={0.1}
+                value={rating}
+                onChange={(e) => setRating(parseFloat(e.target.value))}
               />
-            ))}
-          </Stack>
-        </Form>
-      </div>
+              <div className="text-muted small">
+                {Math.round(rating * 2) / 2} / 5
+              </div>
+            </div>
 
-      <hr className="my-4" />
+            {/* Popular Tags */}
+            <div>
+              <h6 className="fw-semibold text-black">Popular Tags</h6>
+              <Row className="g-2 mt-2">
+                {popularTags.map((tag) => {
+                  const isSelected = selectedTags.includes(tag);
+                  return (
+                    <Col xs="auto" key={tag}>
+                      <Badge
+                        pill
+                        bg={isSelected ? "primary" : "light"}
+                        text={isSelected ? "light" : "dark"}
+                        className={`border shadow-sm px-3 py-2 small ${
+                          isSelected ? "" : "bg-light"
+                        }`}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleTagToggle(tag)}
+                      >
+                        {tag}
+                      </Badge>
+                    </Col>
+                  );
+                })}
+              </Row>
+            </div>
 
-      {/* Pricing Filter */}
-      <div className="mb-4">
-        <h6 className="fw-semibold text-black">Pricing</h6>
-        <Form>
-          <Stack gap={1}>
-            {pricingOptions.map((price) => (
-              <Form.Check
-                type="radio"
-                id={`pricing-${price}`}
-                name="pricing"
-                label={price}
-                key={price}
-                checked={selectedPricing === price}
-                onChange={() => setSelectedPricing(price)}
-                className="text-muted"
-              />
-            ))}
-          </Stack>
-        </Form>
-      </div>
-
-      <hr className="my-4" />
-
-      {/* Rating Slider */}
-      <div className="mb-4">
-        <h6 className="fw-semibold text-black">Minimum Rating</h6>
-        <Form.Range
-          min={0}
-          max={5}
-          step={0.1}
-          value={rating}
-          onChange={(e) => setRating(parseFloat(e.target.value))}
-        />
-        <div className="text-muted small">{Math.round(rating * 2) / 2} / 5</div>
-      </div>
-
-      {/* Popular Tags */}
-      <div>
-        <h6 className="fw-semibold text-black">Popular Tags</h6>
-        <Row className="g-2 mt-2">
-          {popularTags.map((tag) => {
-            const isSelected = selectedTags.includes(tag);
-            return (
-              <Col xs="auto" key={tag}>
-                <Badge
-                  pill
-                  bg={isSelected ? "primary" : "light"}
-                  text={isSelected ? "light" : "dark"}
-                  className={`border shadow-sm px-3 py-2 small ${
-                    isSelected ? "" : "bg-light"
-                  }`}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => handleTagToggle(tag)}
-                >
-                  {tag}
-                </Badge>
-              </Col>
-            );
-          })}
-        </Row>
-      </div>
-    </Card>
+            {/* Reset Button */}
+            <div className="mt-4 text-end">
+              <Button
+                variant="outline-primary"
+                size="sm"
+                className="rounded-pill px-4"
+                onClick={handleReset}
+              >
+                Reset Filters
+              </Button>
+            </div>
+          </Card>
+        </div>
+      </Collapse>
+    </>
   );
 }
