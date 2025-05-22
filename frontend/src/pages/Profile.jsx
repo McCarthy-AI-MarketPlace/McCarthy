@@ -22,8 +22,8 @@ import {
   deleteUserFailure,
   signoutSuccess,
 } from "../redux/user/userSlice";
-import { HiOutlineExclamationCircle } from "react-icons/hi"; // For the modal icon
-import { FaPencilAlt } from "react-icons/fa"; // For the edit icon on avatar
+import { HiOutlineExclamationCircle } from "react-icons/hi"; 
+import { FaPencilAlt } from "react-icons/fa"; 
 import { Link } from "react-router-dom";
 
 export default function Profile() {
@@ -40,7 +40,6 @@ export default function Profile() {
   const filePickerRef = useRef();
   const dispatch = useDispatch();
 
-  // Set initial image file URL from current user's avatar
   useEffect(() => {
     if (currentUser && currentUser.data && currentUser.data.avatar) {
       setImageFileUrl(currentUser.data.avatar);
@@ -51,7 +50,7 @@ export default function Profile() {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
-      setImageFileUrl(URL.createObjectURL(file)); // Show instant preview
+      setImageFileUrl(URL.createObjectURL(file)); 
     }
   };
 
@@ -64,9 +63,9 @@ export default function Profile() {
   const uploadImage = async () => {
     setImageFileUploading(true);
     setImageFileUploadError(null);
-    setImageFileUploadProgress(0); // Reset progress
+    setImageFileUploadProgress(0); 
 
-    const formDataForUpload = new FormData(); // Use a separate formData for upload
+    const formDataForUpload = new FormData(); 
     formDataForUpload.append("image", imageFile);
 
     try {
@@ -80,7 +79,6 @@ export default function Profile() {
         throw new Error(errorData.message || "Upload failed");
       }
 
-      // Simulate progress for the UI (as actual progress feedback needs more sophisticated handling like websockets or specific upload libraries)
       let progress = 0;
       const interval = setInterval(() => {
         progress += 10;
@@ -93,14 +91,14 @@ export default function Profile() {
 
       const data = await res.json();
       setImageFileUrl(data.data.url);
-      setFormData((prevData) => ({ ...prevData, avatar: data.data.url })); // Update formData with new avatar URL
+      setFormData((prevData) => ({ ...prevData, avatar: data.data.url })); 
     } catch (err) {
       setImageFileUploadError(err.message);
       setImageFile(null);
-      setImageFileUrl(currentUser.data.avatar); // Revert to current user's avatar on error
+      setImageFileUrl(currentUser.data.avatar); 
     } finally {
       setImageFileUploading(false);
-      setImageFileUploadProgress(null); // Clear progress after upload is done or failed
+      setImageFileUploadProgress(null); 
     }
   };
 
@@ -113,7 +111,6 @@ export default function Profile() {
     setUpdateUserError(null);
     setUpdateUserSuccess(null);
 
-    // Only update if there are changes in formData or a new image file
     if (Object.keys(formData).length === 0 && !imageFile) {
       setUpdateUserError("No changes made");
       return;
@@ -124,7 +121,6 @@ export default function Profile() {
       return;
     }
 
-    // New password and confirm password validation
     if (formData.password && formData.password !== formData.confirmPassword) {
       setUpdateUserError("New password and confirm password do not match.");
       return;
@@ -207,7 +203,6 @@ export default function Profile() {
         flexDirection: "column",
       }}
     >
-      {/* <Navbar /> */}
 
       <Container
         style={{ flex: 1, padding: "2.5rem 1rem", maxWidth: "1200px" }}
@@ -232,7 +227,6 @@ export default function Profile() {
           }}
         >
           {" "}
-          {/* Row with manual gutter */}
           <Col
             md={8}
             lg={7}
@@ -240,7 +234,6 @@ export default function Profile() {
             style={{ padding: "0 0.75rem", marginBottom: "1.5rem" }}
           >
             {" "}
-            {/* Col with manual padding and margin-bottom */}
             <Card
               style={{
                 borderRadius: "10px",
@@ -508,7 +501,6 @@ export default function Profile() {
             style={{ padding: "0 0.75rem", marginBottom: "1.5rem" }}
           >
             {" "}
-            {/* Col with manual padding and margin-bottom */}
             <Card
               style={{
                 borderRadius: "10px",
@@ -540,7 +532,7 @@ export default function Profile() {
                 >
                   {currentUser && currentUser.data.isAdmin && (
                     <Link
-                      to="/create-post"
+                      to="/publish"
                       style={{
                         display: "block",
                         width: "100%",
@@ -559,7 +551,7 @@ export default function Profile() {
                           color: "#007bff",
                         }}
                       >
-                        Create a post
+                        Publish
                       </Button>
                     </Link>
                   )}
@@ -625,7 +617,6 @@ export default function Profile() {
         )}
       </Container>
 
-      {/* <Footer /> */}
 
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton style={{ borderBottom: "none" }} />
