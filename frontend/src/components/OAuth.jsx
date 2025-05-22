@@ -22,9 +22,9 @@ export default function OAuth({ onClose }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: resultsFromGoogle.user.displayName,
+          fullName: resultsFromGoogle.user.displayName,
           email: resultsFromGoogle.user.email,
-          googlePhotoUrl: resultsFromGoogle.user.photoURL,
+          avatar: resultsFromGoogle.user.photoURL,
         }),
       });
 
