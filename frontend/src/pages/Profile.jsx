@@ -201,6 +201,7 @@ export default function Profile() {
     <div
       style={{
         backgroundColor: "#f5f7fa",
+        marginTop:"3rem",
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
