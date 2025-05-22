@@ -36,7 +36,6 @@ const FAQSection = () => {
     },
   ];
 
-
   const toggleFAQ = (index) => {
     setActiveIndex(index === activeIndex ? null : index);
   };
@@ -44,7 +43,7 @@ const FAQSection = () => {
   return (
     <div
       style={{
-        padding: "3rem 1rem",
+        padding: "8rem 1rem", // Increased vertical padding for more height
         backgroundColor: "#f9f9f9",
         fontFamily: "sans-serif",
       }}
@@ -60,16 +59,6 @@ const FAQSection = () => {
         >
           Frequently Asked Questions
         </h2>
-        <input
-          placeholder="🔍 Search for a question"
-          style={{
-            width: "100%",
-            padding: "0.75rem 1rem",
-            borderRadius: "999px",
-            border: "1px solid #ddd",
-            marginBottom: "2rem",
-          }}
-        />
 
         {faqs.map((faq, index) => (
           <div
