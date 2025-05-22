@@ -1,26 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { tools as toolsData } from '../data/Tools';
 
-const categories = [
-  { name: 'All', count: null },
-  { name: 'Text Generation', count: 156 },
-  { name: 'Image Generation', count: 87 },
-  { name: 'Voice Generation', count: 42 },
-  { name: 'Video Generation', count: 35 },
-  { name: 'Code Generation', count: 28 },
-  { name: 'Data Analysis', count: 63 },
-];
-
-export default function CategoryFilter({ onCategorySelect }) {
-  const [selected, setSelected] = useState('All');
+export default function CategoryFilter({ onCategorySelect, selectedCategory }) {
+  const [selected, setSelected] = useState(selectedCategory || 'All');
+  const [categoryCounts, setCategoryCounts] = useState({});
 
   const backgroundColor = '#a682c6';
 
-  const handleSelect = (category) => {
-    setSelected(category.name);
+  useEffect(() => {
+    const counts = toolsData.reduce((acc, tool) => {
+      acc[tool.category] = (acc[tool.category] || 0) + 1;
+      return acc;
+    }, {});
+    const totalCount = toolsData.length;
+    setCategoryCounts({ All: totalCount, ...counts });
+  }, []);
+
+  useEffect(() => {
+    setSelected(selectedCategory);
+  }, [selectedCategory]);
+
+  const handleSelect = (categoryName) => {
+    setSelected(categoryName);
     if (onCategorySelect) {
-      onCategorySelect(category.name);
+      onCategorySelect(categoryName);
     }
   };
+
+  const categories = [
+    'All',
+    'Text Generation',
+    'Image Generation',
+    'Voice Generation',
+    'Video Generation',
+    'Code Generation',
+    'Data Analysis',
+  ];
 
   return (
     <div
@@ -40,16 +55,16 @@ export default function CategoryFilter({ onCategorySelect }) {
         }}
       >
         {categories.map((category) => {
-          const isSelected = selected === category.name;
+          const isSelected = selected === category;
           return (
             <button
-              key={category.name}
+              key={category}
               onClick={() => handleSelect(category)}
               style={{
                 cursor: 'pointer',
                 padding: '10px 20px',
                 borderRadius: '20px',
-                border: isSelected ? 'none' : '1px solid #ccc',
+                border: 'none',
                 backgroundColor: isSelected ? backgroundColor : '#f0f0f0',
                 color: isSelected ? '#fff' : '#000',
                 fontWeight: isSelected ? '600' : '400',
@@ -62,6 +77,7 @@ export default function CategoryFilter({ onCategorySelect }) {
                   ? '0 4px 10px rgba(166, 130, 198, 0.3)'
                   : '0 1px 4px rgba(0, 0, 0, 0.05)',
                 whiteSpace: 'nowrap',
+                position: 'relative',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#e0e0e0';
@@ -74,9 +90,23 @@ export default function CategoryFilter({ onCategorySelect }) {
                 e.currentTarget.style.color = isSelected ? '#fff' : '#000';
               }}
             >
-              <span>{category.name}</span>
-              {category.count !== null && (
-                <span style={{ opacity: 0.7 }}>({category.count})</span>
+              <span>{category}</span>
+              {categoryCounts[category] !== undefined && (
+                <span style={{ opacity: 0.7 }}>({categoryCounts[category]})</span>
+              )}
+              {isSelected && (
+                <span
+                  style={{
+                    position: 'absolute',
+                    bottom: '-4px',
+                    left: '20%',
+                    right: '20%',
+                    height: '3px',
+                    backgroundColor: '#fff',
+                    borderRadius: '2px',
+                    transition: 'width 0.3s ease',
+                  }}
+                ></span>
               )}
             </button>
           );

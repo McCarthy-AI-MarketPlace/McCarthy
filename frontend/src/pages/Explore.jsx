@@ -1,20 +1,31 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Form, InputGroup, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  InputGroup,
+  Button,
+} from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import CategoryFilter from "../components/CategoryFilter";
 import FiltersSidebar from "../components/FiltersSidebar";
-import RecommendedSection from "./RecommendedSection";
+import ExploreToolsSection from "../components/ExploreToolsSection"; // ✅ import new component
 
 export default function Explore() {
   const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedPricing, setSelectedPricing] = useState("");
+  const [selectedRating, setSelectedRating] = useState(0);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleToggleSidebar = () => {
     setIsSidebarVisible((prev) => !prev);
   };
 
   const handleCategorySelect = (category) => {
-    console.log("Selected category:", category);
-    // Add logic to filter tools here
+    setSelectedCategory(category);
   };
 
   return (
@@ -41,18 +52,12 @@ export default function Explore() {
               transition: "all 0.3s ease",
             }}
             className="shadow-sm"
-            onMouseEnter={(e) => {
-              e.currentTarget.style.border = "1px solid #dee2e6";
-              e.currentTarget.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.08)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.border = "1px solid transparent";
-              e.currentTarget.style.boxShadow = "none";
-            }}
           >
             <Form.Control
               type="text"
               placeholder="Search AI tools by name, category, or description..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 border: "none",
                 backgroundColor: "white",
@@ -81,7 +86,10 @@ export default function Explore() {
       {/* Category filter centered */}
       <div className="d-flex justify-content-center mb-4 w-100 overflow-auto">
         <div style={{ minWidth: "fit-content" }}>
-          <CategoryFilter onCategorySelect={handleCategorySelect} />
+          <CategoryFilter
+            onCategorySelect={handleCategorySelect}
+            selectedCategory={selectedCategory}
+          />
         </div>
       </div>
 
@@ -99,12 +107,6 @@ export default function Explore() {
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
               transition: "all 0.3s ease",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "white")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "white")
-            }
           >
             Show Filters
           </Button>
@@ -118,16 +120,24 @@ export default function Explore() {
             <FiltersSidebar
               isSidebarVisible={isSidebarVisible}
               onToggleSidebar={handleToggleSidebar}
+              selectedPricing={selectedPricing}
+              setSelectedPricing={setSelectedPricing}
+              selectedRating={selectedRating}
+              setSelectedRating={setSelectedRating}
+              selectedTags={selectedTags}
+              setSelectedTags={setSelectedTags}
             />
           </Col>
         )}
 
-        <Col
-          xs={12}
-          md={isSidebarVisible ? 8 : 12}
-          lg={isSidebarVisible ? 9 : 12}
-        >
-          <RecommendedSection />
+        <Col xs={12} md={isSidebarVisible ? 8 : 12} lg={isSidebarVisible ? 9 : 12}>
+          <ExploreToolsSection
+            selectedCategory={selectedCategory}
+            selectedPricing={selectedPricing}
+            selectedRating={selectedRating}
+            selectedTags={selectedTags}
+            searchQuery={searchQuery}
+          />
         </Col>
       </Row>
     </Container>
