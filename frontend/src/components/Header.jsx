@@ -10,6 +10,7 @@ export default function Header() {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -42,6 +43,7 @@ export default function Header() {
   };
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
+  const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -72,10 +74,7 @@ export default function Header() {
         <Link
           to="/"
           className="text-decoration-none text-dark d-inline-flex align-items-center"
-          style={{
-            flexDirection: "column",
-            lineHeight: "1",
-          }}
+          style={{ flexDirection: "column", lineHeight: "1" }}
         >
           <h3 className="fw-bold mb-1" style={{ margin: 0 }}>
             McCarthy
@@ -85,107 +84,183 @@ export default function Header() {
           </p>
         </Link>
 
-        <div className="d-flex align-items-center gap-4">
+        <div className="d-none d-md-flex align-items-center gap-4">
           <Link to="/explore" className="text-dark text-decoration-none">
             Explore
           </Link>
           <Link to="/developer" className="text-dark text-decoration-none">
             Developers
           </Link>
-          <Link to="/dashboard" className="text-dark text-decoration-none">
-            Dashboard
-          </Link>
+          {currentUser && (
+            <Link to="/dashboard" className="text-dark text-decoration-none">
+              Dashboard
+            </Link>
+          )}
         </div>
 
-        {!currentUser ? (
-          <button
-            onClick={handleOpenLogin}
-            style={{ all: "unset", cursor: "pointer", fontWeight: "bold" }}
-          >
-            LOG IN
-          </button>
-        ) : (
-          <div style={{ position: "relative" }} ref={dropdownRef}>
-            <Image
-              src={currentUser.data.avatar}
-              alt="profile"
-              roundedCircle
-              style={{ width: 40, height: 40, cursor: "pointer" }}
-              onClick={toggleDropdown}
-            />
-            {dropdownOpen && (
-              <div
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  top: "calc(100% + 10px)",
-                  backgroundColor: "white",
-                  boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                  borderRadius: "6px",
-                  padding: "0.5rem 0",
-                  zIndex: 10,
-                  minWidth: 120,
-                }}
-              >
+        <div className="d-flex align-items-center gap-3">
+          {currentUser ? (
+            <div style={{ position: "relative" }} ref={dropdownRef}>
+              <Image
+                src={currentUser.data.avatar}
+                alt="profile"
+                roundedCircle
+                style={{ width: 40, height: 40, cursor: "pointer" }}
+                onClick={toggleDropdown}
+              />
+              {dropdownOpen && (
                 <div
-                  onClick={() => {
-                    navigate("/profile");
-                    setDropdownOpen(false);
-                  }}
                   style={{
-                    padding: "0.5rem 1rem",
-                    cursor: "pointer",
-                    whiteSpace: "nowrap",
+                    position: "absolute",
+                    right: 0,
+                    top: "calc(100% + 10px)",
+                    backgroundColor: "white",
+                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                    borderRadius: "6px",
+                    padding: "0.5rem 0",
+                    zIndex: 10,
+                    minWidth: 180,
                   }}
                 >
-                  Profile
+                  <div
+                    className="d-flex flex-column p-2"
+                    style={{ gap: "0.25rem" }}
+                  >
+                    <p style={{ fontSize: "0.875rem", fontWeight: 500 }}>
+                      {currentUser.data.fullName}
+                    </p>
+                    <p className="text-muted" style={{ fontSize: "0.75rem" }}>
+                      {currentUser.data.email}
+                    </p>
+                  </div>
+                  <div
+                    style={{
+                      height: "1px",
+                      backgroundColor: "#e9ecef",
+                      margin: "0.5rem 0",
+                    }}
+                  />
+                  <div
+                    onClick={() => {
+                      navigate("/profile");
+                      setDropdownOpen(false);
+                    }}
+                    style={{
+                      padding: "0.5rem 1rem",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Profile
+                  </div>
+                  {currentUser.data.isAdmin && (
+                    <>
+                      <div
+                        onClick={() => {
+                          navigate("/publish");
+                          setDropdownOpen(false);
+                        }}
+                        style={{
+                          padding: "0.5rem 1rem",
+                          cursor: "pointer",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        Publish
+                      </div>
+                      <div
+                        onClick={() => {
+                          navigate("/my-tools");
+                          setDropdownOpen(false);
+                        }}
+                        style={{
+                          padding: "0.5rem 1rem",
+                          cursor: "pointer",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        My Tools
+                      </div>
+                    </>
+                  )}
+                  <div
+                    onClick={handleLogout}
+                    style={{
+                      padding: "0.5rem 1rem",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Logout
+                  </div>
                 </div>
-                {currentUser.data.isAdmin && (
-                  <>
-                    <div
-                      onClick={() => {
-                        navigate("/publish");
-                        setDropdownOpen(false);
-                      }}
-                      style={{
-                        padding: "0.5rem 1rem",
-                        cursor: "pointer",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      Publish
-                    </div>
-                    <div
-                      onClick={() => {
-                        navigate("/my-tools");
-                        setDropdownOpen(false);
-                      }}
-                      style={{
-                        padding: "0.5rem 1rem",
-                        cursor: "pointer",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      My Tools
-                    </div>
-                  </>
-                )}
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={handleOpenLogin}
+              style={{ all: "unset", cursor: "pointer", fontWeight: "bold" }}
+              className=" d-md-inline"
+            >
+              LOG IN
+            </button>
+          )}
 
-                <div
-                  onClick={handleLogout}
-                  style={{
-                    padding: "0.5rem 1rem",
-                    cursor: "pointer",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Logout
-                </div>
-              </div>
+          <div className="d-md-none">
+            <button
+              onClick={toggleMobileMenu}
+              style={{
+                background: "none",
+                border: "none",
+                fontSize: "1.5rem",
+                cursor: "pointer",
+              }}
+            >
+              ☰
+            </button>
+          </div>
+        </div>
+      </Container>
+
+      {mobileMenuOpen && (
+        <div
+          className="d-md-none position-absolute w-100"
+          style={{
+            top: 65,
+            left: 0,
+            zIndex: 3,
+            backgroundColor: "rgba(255, 255, 255, 0.3)",
+            backdropFilter: "blur(10px)",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <div className="d-flex flex-column align-items-start p-3 gap-2">
+            <Link
+              to="/explore"
+              className="text-dark text-decoration-none"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Explore
+            </Link>
+            <Link
+              to="/developer"
+              className="text-dark text-decoration-none"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Developers
+            </Link>
+            {currentUser && (
+              <Link
+                to="/dashboard"
+                className="text-dark text-decoration-none"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
             )}
           </div>
-        )}
-      </Container>
+        </div>
+      )}
 
       <LoginModal
         show={showLogin}

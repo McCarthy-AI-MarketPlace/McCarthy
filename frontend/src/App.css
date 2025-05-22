@@ -19,7 +19,14 @@ body {
   }
   .auth-modal {
     margin-top: 2%;
-     backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  .mobile-menu {
+    position: absolute;
+    width: 100%;
+    top: 65px;
+    background: white;
+    z-index: 999;
   }
 }
 
