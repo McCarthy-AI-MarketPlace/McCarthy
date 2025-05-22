@@ -1,16 +1,27 @@
 import React from 'react';
+import { Container, Button } from "react-bootstrap";
 import { FaArrowRight } from "react-icons/fa6";
-import ShowcaseSection from '../components/ShowcaseSection';
+import ToolSubmissionForm from '../components/ToolSubmissionForm';
 import FAQSection from '../components/toggleFAQ ';
+
 const Developer = () => {
+  const backgroundStyle = {
+    minHeight: "40vh",
+    background: "linear-gradient(90deg, #7b2ff7 0%, #4facfe 100%)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "white",
+    textAlign: "center",
+    padding: "40px",
+  };
   return (
     <div style={{ marginTop: "4.1rem" }}>
       {/* Gradient Header */}
       <div
         style={{
           minHeight: "30rem",
-          background: "#b58ac5",
-
+          background: "linear-gradient(to right, #e6e1fb, #dbe7fb)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -19,33 +30,54 @@ const Developer = () => {
           padding: "2rem",
         }}
       >
-        <h1 style={{ fontSize: "3.1rem", fontWeight: "bold", color: "black" }}>
-          Add Your AI Tool to McCarthy
-        </h1>
-        <p style={{ fontSize: "1.1rem", maxWidth: "700px", color: "#463f30" }}>
-          Join hundreds of AI developers showcasing their tools to millions of
-          users looking for the perfect solution.
-        </p>
-        <button
-          style={{
-            marginTop: "1.5rem",
-            backgroundColor: "#6e348e",
-            border: "none",
-            padding: "12px 24px",
-            borderRadius: "999px",
-            color: "white",
-            fontWeight: "600",
-            fontSize: "1rem", // Fixed from "rem" to "1rem"
-            cursor: "pointer",
-            boxShadow: "0px 4px 14px rgba(139, 77, 255, 0.3)",
-            display: "flex", // Changed from grid to flex for horizontal layout
-            alignItems: "center",
-            gap: "8px", // Increased gap between text and icon
-          }}
-        >
-          Submit Your Tool
-          <FaArrowRight />
-        </button>
+        <Container>
+          <h1
+            style={{
+              fontSize: "2.8rem",
+              fontWeight: "700",
+              color: "#4b4ded",
+              marginBottom: "1rem",
+            }}
+          >
+            Add Your AI Tool to McCarthy
+          </h1>
+          <p
+            style={{
+              fontSize: "1.1rem",
+              color: "#6c6a73",
+              maxWidth: "700px",
+              margin: "0 auto",
+            }}
+          >
+            Join hundreds of AI developers showcasing their tools to millions of
+            users looking for the perfect solution.
+          </p>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "2rem",
+            }}
+          >
+            <Button
+              style={{
+                backgroundColor: "#6C63FF", // updated bluish-purple to match screenshot/video
+                border: "none",
+                padding: "12px 28px",
+                borderRadius: "999px",
+                fontWeight: "600",
+                fontSize: "1rem",
+                color: "white",
+                boxShadow: "0px 4px 14px rgba(108, 99, 255, 0.3)",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              Submit Your Tool <FaArrowRight />
+            </Button>
+          </div>
+        </Container>
       </div>
 
       {/* Why List Section */}
@@ -131,13 +163,14 @@ const Developer = () => {
       </div>
 
       {/* How It Works Section */}
-      <div style={{ background: "#D1B8DD", padding: "4rem 2rem" }}>
+      <div style={{ background: "#EAEFFF", padding: "4rem 2rem" }}>
         <h2
           style={{
             fontSize: "2rem",
             fontWeight: "bold",
             color: "#222",
             textAlign: "center",
+            marginBottom: "3rem",
           }}
         >
           How It Works
@@ -147,14 +180,21 @@ const Developer = () => {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            justifyContent: "space-between",
-            maxWidth: "1200px",
-            margin: "2rem auto",
+            justifyContent: "center",
             gap: "2rem",
+            maxWidth: "1200px",
+            margin: "0 auto",
           }}
         >
-          {/* Steps */}
-          <div style={{ flex: "1 1 300px" }}>
+          {/* Step Cards */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: "2rem",
+              flex: "2",
+            }}
+          >
             {[
               {
                 number: "01",
@@ -180,38 +220,38 @@ const Developer = () => {
               <div
                 key={index}
                 style={{
+                  background: "#fff",
+                  borderRadius: "1rem",
+                  padding: "1.5rem",
+                  boxShadow: "0 0 15px rgba(0, 0, 0, 0.05)",
                   display: "flex",
-                  marginBottom: "2rem",
+                  flexDirection: "column",
                   alignItems: "flex-start",
+                  gap: "0.5rem",
+                  position: "relative",
                 }}
               >
                 <div
                   style={{
-                    backgroundColor: "#eee6ff",
-                    color: "#6c2bd9",
-                    borderRadius: "50%",
-                    width: "48px",
-                    height: "48px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    backgroundColor: "#CADCFF",
+                    color: "black",
+                    borderRadius: "8px",
+                    padding: "0.5rem 1rem",
                     fontWeight: "bold",
                     fontSize: "1rem",
-                    marginRight: "1rem",
+                    marginBottom: "0.5rem",
                   }}
                 >
                   {step.number}
                 </div>
-                <div>
-                  <h4
-                    style={{ margin: 0, fontSize: "1.1rem", fontWeight: "600" }}
-                  >
-                    {step.title}
-                  </h4>
-                  <p style={{ margin: 0, color: "#555", fontSize: "0.95rem" }}>
-                    {step.desc}
-                  </p>
-                </div>
+                <h4
+                  style={{ margin: 0, fontSize: "1.1rem", fontWeight: "600" }}
+                >
+                  {step.title}
+                </h4>
+                <p style={{ margin: 0, color: "#555", fontSize: "0.95rem" }}>
+                  {step.desc}
+                </p>
               </div>
             ))}
           </div>
@@ -219,11 +259,12 @@ const Developer = () => {
           {/* Features Box */}
           <div
             style={{
-              flex: "1 1 320px",
+              flex: "1 1 300px",
               backgroundColor: "white",
               borderRadius: "1rem",
               padding: "2rem",
-              boxShadow: "0 0 30px rgba(0,0,0,0.05)",
+              boxShadow: "0 0 30px rgba(0,0,0,0.1)",
+              height: "fit-content",
             }}
           >
             {[
@@ -245,9 +286,9 @@ const Developer = () => {
                     display: "inline-block",
                     width: "24px",
                     height: "24px",
-                    backgroundColor: "#eee6ff",
+                    backgroundColor: "#CADCFF",
                     borderRadius: "50%",
-                    color: "#6c2bd9",
+                    color: "black",
                     textAlign: "center",
                     lineHeight: "24px",
                     fontWeight: "bold",
@@ -274,7 +315,36 @@ const Developer = () => {
           </div>
         </div>
       </div>
+
+      <ToolSubmissionForm />
+
+      <div style={backgroundStyle}>
+        <Container>
+          <h2 style={{ fontWeight: "bold", fontSize: "2rem" }}>
+            Ready to Showcase Your AI Tool?
+          </h2>
+          <p style={{ fontSize: "1.25rem", marginTop: "15px" }}>
+            Join our growing marketplace of innovative AI tools and reach <br />
+            thousands of potential users.
+          </p>
+          <Button
+            variant="light"
+            style={{
+              marginTop: "25px",
+              padding: "10px 25px",
+              fontWeight: "500",
+              borderRadius: "25px",
+            }}
+          >
+            Submit Your Tool Now
+          </Button>
+        </Container>
+      </div>
       <FAQSection />
+      <div >
+        
+
+      </div>
     </div>
   );
 };
