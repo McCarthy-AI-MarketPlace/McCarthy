@@ -11,15 +11,15 @@ import MyTools from "./pages/MyTools";
 import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./pages/Profile";
 import EditTool from "./components/EditTool";
+import Home from "./pages/Home";
 
 export default function App() {
   return (
     <Router>
       <Header />
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={<Home />} />
         <Route path="/developer" element={<Developer />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/edit-tool/:id" element={<EditTool />} />
 
@@ -28,6 +28,14 @@ export default function App() {
           element={
             <PrivateRoute>
               <Profile />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
             </PrivateRoute>
           }
         />
@@ -44,6 +52,14 @@ export default function App() {
           path="/my-tools"
           element={
             <PrivateRoute adminOnly={true}>
+              <MyTools />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/my-tools/:userId"
+          element={
+            <PrivateRoute superAdminOnly={true}>
               <MyTools />
             </PrivateRoute>
           }

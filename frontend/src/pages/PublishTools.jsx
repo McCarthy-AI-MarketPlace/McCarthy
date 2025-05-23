@@ -376,11 +376,11 @@ const PublishTool = () => {
                     }}
                   >
                     <option value="">Select pricing</option>
-                    <option value="free">Free</option>
-                    <option value="freemium">Freemium</option>
-                    <option value="premium">Premium</option>
-                    <option value="one-time">One-time Purchase</option>
-                    <option value="subscription">Subscription</option>
+                    <option value="Free">Free</option>
+                    <option value="Freemium">Freemium</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Free Trial">Free Trial</option>
+                    <option value="Pay Per Use">Pay Per Use</option>
                   </Form.Select>
                 </Form.Group>
                 <Form.Group style={{ marginBottom: "1rem" }}>

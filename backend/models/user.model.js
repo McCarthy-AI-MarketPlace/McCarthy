@@ -36,7 +36,11 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    savedTools: [
+    isSuperAdmin: {
+        type: Boolean,
+        default: false,
+    },
+    favoriteTools: [
         {
             type:Schema.Types.ObjectId,
             ref:"Tool",

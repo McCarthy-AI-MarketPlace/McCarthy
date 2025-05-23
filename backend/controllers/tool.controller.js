@@ -32,7 +32,7 @@ export const updateTool = asyncHandler(async (req, res) => {
   try {
     const tool = await Tool.findById(req.params.id);
     if (!tool) return res.status(404).json(new ApiError(404, "Tool not found"));
-    if (tool.user.toString() !== req.user._id.toString()) {
+    if ((tool.user.toString() !== req.user._id.toString()) && !req.user.isSuperAdmin) {
       return res.status(403).json(new ApiError(403, "Unauthorized"));
     }
 
@@ -52,7 +52,7 @@ export const deleteTool = asyncHandler(async (req, res) => {
     if (!tool)
       return res.status(404).json(new ApiResponse(404, "Tool not found"));
 
-    if (tool.user.toString() !== req.user._id.toString()) {
+    if ((tool.user.toString() !== req.user._id.toString()) && !req.user.isSuperAdmin) {
       return res.status(403).json(new ApiError(403, "Unauthorized"));
     }
 
@@ -67,7 +67,7 @@ export const deleteTool = asyncHandler(async (req, res) => {
 
 export const getTools = asyncHandler(async (req, res) => {
   try {
-    const tools = await Tool.find().populate("user", "name email");
+    const tools = await Tool.find().populate("user", "fullName email");
     res.status(200).json(new ApiResponse(200, tools));
   } catch (error) {
     res.status(500).json(new ApiError(500, "Internal Server Error"));

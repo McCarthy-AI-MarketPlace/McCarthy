@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Button, Row, Col, Spinner } from "react-bootstrap";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { Container, Card, Button, Row, Col, Spinner } from "react-bootstrap";
 
 const MyTools = () => {
   const [tools, setTools] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  const { userId: paramUserId } = useParams(); 
   const { currentUser } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (paramUserId && !currentUser.data.isSuperAdmin) {
+      navigate("/"); 
+    }
+  }, [paramUserId, currentUser, navigate]);
+
+  const userId = paramUserId || currentUser.data._id; 
 
   const fetchTools = async () => {
     try {
-      const res = await axios.get(
-        `/api/tool/my-tools/${currentUser.data._id}`,
-        {}
-      );
-      // console.log(res);
+      if (paramUserId && !currentUser.data.isSuperAdmin) {
+        navigate("/");
+        return;
+      }
+
+      const res = await axios.get(`/api/tool/my-tools/${userId}`);
       setTools(res.data.data);
     } catch (err) {
       console.error("Error fetching tools:", err);
@@ -26,40 +35,12 @@ const MyTools = () => {
     }
   };
 
-  const deleteTool = async (id) => {
-    try {
-      console.log(currentUser.data._id);
-      const accessToken = localStorage.getItem("accessToken");
-
-      const response = await fetch(`/api/tool/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(errorData?.message || "Failed to delete tool");
-      }
-
-      fetchTools();
-    } catch (err) {
-      alert(err.message);
-    }
-  };
-
-  const editTool = (id) => {
-    navigate(`/edit-tool/${id}`);
-  };
-
   useEffect(() => {
     fetchTools();
-  }, []);
+  }, [userId]);
 
   return (
-    <Container style={{marginTop: "5rem"}}>
+    <Container style={{ marginTop: "5rem" }}>
       <h2 className="text-center mb-4">My Published Tools</h2>
 
       {loading ? (
@@ -98,7 +79,7 @@ const MyTools = () => {
                   </Button>
                   <Button
                     variant="warning"
-                    onClick={() => editTool(tool._id)}
+                    onClick={() => navigate(`/edit-tool/${tool._id}`)}
                     className="me-2"
                   >
                     Edit

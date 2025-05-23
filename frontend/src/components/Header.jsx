@@ -73,7 +73,13 @@ export default function Header() {
       >
         <Link
           to="/"
-          style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", color: "black" }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            textDecoration: "none",
+            color: "black",
+          }}
         >
           <div
             style={{
@@ -93,7 +99,6 @@ export default function Header() {
           </div>
           <span style={{ fontWeight: "bold", fontSize: "20px" }}>McCarthy</span>
         </Link>
-
 
         <div className="d-none d-md-flex align-items-center gap-4">
           <Link to="/explore" className="text-dark text-decoration-none">
@@ -117,13 +122,16 @@ export default function Header() {
                 alt="profile"
                 roundedCircle
                 style={{ width: 40, height: 40, cursor: "pointer" }}
-                onClick={toggleDropdown}
+                onClick={() => {
+                  toggleDropdown();
+                  setMobileMenuOpen(false);
+                }}
               />
               {dropdownOpen && (
                 <div
                   style={{
                     position: "absolute",
-                    right: 0,
+                    right: -70,
                     top: "calc(100% + 10px)",
                     backgroundColor: "white",
                     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
@@ -219,7 +227,10 @@ export default function Header() {
 
           <div className="d-md-none">
             <button
-              onClick={toggleMobileMenu}
+              onClick={() => {
+                toggleMobileMenu();
+                setDropdownOpen(false);
+              }}
               style={{
                 background: "none",
                 border: "none",
@@ -235,8 +246,9 @@ export default function Header() {
 
       {mobileMenuOpen && (
         <div
-          className="d-md-none position-absolute w-100"
+          className="d-md-none w-100"
           style={{
+            position: "fixed",
             top: 65,
             left: 0,
             zIndex: 3,

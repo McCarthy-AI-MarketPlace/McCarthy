@@ -8,7 +8,7 @@ const EditTool = () => {
     title: '',
     description: '',
     image: '',
-    public_id: '',         // Track Cloudinary public_id
+    public_id: '',         
     toolUrl: '',
     hashtags: '',
     isFeatured: false,

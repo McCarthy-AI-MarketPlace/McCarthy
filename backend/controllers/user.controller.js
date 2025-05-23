@@ -201,3 +201,49 @@ export const google = asyncHandler(async (req, res) => {
       );
   }
 });
+
+export const addToFavorites = asyncHandler(async (req, res) => {
+  const { toolId } = req.body;
+
+  if (!toolId) {
+    throw new ApiError(400, "Tool ID is required");
+  }
+
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  if (!user.favoriteTools.includes(toolId)) {
+    user.favoriteTools.push(toolId);
+    await user.save();
+  }
+
+  res.status(200).json({ favorites: user.favoriteTools });
+});
+
+export const removeFromFavorites = asyncHandler(async (req, res) => {
+  const { toolId } = req.body;
+
+  if (!toolId) {
+    throw new ApiError(400, "Tool ID is required");
+  }
+
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  user.favoriteTools = user.favoriteTools.filter(
+    (id) => id.toString() !== toolId
+  );
+  await user.save();
+
+  res.status(200).json({ favorites: user.favoriteTools });
+});
+
+export const getFavorites = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).populate("favoriteTools");
+  if (!user) return res.status(404).json(new ApiError(404, "User not found"));
+  res.json(new ApiResponse(200, { favorites: user.favoriteTools }));
+});
