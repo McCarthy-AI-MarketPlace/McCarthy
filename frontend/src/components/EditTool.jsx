@@ -1,18 +1,26 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Container, Form, Button, Spinner, Alert } from 'react-bootstrap';
-import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from "react";
+import {
+  Form,
+  Button,
+  Container,
+  Spinner,
+  Alert,
+  Card,
+} from "react-bootstrap";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const EditTool = () => {
   const [toolData, setToolData] = useState({
-    title: '',
-    description: '',
-    image: '',
-    public_id: '',         // Track Cloudinary public_id
-    toolUrl: '',
-    hashtags: '',
-    keyWords: '',          // Add keyWords to state
-    pricing: '',           // Add pricing to state
+    title: "",
+    description: "",
+    image: "",
+    public_id: "",
+    toolUrl: "",
+    hashtags: "",
+    keyWords: "",
+    pricing: "",
     isFeatured: false,
     isEditorsChoice: false,
   });
@@ -24,24 +32,24 @@ const EditTool = () => {
   const fileInputRef = useRef();
   const { id } = useParams();
   const navigate = useNavigate();
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     const fetchTool = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem("accessToken");
         const res = await axios.get(`/api/tool/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
         const tool = res.data.data;
 
         setToolData({
           ...tool,
-          hashtags: tool.hashtags.join(', '),
-          keyWords: tool.keyWords ? tool.keyWords.join(', ') : '',  // Convert array to comma-separated string
-          public_id: tool.imagePublicId || '',  
+          hashtags: tool.hashtags.join(", "),
+          keyWords: tool.keyWords ? tool.keyWords.join(", ") : "",
+          public_id: tool.imagePublicId || "",
         });
       } catch (err) {
-        console.error("Error fetching tool:", err);
         setFetchError("Failed to load tool data. Please try again.");
       }
     };
@@ -56,26 +64,25 @@ const EditTool = () => {
     setUploadError(null);
 
     const formData = new FormData();
-    formData.append('image', file);
-    formData.append('oldPublicId', toolData.public_id); 
+    formData.append("image", file);
+    formData.append("oldPublicId", toolData.public_id);
 
     try {
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
       });
-
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Upload failed');
 
-      setToolData(prev => ({
+      if (!res.ok) throw new Error(data.message || "Upload failed");
+
+      setToolData((prev) => ({
         ...prev,
         image: data.data.url,
-        public_id: data.data.public_id,  
-        toolUrl: data.data.url 
+        public_id: data.data.public_id,
+        toolUrl: data.data.url,
       }));
     } catch (err) {
-      console.error(err);
       setUploadError(err.message);
     } finally {
       setImageUploading(false);
@@ -86,7 +93,7 @@ const EditTool = () => {
     const { name, value, type, checked } = e.target;
     setToolData({
       ...toolData,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -94,174 +101,226 @@ const EditTool = () => {
     e.preventDefault();
 
     if (imageUploading) {
-      alert('Please wait for image to finish uploading.');
+      alert("Please wait for image to finish uploading.");
       return;
     }
 
     try {
-      const token = localStorage.getItem('accessToken');
-
-      // Handle hashtags and keywords properly
+      const token = localStorage.getItem("accessToken");
       const updatedData = {
         ...toolData,
-        hashtags: toolData.hashtags.split(',').map(tag => tag.trim()),
-        keyWords: toolData.keyWords.split(',').map(keyword => keyword.trim())
+        hashtags: toolData.hashtags.split(",").map((tag) => tag.trim()),
+        keyWords: toolData.keyWords.split(",").map((kw) => kw.trim()),
       };
 
       await axios.put(`/api/tool/${id}`, updatedData, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
 
-      navigate('/my-tools');
+      navigate("/my-tools");
     } catch (err) {
-      console.error("Error updating tool:", err);
       alert("Failed to update tool. Please try again.");
     }
   };
 
   return (
-    <Container className="my-5">
-      <h2 className="text-center mb-4">Edit Tool</h2>
-
-      {fetchError && <Alert variant="danger">{fetchError}</Alert>}
-      {uploadError && <Alert variant="danger">{uploadError}</Alert>}
-
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Tool Image</Form.Label>
-          <div
-            onClick={() => fileInputRef.current.click()}
-            style={{
-              cursor: 'pointer',
-              width: '100%',
-              maxWidth: '300px',
-              marginBottom: '1rem'
-            }}
-          >
-            <img
-              src={toolData.image || '/placeholder.png'}
-              alt="Tool Preview"
-              onError={(e) => e.target.src = '/placeholder.png'}
-              style={{
-                width: '100%',
-                height: 'auto',
-                border: '1px solid #ccc',
-                borderRadius: '8px'
-              }}
-            />
-          </div>
-          <Form.Control
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={handleImageChange}
-            style={{ display: 'none' }}
-          />
-          {imageUploading && <Spinner animation="border" size="sm" />}
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Title</Form.Label>
-          <Form.Control
-            type="text"
-            name="title"
-            value={toolData.title}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            name="description"
-            value={toolData.description}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Tool URL</Form.Label>
-          <Form.Control
-            type="url"
-            name="toolUrl"
-            value={toolData.toolUrl}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Hashtags (comma separated)</Form.Label>
-          <Form.Control
-            type="text"
-            name="hashtags"
-            value={toolData.hashtags}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Keywords (comma separated)</Form.Label>
-          <Form.Control
-            type="text"
-            name="keyWords"
-            value={toolData.keyWords}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Pricing</Form.Label>
-          <Form.Select
-            name="pricing"
-            value={toolData.pricing}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Pricing</option>
-            <option value="Free">Free</option>
-            <option value="Freemium">Freemium</option>
-            <option value="Premium">Premium</option>
-            <option value="Free Trial">Free Trial</option>
-            <option value="Pay Per Use">Pay Per Use</option>
-          </Form.Select>
-        </Form.Group>
-
-        <Form.Check
-          type="checkbox"
-          label="Featured"
-          name="isFeatured"
-          checked={toolData.isFeatured}
-          onChange={handleChange}
-        />
-        <Form.Check
-          type="checkbox"
-          label="Editor's Choice"
-          name="isEditorsChoice"
-          checked={toolData.isEditorsChoice}
-          onChange={handleChange}
-        />
-
-        <Button
-          type="submit"
-          className="mt-4 w-100"
-          disabled={imageUploading}
-          variant={imageUploading ? "secondary" : "primary"}
+    <div
+      style={{
+        minHeight: "100vh",
+        marginTop: "3rem",
+        backgroundColor: "#f5f7fa",
+      }}
+    >
+      <Container
+        style={{
+          flex: 1,
+          padding: "2.5rem 1rem",
+          maxWidth: "900px",
+          margin: "auto",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "2.2rem",
+            fontWeight: "700",
+            marginBottom: "0.5rem",
+            textAlign: "center",
+            color: "#343a40",
+          }}
         >
-          {imageUploading ? (
-            <>
-              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-              {' '}Uploading...
-            </>
-          ) : 'Save Changes'}
-        </Button>
-      </Form>
-    </Container>
+          Edit Tool
+        </h1>
+        <p
+          style={{
+            fontSize: "1rem",
+            color: "#6c757d",
+            marginBottom: "2.5rem",
+            textAlign: "center",
+          }}
+        >
+          Update your AI tool information.
+        </p>
+
+        <Card
+          style={{
+            borderRadius: "10px",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+            border: "none",
+          }}
+        >
+          <Card.Body style={{ padding: "2rem" }}>
+            {fetchError && <Alert variant="danger">{fetchError}</Alert>}
+            {uploadError && <Alert variant="danger">{uploadError}</Alert>}
+
+            <Form onSubmit={handleSubmit}>
+              <div style={{ display: "grid", gap: "1.5rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "160px",
+                      width: "160px",
+                      border: "2px dashed #ced4da",
+                      borderRadius: "8px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      overflow: "hidden",
+                      position: "relative",
+                      marginBottom: "1rem",
+                      backgroundColor: "#f8f9fa",
+                    }}
+                  >
+                    {toolData.image ? (
+                      <img
+                        src={toolData.image}
+                        alt="Tool"
+                        style={{
+                          height: "100%",
+                          width: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    ) : (
+                      <p style={{ color: "#adb5bd" }}>Upload Tool Image</p>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        opacity: 0,
+                        cursor: "pointer",
+                      }}
+                      onChange={handleImageChange}
+                      ref={fileInputRef}
+                    />
+                  </div>
+                  {imageUploading && <Spinner animation="border" size="sm" />}
+                </div>
+
+                {[
+                  { label: "Tool Name *", name: "title", type: "text" },
+                  { label: "Tool URL *", name: "toolUrl", type: "url" },
+                  { label: "Pricing *", name: "pricing", type: "select" },
+                  {
+                    label: "Description *",
+                    name: "description",
+                    type: "textarea",
+                  },
+                  {
+                    label: "Hashtags (comma separated)",
+                    name: "hashtags",
+                    type: "text",
+                  },
+                  {
+                    label: "Keywords (comma separated)",
+                    name: "keyWords",
+                    type: "text",
+                  },
+                ].map((field) => (
+                  <Form.Group key={field.name}>
+                    <Form.Label style={{ fontWeight: "500", color: "#495057" }}>
+                      {field.label}
+                    </Form.Label>
+                    {field.type === "textarea" ? (
+                      <Form.Control
+                        as="textarea"
+                        rows={5}
+                        name={field.name}
+                        value={toolData[field.name]}
+                        onChange={handleChange}
+                        required
+                      />
+                    ) : field.type === "select" ? (
+                      <Form.Select
+                        name={field.name}
+                        value={toolData[field.name]}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Select Pricing</option>
+                        <option value="Free">Free</option>
+                        <option value="Freemium">Freemium</option>
+                        <option value="Premium">Premium</option>
+                        <option value="Free Trial">Free Trial</option>
+                        <option value="Pay Per Use">Pay Per Use</option>
+                      </Form.Select>
+                    ) : (
+                      <Form.Control
+                        type={field.type}
+                        name={field.name}
+                        value={toolData[field.name]}
+                        onChange={handleChange}
+                        required
+                      />
+                    )}
+                  </Form.Group>
+                ))}
+
+                {currentUser?.data?.isSuperAdmin && (
+                  <>
+                    <Form.Check
+                      type="checkbox"
+                      label="Featured Tool"
+                      name="isFeatured"
+                      checked={toolData.isFeatured}
+                      onChange={handleChange}
+                    />
+                    <Form.Check
+                      type="checkbox"
+                      label="Editor's Choice"
+                      name="isEditorsChoice"
+                      checked={toolData.isEditorsChoice}
+                      onChange={handleChange}
+                    />
+                  </>
+                )}
+
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={imageUploading}
+                  style={{
+                    padding: "0.75rem",
+                    fontWeight: "600",
+                    fontSize: "1rem",
+                  }}
+                >
+                  Save Changes
+                </Button>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
+      </Container>
+    </div>
   );
 };
 

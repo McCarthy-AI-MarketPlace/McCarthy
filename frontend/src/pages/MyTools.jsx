@@ -12,19 +12,18 @@ import {
   Modal,
   Alert,
 } from "react-bootstrap";
-import { Trash2, Edit, ExternalLink } from "lucide-react"; // Importing icons for actions
+import { Trash2, Edit, ExternalLink } from "lucide-react"; 
 
 const MyTools = () => {
   const [tools, setTools] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // State for error messages
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // State for delete confirmation modal
-  const [toolToDelete, setToolToDelete] = useState(null); // State to store the tool ID to be deleted
+  const [error, setError] = useState(null); 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); 
+  const [toolToDelete, setToolToDelete] = useState(null); 
   const navigate = useNavigate();
   const { userId: paramUserId } = useParams();
   const { currentUser } = useSelector((state) => state.user);
 
-  // Define consistent colors
   const primaryPurple = "#6c63ff";
   const lightPurple = "#f0f0ff";
   const darkText = "#333";
@@ -32,7 +31,6 @@ const MyTools = () => {
   const lightGreyBorder = "#e0e0e0";
   const cardBackgroundColor = "#FFFFFF";
 
-  // Redirect logic for non-super admins trying to view other user's tools
   useEffect(() => {
     if (
       paramUserId &&
@@ -44,7 +42,6 @@ const MyTools = () => {
     }
   }, [paramUserId, currentUser, navigate]);
 
-  // Determine the actual userId to fetch tools for
   const userId =
     currentUser && currentUser.data
       ? paramUserId || currentUser.data._id
@@ -58,10 +55,9 @@ const MyTools = () => {
     }
 
     setLoading(true);
-    setError(null); // Clear previous errors
+    setError(null); 
     try {
-      // In a real application, ensure your API endpoint is secured and handles authorization
-      const token = localStorage.getItem("accessToken"); // Assuming token is stored in localStorage
+      const token = localStorage.getItem("accessToken"); 
       const res = await axios.get(`/api/tool/my-tools/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -78,20 +74,18 @@ const MyTools = () => {
 
   useEffect(() => {
     fetchTools();
-  }, [userId]); // Re-fetch tools if userId changes
+  }, [userId]); 
 
-  // Function to handle tool deletion confirmation
   const handleDeleteClick = (toolId) => {
     setToolToDelete(toolId);
     setShowDeleteConfirm(true);
   };
 
-  // Function to perform tool deletion
   const confirmDelete = async () => {
-    setShowDeleteConfirm(false); // Close the modal immediately
+    setShowDeleteConfirm(false); 
     if (!toolToDelete) return;
 
-    setError(null); // Clear previous errors
+    setError(null); 
     try {
       const token = localStorage.getItem("accessToken");
       await axios.delete(`/api/tool/${toolToDelete}`, {
@@ -99,17 +93,15 @@ const MyTools = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      // Re-fetch the list of tools after successful deletion
       fetchTools();
     } catch (err) {
       console.error("Error deleting tool:", err);
       setError("Failed to delete tool. Please try again.");
     } finally {
-      setToolToDelete(null); // Clear the tool to delete state
+      setToolToDelete(null); 
     }
   };
 
-  // Function to truncate text
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
@@ -120,7 +112,7 @@ const MyTools = () => {
   return (
     <Container style={{ marginTop: "5rem", padding: "2rem 0" }}>
       <h2 className="text-center mb-4 fw-bold" style={{ color: darkText }}>
-        My Published Tools
+        {userId === paramUserId? "User Published Tools":"My Published Tools"}
       </h2>
 
       {error && (
@@ -182,13 +174,11 @@ const MyTools = () => {
       ) : (
         <Row className="g-4">
           {" "}
-          {/* Use g-4 for consistent gutter */}
           {tools.map((tool) => (
             <Col xs={12} md={6} lg={4} key={tool._id}>
               {" "}
-              {/* Responsive columns */}
               <Card
-                className="h-100" // Ensures cards in the same row have equal height
+                className="h-100" 
                 style={{
                   borderRadius: "15px",
                   border: "1px solid #e0e0e0",
@@ -211,10 +201,10 @@ const MyTools = () => {
                   src={
                     tool.image ||
                     "https://placehold.co/400x180/E0E0E0/333333?text=Tool+Image"
-                  } // Placeholder image, increased height
+                  } 
                   alt={tool.title}
                   style={{
-                    height: "180px", // Fixed height for image, increased for more vertical/square format
+                    height: "180px", 
                     objectFit: "cover",
                     borderTopLeftRadius: "15px",
                     borderTopRightRadius: "15px",
@@ -229,13 +219,11 @@ const MyTools = () => {
                   }}
                 >
                   {" "}
-                  {/* Reduced padding */}
                   <Card.Title
                     className="fw-bold mb-2"
                     style={{ color: darkText, fontSize: "1.1rem" }}
                   >
                     {" "}
-                    {/* Reduced font size */}
                     {tool.title}
                   </Card.Title>
                   <Card.Text
@@ -247,16 +235,14 @@ const MyTools = () => {
                     }}
                   >
                     {" "}
-                    {/* Reduced font size */}
                     {truncateText(tool.description, 100)}{" "}
-                    {/* Truncate description */}
                   </Card.Text>
                   <div className="mb-3">
                     {tool.hashtags &&
                       tool.hashtags.slice(0, 3).map(
                         (
                           tag,
-                          index // Limit to 3 hashtags
+                          index 
                         ) => (
                           <span
                             key={index}
@@ -265,7 +251,7 @@ const MyTools = () => {
                               backgroundColor: lightPurple,
                               color: primaryPurple,
                               fontWeight: "500",
-                              padding: "6px 10px", // Reduced padding
+                              padding: "6px 10px", 
                               fontSize: "0.75rem",
                             }}
                           >
@@ -285,8 +271,8 @@ const MyTools = () => {
                         backgroundImage: `linear-gradient(to right, ${primaryPurple}, #8a7dff)`,
                         borderColor: primaryPurple,
                         borderRadius: "8px",
-                        padding: "6px 15px", // Reduced padding
-                        fontSize: "0.9rem", // Reduced font size
+                        padding: "6px 15px", 
+                        fontSize: "0.9rem", 
                         fontWeight: "600",
                         color: "white",
                         boxShadow: "0 2px 5px rgba(108, 99, 255, 0.3)",
@@ -307,7 +293,7 @@ const MyTools = () => {
                       }}
                     >
                       <ExternalLink size={14} style={{ marginRight: "5px" }} />{" "}
-                      Visit {/* Reduced icon size */}
+                      Visit
                     </Button>
                     <div className="d-flex gap-2">
                       <Button
@@ -315,8 +301,8 @@ const MyTools = () => {
                         onClick={() => navigate(`/edit-tool/${tool._id}`)}
                         style={{
                           borderRadius: "8px",
-                          padding: "6px 10px", // Reduced padding
-                          fontSize: "0.8rem", // Reduced font size
+                          padding: "6px 10px", 
+                          fontSize: "0.8rem", 
                           color: darkText,
                           borderColor: lightGreyBorder,
                           transition: "all 0.2s ease",
@@ -329,15 +315,15 @@ const MyTools = () => {
                             "transparent")
                         }
                       >
-                        <Edit size={14} /> Edit {/* Reduced icon size */}
+                        <Edit size={14} /> Edit 
                       </Button>
                       <Button
                         variant="outline-danger"
                         onClick={() => handleDeleteClick(tool._id)}
                         style={{
                           borderRadius: "8px",
-                          padding: "6px 10px", // Reduced padding
-                          fontSize: "0.8rem", // Reduced font size
+                          padding: "6px 10px", 
+                          fontSize: "0.8rem", 
                           color: "#dc3545",
                           borderColor: "#dc3545",
                           transition: "all 0.2s ease",
@@ -350,7 +336,7 @@ const MyTools = () => {
                             "transparent")
                         }
                       >
-                        <Trash2 size={14} /> Delete {/* Reduced icon size */}
+                        <Trash2 size={14} /> Delete 
                       </Button>
                     </div>
                   </div>
@@ -361,7 +347,6 @@ const MyTools = () => {
         </Row>
       )}
 
-      {/* Delete Confirmation Modal */}
       <Modal
         show={showDeleteConfirm}
         onHide={() => setShowDeleteConfirm(false)}

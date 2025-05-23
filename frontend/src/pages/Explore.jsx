@@ -10,9 +10,9 @@ import {
   Button,
   Card,
   ListGroup,
-  Modal, // Import Modal for the filter popup
+  Modal, 
 } from "react-bootstrap";
-import { Search, SlidersHorizontal } from "lucide-react"; // Importing search and filter icons
+import { Search, SlidersHorizontal } from "lucide-react"; 
 
 export default function Explore() {
   const [tools, setTools] = useState([]);
@@ -20,7 +20,7 @@ export default function Explore() {
   const [filteredTools, setFilteredTools] = useState([]);
   const [categoryFilters, setCategoryFilters] = useState([]);
   const [pricingFilters, setPricingFilters] = useState([]);
-  const [showFilterModal, setShowFilterModal] = useState(false); // State for modal visibility
+  const [showFilterModal, setShowFilterModal] = useState(false); 
 
   const categories = [
     "Text Generation",
@@ -40,15 +40,11 @@ export default function Explore() {
 
   const fetchTools = async () => {
     try {
-      // Fetching data from the backend API
       const response = await axios.get("/api/tool");
       setTools(response.data.data);
-      console.log("Fetched tools from backend:", response.data.data);
+      // console.log("Fetched tools from backend:", response.data.data);
     } catch (error) {
       console.error("Error fetching tools:", error);
-      // Fallback or error handling if backend fetch fails
-      // For demonstration, you might want to keep some mock data here for development
-      // if your backend isn't ready. For now, it will just log the error.
     }
   };
 
@@ -60,9 +56,9 @@ export default function Explore() {
       filtered = filtered.filter(
         (tool) =>
           regex.test(tool.title) ||
-          (tool.hashtags && tool.hashtags.some((tag) => regex.test(tag))) || // Check if hashtags exist
+          (tool.hashtags && tool.hashtags.some((tag) => regex.test(tag))) || 
           (tool.keyWords &&
-            tool.keyWords.some((keyword) => regex.test(keyword))) // Check if keyWords exist
+            tool.keyWords.some((keyword) => regex.test(keyword))) 
       );
     }
 
@@ -103,9 +99,9 @@ export default function Explore() {
 
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
   const handleSearchSubmit = (e) => {
-    e.preventDefault(); // Prevent page reload on form submission
+    e.preventDefault();
     filterTools();
-    setShowFilterModal(false); // Close modal on search submit
+    setShowFilterModal(false); 
   };
 
   useEffect(() => {
@@ -116,7 +112,6 @@ export default function Explore() {
     filterTools();
   }, [searchQuery, categoryFilters, pricingFilters, tools]);
 
-  // Define consistent colors
   const primaryPurple = "#6c63ff";
   const lightPurple = "#f0f0ff";
   const darkText = "#333";
@@ -125,13 +120,12 @@ export default function Explore() {
 
   return (
     <Container style={{ marginTop: "5rem", padding: "2rem 0" }}>
-      {/* Main Header Section */}
       <div style={{ textAlign: "center", marginBottom: "3rem" }}>
         <h1
           style={{
             fontSize: "3rem",
             fontWeight: "bold",
-            color: "#333", // Darker color for the main title
+            color: "#333", 
             marginBottom: "0.5rem",
           }}
         >
@@ -140,7 +134,7 @@ export default function Explore() {
         <p
           style={{
             fontSize: "1.25rem",
-            color: "#666", // Muted color for the subtitle
+            color: "#666", 
             maxWidth: "600px",
             margin: "0 auto",
           }}
@@ -149,16 +143,14 @@ export default function Explore() {
         </p>
       </div>
 
-      {/* Mobile Search Bar and Filter Button */}
       <div className="d-lg-none mb-4 px-3">
         {" "}
-        {/* visible on small screens, hidden on large */}
         <Form
           onSubmit={handleSearchSubmit}
           className="d-flex align-items-center justify-content-between"
           style={{
             border: `1px solid ${lightGreyBorder}`,
-            borderRadius: "50px", // More rounded for mobile search
+            borderRadius: "50px", 
             padding: "0.5rem 1rem",
             boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
             backgroundColor: "#fff",
@@ -172,15 +164,15 @@ export default function Explore() {
             style={{
               border: "none",
               boxShadow: "none",
-              padding: "0", // No padding inside input
+              padding: "0", 
               fontSize: "0.95rem",
               flexGrow: 1,
-              marginRight: "0.5rem", // Space before filter button
+              marginRight: "0.5rem", 
             }}
           />
           <Button
             variant="link"
-            onClick={() => setShowFilterModal(true)} // Open modal on click
+            onClick={() => setShowFilterModal(true)} 
             style={{
               color: primaryPurple,
               padding: "0.25rem 0.5rem",
@@ -197,7 +189,7 @@ export default function Explore() {
               backgroundColor: primaryPurple,
               backgroundImage: `linear-gradient(to right, ${primaryPurple}, #8a7dff)`,
               borderColor: primaryPurple,
-              borderRadius: "50px", // Rounded search button
+              borderRadius: "50px", 
               padding: "0.5rem 1rem",
               fontSize: "0.95rem",
               color: "white",
@@ -211,16 +203,13 @@ export default function Explore() {
       </div>
 
       <Row>
-        {/* Filter/Sidebar Column - Hidden on small screens */}
         <Col lg={3} className="d-none d-lg-block mb-4">
           {" "}
-          {/* hidden on small screens, visible on large */}
           <Card
             className="shadow-sm border-0 rounded-4"
             style={{ padding: "1.5rem" }}
           >
             <Card.Body style={{ padding: "0" }}>
-              {/* Search Bar (Desktop) */}
               <Form onSubmit={handleSearchSubmit} className="mb-4">
                 <div
                   className="d-flex align-items-center"
@@ -246,7 +235,7 @@ export default function Explore() {
                   />
                   <Button
                     variant="link"
-                    type="submit" // Set type to submit for form submission
+                    type="submit" 
                     style={{ color: mutedText, padding: "0.5rem" }}
                   >
                     <Search size={20} />
@@ -254,7 +243,6 @@ export default function Explore() {
                 </div>
               </Form>
 
-              {/* Categories Filter */}
               <div className="mb-4">
                 <h5
                   style={{
@@ -283,7 +271,7 @@ export default function Explore() {
                         id={`category-${category}`}
                         label={category}
                         checked={categoryFilters.includes(category)}
-                        onChange={() => handleCategoryChange(category)} // Ensure change handler works
+                        onChange={() => handleCategoryChange(category)} 
                         style={{ fontSize: "0.95rem", color: mutedText }}
                       />
                       <span
@@ -311,7 +299,6 @@ export default function Explore() {
                 </ListGroup>
               </div>
 
-              {/* Pricing Filter */}
               <div>
                 <h5
                   style={{
@@ -340,7 +327,7 @@ export default function Explore() {
                         id={`pricing-${option}`}
                         label={option}
                         checked={pricingFilters.includes(option)}
-                        onChange={() => handlePricingChange(option)} // Ensure change handler works
+                        onChange={() => handlePricingChange(option)} 
                         style={{ fontSize: "0.95rem", color: mutedText }}
                       />
                       <span
@@ -363,9 +350,8 @@ export default function Explore() {
           </Card>
         </Col>
 
-        {/* Tool List Column */}
         <Col lg={9}>
-          <ToolList tools={filteredTools} />
+          <ToolList tools={filteredTools} userToken={localStorage.getItem("accessToken")} />
           {filteredTools.length === 0 && (
             <div className="text-center mt-5" style={{ color: mutedText }}>
               <h4>No tools found matching your criteria.</h4>
@@ -375,7 +361,6 @@ export default function Explore() {
         </Col>
       </Row>
 
-      {/* Filter Modal for Small Screens */}
       <Modal
         show={showFilterModal}
         onHide={() => setShowFilterModal(false)}
@@ -385,7 +370,6 @@ export default function Explore() {
           <Modal.Title>Filter Tools</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* Categories Filter in Modal */}
           <div className="mb-4">
             <h5
               style={{
@@ -440,7 +424,6 @@ export default function Explore() {
             </ListGroup>
           </div>
 
-          {/* Pricing Filter in Modal */}
           <div>
             <h5
               style={{
