@@ -12,6 +12,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./pages/Profile";
 import EditTool from "./components/EditTool";
 import Home from "./pages/Home";
+import UserManagement from "./pages/UserManagement";
 
 export default function App() {
   return (
@@ -61,6 +62,14 @@ export default function App() {
           element={
             <PrivateRoute superAdminOnly={true}>
               <MyTools />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <PrivateRoute superAdminOnly={true}>
+              <UserManagement />
             </PrivateRoute>
           }
         />

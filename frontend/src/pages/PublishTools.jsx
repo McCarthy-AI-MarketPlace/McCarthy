@@ -7,11 +7,15 @@ import {
   Col,
   Alert,
   Spinner,
-  Card, // Import Card for the new design
+  Card, 
 } from "react-bootstrap";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const PublishTool = () => {
+
+const currentUser = useSelector((state) => state.user.currentUser);
+
   const [toolData, setToolData] = useState({
     image: "",
     title: "",
@@ -127,7 +131,7 @@ const PublishTool = () => {
     <div
       style={{
         minHeight: "100vh",
-        marginTop:"3rem",
+        marginTop: "3rem",
         display: "flex",
         flexDirection: "column",
         backgroundColor: "#f5f7fa",
@@ -480,78 +484,80 @@ const PublishTool = () => {
                     Separate keywords with commas
                   </p>
                 </Form.Group>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1rem",
-                    marginTop: "1rem",
-                  }}
-                >
+                {currentUser.data.isSuperAdmin && (
                   <div
                     style={{
                       display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
+                      flexDirection: "column",
+                      gap: "1rem",
+                      marginTop: "1rem",
                     }}
                   >
-                    <div>
-                      <Form.Label
-                        htmlFor="isFeatured"
-                        style={{
-                          fontWeight: "500",
-                          marginBottom: "0.25rem",
-                          color: "#495057",
-                        }}
-                      >
-                        Featured Tool
-                      </Form.Label>
-                      <p style={{ fontSize: "0.875rem", color: "#6c757d" }}>
-                        Request to be featured on our homepage
-                      </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div>
+                        <Form.Label
+                          htmlFor="isFeatured"
+                          style={{
+                            fontWeight: "500",
+                            marginBottom: "0.25rem",
+                            color: "#495057",
+                          }}
+                        >
+                          Featured Tool
+                        </Form.Label>
+                        <p style={{ fontSize: "0.875rem", color: "#6c757d" }}>
+                          Request to be featured on our homepage
+                        </p>
+                      </div>
+                      <Form.Check
+                        type="switch"
+                        id="isFeatured"
+                        name="isFeatured"
+                        checked={toolData.isFeatured}
+                        onChange={handleChange}
+                        style={{ transform: "scale(1.2)" }} // Slightly larger switch
+                      />
                     </div>
-                    <Form.Check
-                      type="switch"
-                      id="isFeatured"
-                      name="isFeatured"
-                      checked={toolData.isFeatured}
-                      onChange={handleChange}
-                      style={{ transform: "scale(1.2)" }} // Slightly larger switch
-                    />
-                  </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <div>
-                      <Form.Label
-                        htmlFor="isEditorsChoice"
-                        style={{
-                          fontWeight: "500",
-                          marginBottom: "0.25rem",
-                          color: "#495057",
-                        }}
-                      >
-                        Editor's Choice
-                      </Form.Label>
-                      <p style={{ fontSize: "0.875rem", color: "#6c757d" }}>
-                        Request to be considered for Editor's Choice
-                      </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div>
+                        <Form.Label
+                          htmlFor="isEditorsChoice"
+                          style={{
+                            fontWeight: "500",
+                            marginBottom: "0.25rem",
+                            color: "#495057",
+                          }}
+                        >
+                          Editor's Choice
+                        </Form.Label>
+                        <p style={{ fontSize: "0.875rem", color: "#6c757d" }}>
+                          Request to be considered for Editor's Choice
+                        </p>
+                      </div>
+                      <Form.Check
+                        type="switch"
+                        id="isEditorsChoice"
+                        name="isEditorsChoice"
+                        checked={toolData.isEditorsChoice}
+                        onChange={handleChange}
+                        style={{ transform: "scale(1.2)" }} // Slightly larger switch
+                      />
                     </div>
-                    <Form.Check
-                      type="switch"
-                      id="isEditorsChoice"
-                      name="isEditorsChoice"
-                      checked={toolData.isEditorsChoice}
-                      onChange={handleChange}
-                      style={{ transform: "scale(1.2)" }} // Slightly larger switch
-                    />
                   </div>
-                </div>
+                )}
               </div>
 
               <div
@@ -562,7 +568,6 @@ const PublishTool = () => {
                   marginTop: "2rem",
                 }}
               >
-                
                 <Button
                   type="submit"
                   variant="primary"

@@ -8,9 +8,11 @@ const EditTool = () => {
     title: '',
     description: '',
     image: '',
-    public_id: '',         
+    public_id: '',         // Track Cloudinary public_id
     toolUrl: '',
     hashtags: '',
+    keyWords: '',          // Add keyWords to state
+    pricing: '',           // Add pricing to state
     isFeatured: false,
     isEditorsChoice: false,
   });
@@ -35,6 +37,7 @@ const EditTool = () => {
         setToolData({
           ...tool,
           hashtags: tool.hashtags.join(', '),
+          keyWords: tool.keyWords ? tool.keyWords.join(', ') : '',  // Convert array to comma-separated string
           public_id: tool.imagePublicId || '',  
         });
       } catch (err) {
@@ -97,9 +100,12 @@ const EditTool = () => {
 
     try {
       const token = localStorage.getItem('accessToken');
+
+      // Handle hashtags and keywords properly
       const updatedData = {
         ...toolData,
-        hashtags: toolData.hashtags.split(',').map(tag => tag.trim())
+        hashtags: toolData.hashtags.split(',').map(tag => tag.trim()),
+        keyWords: toolData.keyWords.split(',').map(keyword => keyword.trim())
       };
 
       await axios.put(`/api/tool/${id}`, updatedData, {
@@ -196,6 +202,34 @@ const EditTool = () => {
             onChange={handleChange}
             required
           />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Keywords (comma separated)</Form.Label>
+          <Form.Control
+            type="text"
+            name="keyWords"
+            value={toolData.keyWords}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>Pricing</Form.Label>
+          <Form.Select
+            name="pricing"
+            value={toolData.pricing}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Pricing</option>
+            <option value="Free">Free</option>
+            <option value="Freemium">Freemium</option>
+            <option value="Premium">Premium</option>
+            <option value="Free Trial">Free Trial</option>
+            <option value="Pay Per Use">Pay Per Use</option>
+          </Form.Select>
         </Form.Group>
 
         <Form.Check

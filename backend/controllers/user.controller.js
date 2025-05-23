@@ -118,6 +118,26 @@ export const deleteUser = asyncHandler(async (req, res) => {
 
   res.status(200).json(new ApiResponse(200, {}, "User deleted successfully"));
 });
+export const deleteOtherUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const { userId } = req.params;
+
+  if (!user || !userId) {
+    throw new ApiError(404, "user not found");
+  }
+
+  if (!user.isSuperAdmin) {
+    throw new ApiError(403, "You are not authorized to delete this user");
+  }
+
+  const deletedUser = await User.findByIdAndDelete(userId);
+  
+  if (!deletedUser) {
+    throw new ApiError(404, "user not found");
+  }
+
+  res.status(200).json(new ApiResponse(200, {}, "User deleted successfully"));
+});
 
 export const getUserProfile = async (req, res) => {
   try {
@@ -246,4 +266,23 @@ export const getFavorites = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id).populate("favoriteTools");
   if (!user) return res.status(404).json(new ApiError(404, "User not found"));
   res.json(new ApiResponse(200, { favorites: user.favoriteTools }));
+});
+
+export const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find().select("-password"); 
+  res.json(new ApiResponse(200, users, "Fetched all users"));
+});
+
+export const toggleAdminStatus = asyncHandler(async (req, res) => {
+  const { userId } = req.body;
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  user.isAdmin = !user.isAdmin; 
+  await user.save();
+  
+  res.json(new ApiResponse(200, user, "User admin status updated"));
 });

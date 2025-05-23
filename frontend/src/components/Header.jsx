@@ -202,6 +202,21 @@ export default function Header() {
                       </div>
                     </>
                   )}
+                  {currentUser.data.isSuperAdmin && (
+                    <div
+                      onClick={() => {
+                        navigate("/users");
+                        setDropdownOpen(false);
+                      }}
+                      style={{
+                        padding: "0.5rem 1rem",
+                        cursor: "pointer",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      User
+                    </div>
+                  )}
                   <div
                     onClick={handleLogout}
                     style={{
