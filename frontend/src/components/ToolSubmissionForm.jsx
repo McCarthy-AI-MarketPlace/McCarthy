@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Tabs, Tab, Form, Button, Row, Col, Container } from "react-bootstrap";
 
 const ToolSubmissionForm = () => {
@@ -10,7 +10,6 @@ const ToolSubmissionForm = () => {
   const [shortDescription, setShortDescription] = useState("");
   const [fullDescription, setFullDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [logoFile, setLogoFile] = useState(null);
   const [tags, setTags] = useState("");
 
   // State for Basic Info form validation errors
@@ -18,7 +17,6 @@ const ToolSubmissionForm = () => {
   const [shortDescriptionError, setShortDescriptionError] = useState(false);
   const [fullDescriptionError, setFullDescriptionError] = useState(false);
   const [categoryError, setCategoryError] = useState(false);
-  const [logoFileError, setLogoFileError] = useState(false);
   const [tagsError, setTagsError] = useState(false);
 
   // Styles for the form and its elements
@@ -26,9 +24,9 @@ const ToolSubmissionForm = () => {
     border: "1px solid #eee",
     borderRadius: "15px",
     padding: "30px",
-    backgroundColor: "#ffffff", // Form background is white
+    backgroundColor: "#ffffff",
     marginTop: "20px",
-    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)", // Increased box shadow
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)",
   };
 
   const sectionTitleStyle = {
@@ -46,7 +44,7 @@ const ToolSubmissionForm = () => {
   const tabStyle = {
     borderRadius: "12px",
     overflow: "hidden",
-    backgroundColor: "#e0e0e0", // Neutral background for the tabs
+    backgroundColor: "#e0e0e0",
   };
 
   const buttonStyle = {
@@ -61,7 +59,6 @@ const ToolSubmissionForm = () => {
   const validateBasicInfo = () => {
     let isValid = true;
 
-    // Validate Tool Name
     if (toolName.trim() === "") {
       setToolNameError(true);
       isValid = false;
@@ -69,7 +66,6 @@ const ToolSubmissionForm = () => {
       setToolNameError(false);
     }
 
-    // Validate Short Description
     if (shortDescription.trim() === "") {
       setShortDescriptionError(true);
       isValid = false;
@@ -77,7 +73,6 @@ const ToolSubmissionForm = () => {
       setShortDescriptionError(false);
     }
 
-    // Validate Full Description
     if (fullDescription.trim() === "") {
       setFullDescriptionError(true);
       isValid = false;
@@ -85,7 +80,6 @@ const ToolSubmissionForm = () => {
       setFullDescriptionError(false);
     }
 
-    // Validate Category
     if (category === "" || category === "Select category") {
       setCategoryError(true);
       isValid = false;
@@ -93,15 +87,6 @@ const ToolSubmissionForm = () => {
       setCategoryError(false);
     }
 
-    // Validate Logo/Icon
-    if (!logoFile) {
-      setLogoFileError(true);
-      isValid = false;
-    } else {
-      setLogoFileError(false);
-    }
-
-    // Validate Tags
     if (tags.trim() === "") {
       setTagsError(true);
       isValid = false;
@@ -114,26 +99,20 @@ const ToolSubmissionForm = () => {
 
   // Handle form submission for Basic Info tab
   const handleBasicInfoSubmit = (event) => {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
     const isValid = validateBasicInfo();
 
     if (isValid) {
-      // All fields are valid, proceed with submission logic
       console.log("Basic Info Submitted:", {
         toolName,
         shortDescription,
         fullDescription,
         category,
-        logoFile,
         tags,
       });
-      // You would typically send this data to an API here
-      // Replace alert with a custom modal or notification for production
-      // alert("Basic Info submitted successfully!");
+      // Place your API submission logic here
     } else {
       console.log("Basic Info validation failed.");
-      // Replace alert with a custom modal or notification for production
-      // alert("Please fill in all required fields in Basic Info tab.");
     }
   };
 
@@ -142,22 +121,28 @@ const ToolSubmissionForm = () => {
     toolName.trim() !== "" &&
     shortDescription.trim() !== "" &&
     fullDescription.trim() !== "" &&
-    (category !== "" && category !== "Select category") &&
-    logoFile !== null &&
+    category !== "" &&
+    category !== "Select category" &&
     tags.trim() !== "";
 
   return (
-    // Outer div for controlling the overall page background and minimum height
-    <div style={{ backgroundColor: "#ffffff", minHeight: "100vh", padding: "20px 0" }}>
-      {/* Container for responsive layout and max-width control */}
-      <Container className="py-5" style={{ maxWidth: '800px' }}> {/* Added maxWidth for better control on large screens */}
-        {/* Page Title and Subtitle */}
+    <div
+      style={{
+        backgroundColor: "#ffffff",
+        minHeight: "100vh",
+        padding: "20px 0",
+      }}
+    >
+      <Container className="py-5" style={{ maxWidth: "800px" }}>
         <div className="text-center mb-4">
-          <h1 className="text-3xl font-bold text-gray-800">Submit Your AI Tool</h1> {/* Title is bold */}
-          <p className="text-gray-600">Fill out the form below and our team will review your submission.</p> {/* Paragraph is grey */}
+          <h1 className="text-3xl font-bold text-gray-800">
+            Submit Your AI Tool
+          </h1>
+          <p className="text-gray-600">
+            Fill out the form below and our team will review your submission.
+          </p>
         </div>
 
-        {/* Main Tool Submission Form */}
         <div style={formStyle}>
           <div style={sectionTitleStyle}>Tool Submission Form</div>
           <div style={descriptionStyle}>
@@ -165,7 +150,6 @@ const ToolSubmissionForm = () => {
             showcase it.
           </div>
 
-          {/* Tabs for different form sections */}
           <Tabs
             activeKey={key}
             onSelect={(k) => setKey(k)}
@@ -173,11 +157,12 @@ const ToolSubmissionForm = () => {
             style={tabStyle}
             justify
           >
-            {/* Basic Info Tab */}
             <Tab eventKey="basic" title="Basic Info">
               <Form onSubmit={handleBasicInfoSubmit}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Tool Name <span className="text-danger">*</span></Form.Label>
+                  <Form.Label>
+                    Tool Name <span className="text-danger">*</span>
+                  </Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter the name of your AI tool"
@@ -191,7 +176,9 @@ const ToolSubmissionForm = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Short Description <span className="text-danger">*</span></Form.Label>
+                  <Form.Label>
+                    Short Description <span className="text-danger">*</span>
+                  </Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Brief description (max 100 characters)"
@@ -205,7 +192,9 @@ const ToolSubmissionForm = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Full Description <span className="text-danger">*</span></Form.Label>
+                  <Form.Label>
+                    Full Description <span className="text-danger">*</span>
+                  </Form.Label>
                   <Form.Control
                     as="textarea"
                     rows={4}
@@ -220,10 +209,11 @@ const ToolSubmissionForm = () => {
                 </Form.Group>
 
                 <Row>
-                  {/* Responsive columns: 6 on medium+, 12 on extra-small */}
                   <Col xs={12} md={6}>
                     <Form.Group className="mb-3">
-                      <Form.Label>Category <span className="text-danger">*</span></Form.Label>
+                      <Form.Label>
+                        Category <span className="text-danger">*</span>
+                      </Form.Label>
                       <Form.Select
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
@@ -233,31 +223,19 @@ const ToolSubmissionForm = () => {
                         <option value="Productivity">Productivity</option>
                         <option value="Writing">Writing</option>
                         <option value="Education">Education</option>
-                        {/* Add more categories as needed */}
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         Category is required.
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
-                  {/* Responsive columns: 6 on medium+, 12 on extra-small */}
-                  <Col xs={12} md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Logo/Icon <span className="text-danger">*</span></Form.Label>
-                      <Form.Control
-                        type="file"
-                        onChange={(e) => setLogoFile(e.target.files[0])}
-                        isInvalid={logoFileError}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Logo/Icon is required.
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
                 </Row>
 
                 <Form.Group className="mb-4">
-                  <Form.Label>Tags (Comma Separated) <span className="text-danger">*</span></Form.Label>
+                  <Form.Label>
+                    Tags (Comma Separated){" "}
+                    <span className="text-danger">*</span>
+                  </Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="e.g., chatbot, writing, translation"
@@ -272,7 +250,11 @@ const ToolSubmissionForm = () => {
 
                 <div className="d-flex justify-content-between">
                   <Button variant="outline-secondary">Save Draft</Button>
-                  <Button style={buttonStyle} type="submit" disabled={!isBasicInfoFormComplete}>
+                  <Button
+                    style={buttonStyle}
+                    type="submit"
+                    disabled={!isBasicInfoFormComplete}
+                  >
                     Submit for Review →
                   </Button>
                 </div>
@@ -284,7 +266,10 @@ const ToolSubmissionForm = () => {
               <Form>
                 <Form.Group className="mb-3">
                   <Form.Label>Tool URL</Form.Label>
-                  <Form.Control type="text" placeholder="https://yourtool.com" />
+                  <Form.Control
+                    type="text"
+                    placeholder="https://yourtool.com"
+                  />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -306,7 +291,6 @@ const ToolSubmissionForm = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>Required Data Permissions</Form.Label>
                   <Row>
-                    {/* Responsive columns for checkboxes */}
                     <Col xs={6} md={3}>
                       <Form.Check type="checkbox" label="User Email" />
                     </Col>
@@ -342,7 +326,6 @@ const ToolSubmissionForm = () => {
             <Tab eventKey="business" title="Business Info">
               <Form>
                 <Row className="mb-3">
-                  {/* Responsive columns: 6 on medium+, 12 on extra-small */}
                   <Col xs={12} md={6}>
                     <Form.Group>
                       <Form.Label>Company/Developer Name</Form.Label>
@@ -352,7 +335,6 @@ const ToolSubmissionForm = () => {
                       />
                     </Form.Group>
                   </Col>
-                  {/* Responsive columns: 6 on medium+, 12 on extra-small */}
                   <Col xs={12} md={6}>
                     <Form.Group>
                       <Form.Label>Contact Email</Form.Label>
