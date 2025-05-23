@@ -131,7 +131,7 @@ export default function Header() {
                 <div
                   style={{
                     position: "absolute",
-                    right: -70,
+                    right: 0,
                     top: "calc(100% + 10px)",
                     backgroundColor: "white",
                     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
