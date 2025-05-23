@@ -27,10 +27,12 @@ const toolSchema = new mongoose.Schema({
     required: true
   },
   hashtags: [{
-    type: String
+    type: String,
+    required: true
   }],
   keyWords: [{
-    type: String
+    type: String,
+    require: true
   }],
   isFeatured: {
     type: Boolean,
