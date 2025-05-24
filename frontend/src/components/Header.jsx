@@ -59,7 +59,7 @@ export default function Header() {
     <>
       <Container
         fluid
-        className="d-flex justify-content-between align-items-center header-padding"
+        className="d-flex justify-content-between align-items-center header-padding px-5"
         style={{
           backgroundColor: "rgba(255, 255, 255, 0.5)",
           backdropFilter: "blur(10px)",
@@ -101,6 +101,9 @@ export default function Header() {
         </Link>
 
         <div className="d-none d-md-flex align-items-center gap-4">
+          <Link to="/" className="text-dark text-decoration-none">
+            Home
+          </Link>
           <Link to="/explore" className="text-dark text-decoration-none">
             Explore
           </Link>
@@ -131,7 +134,7 @@ export default function Header() {
                 <div
                   style={{
                     position: "absolute",
-                    right: -70,
+                    right: 0,
                     top: "calc(100% + 10px)",
                     backgroundColor: "white",
                     boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
@@ -273,6 +276,13 @@ export default function Header() {
           }}
         >
           <div className="d-flex flex-column align-items-start p-3 gap-2">
+            <Link
+              to="/"
+              className="text-dark text-decoration-none"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Home
+            </Link>
             <Link
               to="/explore"
               className="text-dark text-decoration-none"
