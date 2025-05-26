@@ -29,51 +29,6 @@ export default function Home() {
       tags: ["Chatbot", "Writing", "Content Creation"],
       icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/1024px-ChatGPT_logo.svg.png", 
     },
-    {
-      name: "DALL-E",
-      rating: 4.7,
-      status: "Popular",
-      description:
-        "Create realistic images and art from natural language descriptions.",
-      tags: ["Image Generation", "Art", "Design"],
-      icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/DALL-E_logo.svg/1024px-DALL-E_logo.svg.png", 
-    },
-    {
-      name: "Midjourney",
-      rating: 4.9,
-      status: "Popular",
-      description:
-        "Generate beautiful, detailed images from text prompts for illustration and concept art.",
-      tags: ["Image Generation", "Art", "Design"],
-      icon: "https://www.midjourney.com/assets/logo.png", 
-    },
-    {
-      name: "Copy.ai",
-      rating: 4.5,
-      status: "New",
-      description:
-        "Create marketing copy, content, and ideas for your business in seconds.",
-      tags: ["Copywriting", "Marketing", "Content"],
-      icon: "https://global-uploads.webflow.com/62c0b490483c6c0964a2c510/62d985fc6f7f6314f8a9a463_favicon.png", 
-    },
-    {
-      name: "Murf.ai",
-      rating: 4.3,
-      status: "",
-      description:
-        "Convert text to natural-sounding speech with AI voices for videos and presentations.",
-      tags: ["Voice", "Audio", "Text-to-Speech"],
-      icon: "https://assets-global.website-files.com/618210332d787d55bfb200d7/6477e69c762512a20b925b41_murf-logo.svg", 
-    },
-    {
-      name: "GitHub Copilot",
-      rating: 4.6,
-      status: "Popular",
-      description:
-        "AI pair programmer that helps you write better code by suggesting code snippets.",
-      tags: ["Code", "Development", "Productivity"],
-      icon: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png", 
-    },
   ];
   const categories = [
     { name: "Text Generation", tools: 156 },
@@ -243,6 +198,8 @@ export default function Home() {
                       backgroundColor: "#F0F0FF",
                       padding: "10px",
                       borderRadius: "12px",
+                      cursor:"pointer",
+                      
                     }} 
                   />
                 </div>
