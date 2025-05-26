@@ -12,11 +12,26 @@ import Profile from "./pages/Profile";
 import EditTool from "./components/EditTool";
 import Home from "./pages/Home";
 import UserManagement from "./pages/UserManagement";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   return (
     <Router>
       <Header />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        containerClassName="custom-toast-container"
+        toastClassName="custom-toast"
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/developer" element={<Developer />} />

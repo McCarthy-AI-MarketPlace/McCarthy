@@ -199,7 +199,11 @@ const ToolCard = ({ tool }) => {
             <Button
               variant="light"
               className="rounded-circle d-flex justify-content-center align-items-center shadow-sm"
-              onClick={() => toggleHeart(tool._id)}
+              onClick={() =>
+                currentUser
+                  ? toggleHeart(tool._id)
+                  : toast.info("Login to add tools to favorites")
+              }
               disabled={loadingHeartId === tool._id}
               style={{
                 width: "38px",
@@ -220,7 +224,7 @@ const ToolCard = ({ tool }) => {
               />
             </Button>
           </div>
-          {currentUser.data.isSuperAdmin && (
+          {currentUser?.data?.isSuperAdmin && (
             <div className="d-flex justify-content-between align-items-center mt-4 p-1">
               <Button
                 variant="outline-secondary"
