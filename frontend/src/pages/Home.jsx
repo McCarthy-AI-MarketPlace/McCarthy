@@ -26,6 +26,7 @@ import {
 
 import ToolCard from "../components/ToolCard";
 import FixedLogos from "../components/FixedLogos";
+import { useNavigate } from "react-router-dom";
 
 const COLORS = {
   primary: "#5F2EEA",
@@ -92,6 +93,15 @@ export default function Home() {
   const [trendingTools, setTrendingTools] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleSearchClick = () => {
+    if (searchQuery) {
+      navigate(`/explore?query=${searchQuery}`);
+    }
+  };
 
   useEffect(() => {
     const fetchTools = async () => {
@@ -180,22 +190,24 @@ export default function Home() {
                 <Form.Control
                   placeholder="Search for AI tools (eg., video generation)"
                   aria-label="Search"
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   style={{ border: "none", boxShadow: "none" }}
                 />
 
-                <Button
-                  variant="light"
-                  id="dropdown-filters"
-                  style={{
-                    border: "none",
-                    borderLeft: "1px solid #E0E0E0",
-                    color: "#6A6A80",
-                    zIndex: 0,
-                  }}
-                >
-                  <FaFilter className="me-2" /> Filters
-                </Button>
-
+                <Link to="/explore">
+                  <Button
+                    variant="light"
+                    id="dropdown-filters"
+                    style={{
+                      border: "none",
+                      borderLeft: "1px solid #E0E0E0",
+                      color: "#6A6A80",
+                      zIndex: 0,
+                    }}
+                  >
+                    <FaFilter className="me-2" /> Filters
+                  </Button>
+                </Link>
                 <Button
                   style={{
                     backgroundColor: "#7646C3",
@@ -205,6 +217,7 @@ export default function Home() {
                     paddingRight: "15px",
                     zIndex: 0,
                   }}
+                  onClick={handleSearchClick}
                 >
                   <Link
                     to="/explore"
@@ -225,6 +238,7 @@ export default function Home() {
                   boxShadow: "0 4px 10px rgba(147, 105, 218)",
                 }}
                 className="mt-3 rounded-pill"
+                onClick={handleSearchClick}
               >
                 <Link
                   to="/explore"
@@ -235,23 +249,6 @@ export default function Home() {
               </Button>
 
               <div className="d-flex justify-content-center mt-5 gap-3">
-                {/* {["C", "M", "C", "D", "G"].map((letter, idx) => (
-                  <div
-                    key={idx}
-                    className="rounded-circle d-flex justify-content-center align-items-center"
-                    style={{
-                      width: 50,
-                      height: 50,
-                      border: "1px solid #E0E0E0",
-                      color: "grey",
-                      fontWeight: "bold",
-                      fontSize: "1.2rem",
-                      boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-                    }}
-                  >
-                    {letter}
-                  </div>
-                ))} */}
                 <FixedLogos />
               </div>
             </Col>

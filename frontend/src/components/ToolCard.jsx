@@ -84,6 +84,23 @@ const ToolCard = ({ tool }) => {
     }
   };
 
+  const handleDelete = async (toolId) => {
+    // if (!window.confirm("Are you sure you want to delete this tool?")) return;
+
+    try {
+      await axios.delete(`/api/tool/${toolId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      toast.success("Tool deleted successfully");
+
+      window.location.reload();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete tool");
+    }
+  };
+
   const truncateText = (text, maxLength) => {
     if (text?.length > maxLength) {
       return text.substring(0, maxLength) + "...";
@@ -160,7 +177,7 @@ const ToolCard = ({ tool }) => {
                   padding: "8px 12px",
                 }}
               >
-                {tag}
+                {"#" + tag}
               </span>
             ))}
           </div>
@@ -225,7 +242,7 @@ const ToolCard = ({ tool }) => {
             </Button>
           </div>
           {currentUser?.data?.isSuperAdmin && (
-            <div className="d-flex justify-content-between align-items-center mt-4 p-1">
+            <div className="d-flex justify-content-between align-items-center mt-4 p-1 gap-2">
               <Button
                 variant="outline-secondary"
                 onClick={() => navigate(`/edit-tool/${tool._id}`)}
@@ -245,6 +262,27 @@ const ToolCard = ({ tool }) => {
                 }
               >
                 <Edit size={14} /> Edit
+              </Button>
+
+              <Button
+                variant="outline-danger"
+                onClick={() => handleDelete(tool._id)}
+                style={{
+                  borderRadius: "8px",
+                  padding: "6px 10px",
+                  fontSize: "0.8rem",
+                  color: "#dc3545",
+                  borderColor: "#f5c6cb",
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#f8d7da")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "transparent")
+                }
+              >
+                Delete
               </Button>
             </div>
           )}

@@ -13,6 +13,8 @@ import {
   Modal,
 } from "react-bootstrap";
 import { Search, SlidersHorizontal } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Explore() {
   const [tools, setTools] = useState([]);
@@ -21,6 +23,19 @@ export default function Explore() {
   const [categoryFilters, setCategoryFilters] = useState([]);
   const [pricingFilters, setPricingFilters] = useState([]);
   const [showFilterModal, setShowFilterModal] = useState(false);
+
+  const navigate = useNavigate();
+
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const paramSearchQuery = queryParams.get("query");
+
+  useEffect(() => {
+    if (paramSearchQuery) {
+      navigate("/explore")
+      setSearchQuery(paramSearchQuery);
+    }
+  }, [paramSearchQuery]);
 
   const categories = [
     "Text Generation",
@@ -52,34 +67,44 @@ export default function Explore() {
     let filtered = tools;
 
     if (searchQuery) {
-      const lowerCaseSearchQuery = searchQuery.toLowerCase(); // convert the search query to lowercase
+      const lowerCaseSearchQuery = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (tool) =>
-          tool.title.toLowerCase().includes(lowerCaseSearchQuery) || // convert tool title to lowercase
+          tool.title.toLowerCase().includes(lowerCaseSearchQuery) ||
           (tool.hashtags &&
             tool.hashtags.some((tag) =>
               tag.toLowerCase().includes(lowerCaseSearchQuery)
-            )) || // convert hashtags to lowercase
+            )) ||
           (tool.keyWords &&
             tool.keyWords.some((keyword) =>
               keyword.toLowerCase().includes(lowerCaseSearchQuery)
-            )) // convert keyWords to lowercase
+            ))
       );
     }
 
     if (categoryFilters.length > 0) {
+      const lowerCaseCategoryFilters = categoryFilters.map((c) =>
+        c.toLowerCase()
+      );
       filtered = filtered.filter((tool) =>
-        categoryFilters.some(
+        lowerCaseCategoryFilters.some(
           (category) =>
-            (tool.keyWords && tool.keyWords.includes(category)) ||
-            (tool.hashtags && tool.hashtags.includes(category))
+            (tool.keyWords &&
+              tool.keyWords.some((kw) => kw.toLowerCase() === category)) ||
+            (tool.hashtags &&
+              tool.hashtags.some((tag) => tag.toLowerCase() === category))
         )
       );
     }
 
     if (pricingFilters.length > 0) {
-      filtered = filtered.filter((tool) =>
-        pricingFilters.includes(tool.pricing)
+      const lowerCasePricingFilters = pricingFilters.map((p) =>
+        p.toLowerCase()
+      );
+      filtered = filtered.filter(
+        (tool) =>
+          tool.pricing &&
+          lowerCasePricingFilters.includes(tool.pricing.toLowerCase())
       );
     }
 
