@@ -10,9 +10,9 @@ import {
   Button,
   Card,
   ListGroup,
-  Modal, 
+  Modal,
 } from "react-bootstrap";
-import { Search, SlidersHorizontal } from "lucide-react"; 
+import { Search, SlidersHorizontal } from "lucide-react";
 
 export default function Explore() {
   const [tools, setTools] = useState([]);
@@ -20,7 +20,7 @@ export default function Explore() {
   const [filteredTools, setFilteredTools] = useState([]);
   const [categoryFilters, setCategoryFilters] = useState([]);
   const [pricingFilters, setPricingFilters] = useState([]);
-  const [showFilterModal, setShowFilterModal] = useState(false); 
+  const [showFilterModal, setShowFilterModal] = useState(false);
 
   const categories = [
     "Text Generation",
@@ -52,13 +52,18 @@ export default function Explore() {
     let filtered = tools;
 
     if (searchQuery) {
-      const regex = new RegExp(searchQuery, "i");
+      const lowerCaseSearchQuery = searchQuery.toLowerCase(); // convert the search query to lowercase
       filtered = filtered.filter(
         (tool) =>
-          regex.test(tool.title) ||
-          (tool.hashtags && tool.hashtags.some((tag) => regex.test(tag))) || 
+          tool.title.toLowerCase().includes(lowerCaseSearchQuery) || // convert tool title to lowercase
+          (tool.hashtags &&
+            tool.hashtags.some((tag) =>
+              tag.toLowerCase().includes(lowerCaseSearchQuery)
+            )) || // convert hashtags to lowercase
           (tool.keyWords &&
-            tool.keyWords.some((keyword) => regex.test(keyword))) 
+            tool.keyWords.some((keyword) =>
+              keyword.toLowerCase().includes(lowerCaseSearchQuery)
+            )) // convert keyWords to lowercase
       );
     }
 
@@ -101,7 +106,7 @@ export default function Explore() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     filterTools();
-    setShowFilterModal(false); 
+    setShowFilterModal(false);
   };
 
   useEffect(() => {
@@ -125,7 +130,7 @@ export default function Explore() {
           style={{
             fontSize: "3rem",
             fontWeight: "bold",
-            color: "#333", 
+            color: "#333",
             marginBottom: "0.5rem",
           }}
         >
@@ -134,7 +139,7 @@ export default function Explore() {
         <p
           style={{
             fontSize: "1.25rem",
-            color: "#666", 
+            color: "#666",
             maxWidth: "600px",
             margin: "0 auto",
           }}
@@ -150,7 +155,7 @@ export default function Explore() {
           className="d-flex align-items-center justify-content-between"
           style={{
             border: `1px solid ${lightGreyBorder}`,
-            borderRadius: "50px", 
+            borderRadius: "50px",
             padding: "0.5rem 1rem",
             boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
             backgroundColor: "#fff",
@@ -164,15 +169,15 @@ export default function Explore() {
             style={{
               border: "none",
               boxShadow: "none",
-              padding: "0", 
+              padding: "0",
               fontSize: "0.95rem",
               flexGrow: 1,
-              marginRight: "0.5rem", 
+              marginRight: "0.5rem",
             }}
           />
           <Button
             variant="link"
-            onClick={() => setShowFilterModal(true)} 
+            onClick={() => setShowFilterModal(true)}
             style={{
               color: primaryPurple,
               padding: "0.25rem 0.5rem",
@@ -189,7 +194,7 @@ export default function Explore() {
               backgroundColor: primaryPurple,
               backgroundImage: `linear-gradient(to right, ${primaryPurple}, #8a7dff)`,
               borderColor: primaryPurple,
-              borderRadius: "50px", 
+              borderRadius: "50px",
               padding: "0.5rem 1rem",
               fontSize: "0.95rem",
               color: "white",
@@ -235,7 +240,7 @@ export default function Explore() {
                   />
                   <Button
                     variant="link"
-                    type="submit" 
+                    type="submit"
                     style={{ color: mutedText, padding: "0.5rem" }}
                   >
                     <Search size={20} />
@@ -271,7 +276,7 @@ export default function Explore() {
                         id={`category-${category}`}
                         label={category}
                         checked={categoryFilters.includes(category)}
-                        onChange={() => handleCategoryChange(category)} 
+                        onChange={() => handleCategoryChange(category)}
                         style={{ fontSize: "0.95rem", color: mutedText }}
                       />
                       <span
@@ -327,7 +332,7 @@ export default function Explore() {
                         id={`pricing-${option}`}
                         label={option}
                         checked={pricingFilters.includes(option)}
-                        onChange={() => handlePricingChange(option)} 
+                        onChange={() => handlePricingChange(option)}
                         style={{ fontSize: "0.95rem", color: mutedText }}
                       />
                       <span
@@ -351,7 +356,10 @@ export default function Explore() {
         </Col>
 
         <Col lg={9}>
-          <ToolList tools={filteredTools} userToken={localStorage.getItem("accessToken")} />
+          <ToolList
+            tools={filteredTools}
+            userToken={localStorage.getItem("accessToken")}
+          />
           {filteredTools.length === 0 && (
             <div className="text-center mt-5" style={{ color: mutedText }}>
               <h4>No tools found matching your criteria.</h4>
