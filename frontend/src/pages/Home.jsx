@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-
 import { Link } from "react-router-dom";
-
 import {
   Container,
   Row,
@@ -27,14 +25,12 @@ import {
 } from "react-icons/fa";
 
 import ToolCard from "../components/ToolCard";
+import FixedLogos from "../components/FixedLogos";
 
 const COLORS = {
   primary: "#5F2EEA",
-
   primaryLight: "#9369DA",
-
   text: "#6A6A80",
-
   bg: "#F8F8FC",
 };
 
@@ -52,28 +48,24 @@ const categories = [
 const whyItems = [
   {
     title: "All in One Place",
-
     description:
       "Access hundreds of AI tools without switching between websites.",
   },
 
   {
     title: "User Privacy First",
-
     description:
       "Transparent data policies so you know exactly what information is shared.",
   },
 
   {
     title: "Expert Curation",
-
     description:
       "Our team tests and reviews tools to ensure quality and usefulness.",
   },
 
   {
     title: "Personalized Recommendations",
-
     description:
       "Get AI tool suggestions based on your usage patterns and preferences.",
   },
@@ -95,30 +87,22 @@ const HoverCard = ({ hoveredIndex, index, setHovered, children, ...props }) => (
 
 export default function Home() {
   const [hoveredHow, setHoveredHow] = useState(null);
-
   const [hoveredWhy, setHoveredWhy] = useState(null);
-
   const [hoveredCategory, setHoveredCategory] = useState(null);
-
   const [trendingTools, setTrendingTools] = useState([]);
-
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchTools = async () => {
       try {
         const response = await fetch("/api/tool/");
-
         const data = await response.json();
-
         setTrendingTools(data.data);
 
         // console.log(data.data);
       } catch (error) {
         console.error("Error fetching tools:", error);
-
         setError("Failed to load tools.");
       } finally {
         setLoading(false);
@@ -129,38 +113,27 @@ export default function Home() {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-
   if (error) return <div>{error}</div>;
 
   return (
     <div
       style={{
         marginTop: "10vh",
-
         minHeight: "90vh",
-
         display: "flex",
-
         flexDirection: "column",
-
         fontFamily: FONT,
-
         backgroundColor: COLORS.bg,
       }}
     >
       <style>
         {`.card {
-
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-     }
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
      .card.hover-effect {
-
       transform: translateY(-5px);
-
       box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
-
      }`}
       </style>
 
@@ -170,9 +143,7 @@ export default function Home() {
         className="py-5 text-center d-flex align-items-center"
         style={{
           background: "linear-gradient(180deg, #e8e2fb 30%, #dfe7fb 100%)",
-
           minHeight: "70vh",
-
           paddingTop: "8vh",
         }}
       >
@@ -198,11 +169,8 @@ export default function Home() {
                 <InputGroup.Text
                   style={{
                     backgroundColor: "#FFFFFF",
-
                     border: "none",
-
                     borderRight: "1px solid #E0E0E0",
-
                     paddingLeft: "15px",
                   }}
                 >
@@ -220,11 +188,8 @@ export default function Home() {
                   id="dropdown-filters"
                   style={{
                     border: "none",
-
                     borderLeft: "1px solid #E0E0E0",
-
                     color: "#6A6A80",
-
                     zIndex: 0,
                   }}
                 >
@@ -234,15 +199,10 @@ export default function Home() {
                 <Button
                   style={{
                     backgroundColor: "#7646C3",
-
                     borderColor: "#7646C3",
-
                     borderRadius: "0",
-
                     paddingLeft: "15px",
-
                     paddingRight: "15px",
-
                     zIndex: 0,
                   }}
                 >
@@ -258,15 +218,10 @@ export default function Home() {
               <Button
                 style={{
                   backgroundColor: "#7646C3",
-
                   borderColor: COLORS.primaryLight,
-
                   padding: "12px 30px",
-
                   fontSize: "1.1rem",
-
                   borderRadius: "8px",
-
                   boxShadow: "0 4px 10px rgba(147, 105, 218)",
                 }}
                 className="mt-3 rounded-pill"
@@ -280,29 +235,24 @@ export default function Home() {
               </Button>
 
               <div className="d-flex justify-content-center mt-5 gap-3">
-                {["C", "M", "C", "D", "G"].map((letter, idx) => (
+                {/* {["C", "M", "C", "D", "G"].map((letter, idx) => (
                   <div
                     key={idx}
                     className="rounded-circle d-flex justify-content-center align-items-center"
                     style={{
                       width: 50,
-
                       height: 50,
-
                       border: "1px solid #E0E0E0",
-
                       color: "grey",
-
                       fontWeight: "bold",
-
                       fontSize: "1.2rem",
-
                       boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
                     }}
                   >
                     {letter}
                   </div>
-                ))}
+                ))} */}
+                <FixedLogos />
               </div>
             </Col>
           </Row>
@@ -313,7 +263,6 @@ export default function Home() {
 
       <Container className="text-center my-5 py-5">
         <h2 className="fw-bold mb-3">How McCarthy Works</h2>
-
         <p className="lead mb-5" style={{ color: COLORS.text }}>
           Discover, compare, and use AI tools without the hassle of switching
           between websites.
@@ -334,9 +283,7 @@ export default function Home() {
                   }}
                 />
               ),
-
               title: "Search & Discover",
-
               desc: "Explore our curated AI tools...",
             },
 
@@ -354,7 +301,6 @@ export default function Home() {
               ),
 
               title: "Compare & Choose",
-
               desc: "Read reviews, compare features...",
             },
 
@@ -370,9 +316,7 @@ export default function Home() {
                   }}
                 />
               ),
-
               title: "Use Instantly",
-
               desc: "Launch tools directly and start creating.",
             },
           ].map((item, idx) => (
@@ -388,9 +332,7 @@ export default function Home() {
                 >
                   {item.icon}
                 </div>
-
                 <h5 className="fw-bold">{item.title}</h5>
-
                 <p className="text-muted">{item.desc}</p>
               </HoverCard>
             </Col>
@@ -442,7 +384,6 @@ export default function Home() {
         >
           Browse by Category
         </h2>
-
         <p className="lead mb-5" style={{ color: COLORS.text }}>
           Find the perfect AI tool for your specific needs.
         </p>
@@ -450,7 +391,7 @@ export default function Home() {
         <Row className="justify-content-center g-4">
           {categories.map((cat, idx) => (
             <Col xs={6} sm={4} lg={2} key={idx}>
-              <Link to="/explore" style={{textDecoration:"none"}}>
+              <Link to="/explore" style={{ textDecoration: "none" }}>
                 <div
                   className={`card h-100 border-0 shadow-sm rounded-4 p-3 ${
                     hoveredCategory === idx ? "hover-effect" : ""
@@ -465,11 +406,9 @@ export default function Home() {
                   >
                     {cat.icon}
                   </div>
-
                   <p className="fw-semibold mb-1" style={{ color: "#333333" }}>
                     {cat.name}
                   </p>
-
                   <p className="text-muted mb-0" style={{ fontSize: "0.9rem" }}>
                     {cat.tools} tools
                   </p>
@@ -516,21 +455,13 @@ export default function Home() {
         <div
           style={{
             borderRadius: "1.2rem",
-
             minHeight: "40vh",
-
             background: "linear-gradient(90deg, #7b2ff7 0%, #4facfe 100%)",
-
             display: "flex",
-
             justifyContent: "center",
-
             alignItems: "center",
-
             color: "white",
-
             textAlign: "center",
-
             padding: 40,
           }}
         >
@@ -551,11 +482,8 @@ export default function Home() {
                 variant="light"
                 style={{
                   marginTop: 25,
-
                   padding: "10px 25px",
-
                   fontWeight: "500",
-
                   borderRadius: "25px",
                 }}
               >
