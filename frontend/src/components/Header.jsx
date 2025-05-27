@@ -59,9 +59,9 @@ export default function Header() {
     <>
       <Container
         fluid
-        className="d-flex justify-content-between align-items-center header-padding px-5"
+        className="d-flex justify-content-between align-items-center"
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          background: "linear-gradient(180deg, #e8e2fb 30%, #dfe7fb 100%)",
           backdropFilter: "blur(10px)",
           WebkitBackdropFilter: "blur(10px)",
           width: "100%",
@@ -323,3 +323,7 @@ export default function Header() {
     </>
   );
 }
+
+
+
+

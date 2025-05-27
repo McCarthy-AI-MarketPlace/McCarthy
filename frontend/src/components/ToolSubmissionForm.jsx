@@ -251,10 +251,11 @@ const ToolSubmissionForm = () => {
                 <div className="d-flex justify-content-between">
                   <Button variant="outline-secondary">Save Draft</Button>
                   <Button
-                    style={buttonStyle}
+                    style={{buttonStyle, background:"#7646C3"}}
                     type="submit"
                     disabled={!isBasicInfoFormComplete}
                   >
+
                     Submit for Review →
                   </Button>
                 </div>
@@ -398,3 +399,6 @@ const ToolSubmissionForm = () => {
 };
 
 export default ToolSubmissionForm;
+
+
+

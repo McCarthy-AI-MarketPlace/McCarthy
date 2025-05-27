@@ -6,10 +6,6 @@ body {
   box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 }
 
-.header-padding {
-  padding: 0 5rem;
-}
-
 .custom-toast {
   max-width: 60vw;
   width: 100%;

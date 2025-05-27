@@ -16,7 +16,7 @@ const Developer = () => {
     padding: "40px",
   };
   return (
-    <div style={{ marginTop: "4.1rem" }}>
+    <div style={{ marginTop: "4rem" }}>
       {/* Gradient Header */}
       <div
         style={{
@@ -61,7 +61,7 @@ const Developer = () => {
           >
             <Button
               style={{
-                backgroundColor: "#6C63FF", // updated bluish-purple to match screenshot/video
+                backgroundColor: "#7646C3", // updated bluish-purple to match screenshot/video
                 border: "none",
                 padding: "12px 28px",
                 borderRadius: "999px",

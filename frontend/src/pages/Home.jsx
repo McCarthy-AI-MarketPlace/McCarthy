@@ -128,7 +128,7 @@ export default function Home() {
   return (
     <div
       style={{
-        marginTop: "10vh",
+        marginTop: "8.9vh",
         minHeight: "90vh",
         display: "flex",
         flexDirection: "column",
@@ -493,3 +493,7 @@ export default function Home() {
     </div>
   );
 }
+
+
+
+
