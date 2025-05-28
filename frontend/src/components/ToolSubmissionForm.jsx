@@ -399,6 +399,3 @@ const ToolSubmissionForm = () => {
 };
 
 export default ToolSubmissionForm;
-
-
-

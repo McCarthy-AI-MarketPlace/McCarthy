@@ -61,15 +61,16 @@ export default function Header() {
         fluid
         className="d-flex justify-content-between align-items-center"
         style={{
-          background: "linear-gradient(180deg, #e8e2fb 30%, #dfe7fb 100%)",
-          backdropFilter: "blur(10px)",
-          WebkitBackdropFilter: "blur(10px)",
-          width: "100%",
-          position: "fixed",
-          height: "65px",
-          zIndex: "2",
-          // borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-        }}
+  backgroundColor: "rgba(232, 226, 251, 0.7)", // translucent light purple
+  backdropFilter: "blur(10px)",
+  WebkitBackdropFilter: "blur(10px)",
+  width: "100%",
+  position: "fixed",
+  height: "65px",
+  zIndex: "2",
+  borderBottom: "1px solid rgba(0, 0, 0, 0.05)",
+}}
+
       >
         <Link
           to="/"
@@ -323,7 +324,3 @@ export default function Header() {
     </>
   );
 }
-
-
-
-

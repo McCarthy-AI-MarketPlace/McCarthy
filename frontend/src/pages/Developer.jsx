@@ -21,7 +21,7 @@ const Developer = () => {
       <div
         style={{
           minHeight: "30rem",
-          background: "linear-gradient(to right, #e6e1fb, #dbe7fb)",
+          background: "linear-gradient(180deg, #e8e2fb 30%, #dfe7fb 100%)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -163,7 +163,7 @@ const Developer = () => {
       </div>
 
       {/* How It Works Section */}
-      <div style={{ background: "#EAEFFF", padding: "4rem 2rem" }}>
+      <div style={{ background: "#eeebfc", padding: "4rem 2rem" }}>
         <h2
           style={{
             fontSize: "2rem",
@@ -350,3 +350,4 @@ const Developer = () => {
 };
 
 export default Developer;
+
