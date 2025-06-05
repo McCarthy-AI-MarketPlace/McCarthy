@@ -1,26 +1,22 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import { Heart } from "lucide-react";
+import { Col, Card, Button } from "react-bootstrap";
+import { Heart, Edit } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUser } from "../redux/user/userSlice";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { Edit } from "lucide-react";
 
 const ToolCard = ({ tool }) => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
-
-  const darkText = "#333";
-  const lightGreyBorder = "#e0e0e0";
 
   const favoriteToolIds = currentUser?.data?.favoriteTools || [];
   const [loadingHeartId, setLoadingHeartId] = useState(null);
 
-  const toggleHeart = async (toolId) => {
+  const toggleHeart = async (toolId, e) => {
+    e.stopPropagation();
     if (!toolId || !currentUser) return;
 
     const isFavorite = favoriteToolIds.includes(toolId);
@@ -84,9 +80,8 @@ const ToolCard = ({ tool }) => {
     }
   };
 
-  const handleDelete = async (toolId) => {
-    // if (!window.confirm("Are you sure you want to delete this tool?")) return;
-
+  const handleDelete = async (toolId, e) => {
+    e.stopPropagation();
     try {
       await axios.delete(`/api/tool/${toolId}`, {
         headers: {
@@ -94,7 +89,6 @@ const ToolCard = ({ tool }) => {
         },
       });
       toast.success("Tool deleted successfully");
-
       window.location.reload();
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to delete tool");
@@ -109,7 +103,12 @@ const ToolCard = ({ tool }) => {
   };
 
   return (
-    <Col lg={4} md={6} className="mb-4" key={tool._id}>
+    <Col
+      lg={4}
+      md={6}
+      className="mb-4"
+      onClick={() => navigate(`/explore/${tool._id}`)}
+    >
       <Card
         style={{
           borderRadius: "15px",
@@ -145,7 +144,7 @@ const ToolCard = ({ tool }) => {
             }}
           >
             <img
-              src={tool.icon}
+              src={tool.icon || "/default-icon.png"}
               alt={tool.name}
               style={{
                 width: "40px",
@@ -195,9 +194,8 @@ const ToolCard = ({ tool }) => {
                 padding: "8px 20px",
                 boxShadow: "0 2px 5px rgba(138, 94, 253, 0.7)",
                 color: "white",
-                transition:
-                  "background-color 0.2s ease-in-out, transform 0.1s ease-in-out",
               }}
+              onClick={(e) => e.stopPropagation()}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = "#5a52e0";
                 e.currentTarget.style.backgroundImage =
@@ -216,9 +214,9 @@ const ToolCard = ({ tool }) => {
             <Button
               variant="light"
               className="rounded-circle d-flex justify-content-center align-items-center shadow-sm"
-              onClick={() =>
+              onClick={(e) =>
                 currentUser
-                  ? toggleHeart(tool._id)
+                  ? toggleHeart(tool._id, e)
                   : toast.info("Login to add tools to favorites")
               }
               disabled={loadingHeartId === tool._id}
@@ -241,46 +239,36 @@ const ToolCard = ({ tool }) => {
               />
             </Button>
           </div>
+
           {currentUser?.data?.isSuperAdmin && (
             <div className="d-flex justify-content-between align-items-center mt-4 p-1 gap-2">
               <Button
                 variant="outline-secondary"
-                onClick={() => navigate(`/edit-tool/${tool._id}`)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/edit-tool/${tool._id}`);
+                }}
                 style={{
                   borderRadius: "8px",
                   padding: "6px 10px",
                   fontSize: "0.8rem",
-                  color: darkText,
-                  borderColor: lightGreyBorder,
-                  transition: "all 0.2s ease",
+                  color: "#333",
+                  borderColor: "#e0e0e0",
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#f0f0f0")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "transparent")
-                }
               >
                 <Edit size={14} /> Edit
               </Button>
 
               <Button
                 variant="outline-danger"
-                onClick={() => handleDelete(tool._id)}
+                onClick={(e) => handleDelete(tool._id, e)}
                 style={{
                   borderRadius: "8px",
                   padding: "6px 10px",
                   fontSize: "0.8rem",
                   color: "#dc3545",
                   borderColor: "#f5c6cb",
-                  transition: "all 0.2s ease",
                 }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#f8d7da")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "transparent")
-                }
               >
                 Delete
               </Button>

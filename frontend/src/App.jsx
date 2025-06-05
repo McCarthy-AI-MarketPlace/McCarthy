@@ -15,6 +15,7 @@ import UserManagement from "./pages/UserManagement";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToolInfo from "./pages/ToolInfo";
+import ExploreTool from "./pages/ExploreTool";
 
 export default function App() {
   return (
@@ -89,6 +90,7 @@ export default function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/explore/:id" element={<ExploreTool />} />
       </Routes>
       <Footer />
     </Router>
