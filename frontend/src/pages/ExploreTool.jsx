@@ -29,15 +29,14 @@ const ExploreTool = () => {
         setLoading(false);
       }
     };
-
     fetchTool();
   }, [id]);
 
   if (loading) {
     return (
       <Container
-        className="text-center mt-5"
-        style={{ backgroundColor: "#F5F0FA", minHeight: "100vh" }}
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "100vh", backgroundColor: "#f4f4f4" }}
       >
         <Spinner animation="border" variant="primary" />
       </Container>
@@ -47,8 +46,8 @@ const ExploreTool = () => {
   if (!tool) {
     return (
       <Container
-        className="mt-5"
-        style={{ backgroundColor: "#F5F0FA", minHeight: "100vh" }}
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "100vh", backgroundColor: "#f4f4f4" }}
       >
         <Alert variant="danger">Tool not found</Alert>
       </Container>
@@ -56,61 +55,51 @@ const ExploreTool = () => {
   }
 
   return (
-    <div
-      style={{
-        backgroundColor: "#F5F0FA",
-        minHeight: "100vh",
-        paddingTop: "80px", // Adjust based on your header height
-      }}
-    >
+    <div style={{ backgroundColor: "#f9f9fb", minHeight: "100vh", paddingTop: "80px" }}>
       <Container>
         <Row className="g-4">
           {/* LEFT BOX */}
-          <Col xs={12} lg={4} className="mb-4 mb-lg-0">
+          <Col xs={12} lg={4}>
             <Card
-              className="h-100"
-              style={{
-                borderRadius: "1rem",
-                border: "1px solid #D1C4E9",
-                backgroundColor: "#ffffff",
-              }}
+              className="shadow-sm border-0 h-100"
+              style={{ borderRadius: "16px", backgroundColor: "#ffffff" }}
             >
-              <Card.Body className="text-center">
+              <Card.Body className="text-center p-4">
                 <Card.Img
                   variant="top"
                   src={tool.image}
                   alt={tool.title}
                   style={{
-                    width: "100%",
-                    height: "auto",
-                    maxHeight: "200px",
+                    maxHeight: "180px",
                     objectFit: "contain",
                     marginBottom: "1rem",
+                    borderRadius: "10px",
                   }}
                 />
-                <h4 className="fw-bold text-dark">{tool.title}</h4>
-                <p className="text-muted mb-1">{tool.pricing}</p>
+                <h4 className="fw-semibold text-dark">{tool.title}</h4>
+                <p className="text-muted small">{tool.pricing}</p>
 
                 {tool.isFeatured && (
-                  <Badge bg="success" className="mb-2">
+                  <Badge bg="success" className="mb-2 me-2">
                     Featured
                   </Badge>
                 )}
                 {tool.isEditorsChoice && (
-                  <Badge bg="warning" text="dark" className="mb-2 ms-2">
+                  <Badge bg="warning" text="dark" className="mb-2">
                     Editor's Choice
                   </Badge>
                 )}
 
-                <div className="d-grid mt-3">
+                <div className="d-grid mt-4">
                   <Button
                     href={tool.toolUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
-                      backgroundColor: "#9369DA",
+                      backgroundColor: "#6C63FF",
                       border: "none",
-                      borderRadius: "0.5rem",
+                      borderRadius: "8px",
+                      padding: "10px 16px",
                     }}
                   >
                     Visit Tool
@@ -123,36 +112,33 @@ const ExploreTool = () => {
           {/* RIGHT BOX */}
           <Col xs={12} lg={8}>
             <Card
-              className="h-100"
-              style={{
-                borderRadius: "1rem",
-                border: "1px solid #D1C4E9",
-                backgroundColor: "#ffffff",
-              }}
+              className="shadow-sm border-0 h-100"
+              style={{ borderRadius: "16px", backgroundColor: "#ffffff" }}
             >
-              <Card.Body>
-                <h5 className="fw-bold mb-3" style={{ color: "#9369DA" }}>
+              <Card.Body className="p-4">
+                <h5 className="fw-bold mb-3" style={{ color: "#6C63FF" }}>
                   Overview
                 </h5>
-                <p>{tool.description}</p>
+                <p style={{ color: "#333" }}>{tool.description}</p>
 
-                <h6 className="fw-bold mt-4" style={{ color: "#9369DA" }}>
+                <h6 className="fw-bold mt-4 mb-2" style={{ color: "#6C63FF" }}>
                   Tags
                 </h6>
                 <div className="mb-3">
-                  {tool.hashtags?.map((tag, index) => (
+                  {tool.hashtags?.map((tag, i) => (
                     <Badge
-                      key={index}
+                      key={i}
+                      className="me-2 mb-2"
                       bg="light"
                       text="dark"
-                      className="me-2 mb-2"
                       style={{
-                        border: `1px solid #9369DA`,
-                        color: "#9369DA",
-                        padding: "0.5em 0.75em",
-                        borderRadius: "0.75rem",
-                        fontSize: "0.85rem",
-                        backgroundColor: "#F3EFFF",
+                        backgroundColor: "#eee",
+                        color: "#6C63FF",
+                        padding: "6px 12px",
+                        borderRadius: "999px",
+                        fontWeight: "500",
+                        fontSize: "0.8rem",
+                        border: "1px solid #6C63FF",
                       }}
                     >
                       #{tag}
@@ -160,23 +146,24 @@ const ExploreTool = () => {
                   ))}
                 </div>
 
-                <h6 className="fw-bold" style={{ color: "#9369DA" }}>
+                <h6 className="fw-bold mb-2" style={{ color: "#6C63FF" }}>
                   Keywords
                 </h6>
                 <div className="mb-3">
-                  {tool.keyWords?.map((word, index) => (
+                  {tool.keyWords?.map((word, i) => (
                     <Badge
-                      key={index}
+                      key={i}
+                      className="me-2 mb-2"
                       bg="light"
                       text="dark"
-                      className="me-2 mb-2"
                       style={{
-                        backgroundColor: "#F2F0FA",
-                        color: "#9369DA",
-                        border: `1px solid #9369DA`,
-                        padding: "0.5em 0.75em",
-                        borderRadius: "0.75rem",
-                        fontSize: "0.85rem",
+                        backgroundColor: "#f1f0f9",
+                        color: "#6C63FF",
+                        padding: "6px 12px",
+                        borderRadius: "999px",
+                        fontWeight: "500",
+                        fontSize: "0.8rem",
+                        border: "1px solid #6C63FF",
                       }}
                     >
                       {word}
@@ -184,33 +171,32 @@ const ExploreTool = () => {
                   ))}
                 </div>
 
-                <hr />
+                <hr className="my-4" />
 
                 <Row>
-                  <Col xs={12} sm={6}>
-                    <p>
-                      <strong>Saves:</strong> {tool.saves}
-                    </p>
+                  <Col xs={12} sm={6} className="mb-2">
+                    <small className="text-muted">Saves:</small>
+                    <div className="fw-bold">{tool.saves}</div>
                   </Col>
-                  <Col xs={12} sm={6}>
-                    <p>
-                      <strong>Created At:</strong>{" "}
+                  <Col xs={12} sm={6} className="mb-2">
+                    <small className="text-muted">Created At:</small>
+                    <div className="fw-bold">
                       {new Date(tool.createdAt).toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "short",
                         year: "numeric",
                       })}
-                    </p>
+                    </div>
                   </Col>
-                  <Col xs={12} sm={6}>
-                    <p>
-                      <strong>Last Updated:</strong>{" "}
+                  <Col xs={12} sm={6} className="mb-2">
+                    <small className="text-muted">Last Updated:</small>
+                    <div className="fw-bold">
                       {new Date(tool.updatedAt).toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "short",
                         year: "numeric",
                       })}
-                    </p>
+                    </div>
                   </Col>
                 </Row>
               </Card.Body>
