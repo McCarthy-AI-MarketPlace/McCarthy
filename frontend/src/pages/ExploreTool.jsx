@@ -1,225 +1,602 @@
 import React, { useEffect, useState } from "react";
+
 import { useParams } from "react-router-dom";
+
 import axios from "axios";
+
 import {
-  Container,
-  Spinner,
-  Alert,
-  Button,
-  Badge,
-  Row,
-  Col,
-  Card,
+
+ Badge,
+
+ Button,
+
+ Container,
+
+ Row,
+
+ Col,
+
+ Card,
+
+ Spinner,
+
+ Image, // Import Image component for better control
+
 } from "react-bootstrap";
 
+import { FaStar, FaRegStar, FaShareAlt, FaHeart, FaList } from "react-icons/fa";
+
 const ExploreTool = () => {
-  const { id } = useParams();
-  const [tool, setTool] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchTool = async () => {
-      try {
-        const res = await axios.get(`/api/tool/${id}`);
-        setTool(res.data.data);
-      } catch (error) {
-        console.error(error);
-        setTool(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+ const { id } = useParams();
 
-    fetchTool();
-  }, [id]);
+ const [tool, setTool] = useState(null);
 
-  if (loading) {
-    return (
-      <Container
-        className="text-center mt-5"
-        style={{ backgroundColor: "#F5F0FA", minHeight: "100vh" }}
-      >
-        <Spinner animation="border" variant="primary" />
-      </Container>
-    );
-  }
+ useEffect(() => {
 
-  if (!tool) {
-    return (
-      <Container
-        className="mt-5"
-        style={{ backgroundColor: "#F5F0FA", minHeight: "100vh" }}
-      >
-        <Alert variant="danger">Tool not found</Alert>
-      </Container>
-    );
-  }
+  const fetchTool = async () => {
+
+   try {
+
+    const res = await axios.get(`/api/tool/${id}`);
+
+    setTool(res.data.data);
+
+   } catch (err) {
+
+    console.error("Failed to load tool:", err);
+
+   }
+
+  };
+
+  fetchTool();
+
+ }, [id]);
+
+ if (!tool)
 
   return (
-    <div
-      style={{
-        backgroundColor: "#F5F0FA",
-        minHeight: "100vh",
-        paddingTop: "80px", // Adjust based on your header height
-      }}
-    >
-      <Container>
-        <Row className="g-4">
-          {/* LEFT BOX */}
-          <Col xs={12} lg={4} className="mb-4 mb-lg-0">
-            <Card
-              className="h-100"
-              style={{
-                borderRadius: "1rem",
-                border: "1px solid #D1C4E9",
-                backgroundColor: "#ffffff",
-              }}
-            >
-              <Card.Body className="text-center">
-                <Card.Img
-                  variant="top"
-                  src={tool.image}
-                  alt={tool.title}
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    maxHeight: "200px",
-                    objectFit: "contain",
-                    marginBottom: "1rem",
-                  }}
-                />
-                <h4 className="fw-bold text-dark">{tool.title}</h4>
-                <p className="text-muted mb-1">{tool.pricing}</p>
 
-                {tool.isFeatured && (
-                  <Badge bg="success" className="mb-2">
-                    Featured
-                  </Badge>
-                )}
-                {tool.isEditorsChoice && (
-                  <Badge bg="warning" text="dark" className="mb-2 ms-2">
-                    Editor's Choice
-                  </Badge>
-                )}
+   <div className="text-center py-5">
 
-                <div className="d-grid mt-3">
-                  <Button
-                    href={tool.toolUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      backgroundColor: "#9369DA",
-                      border: "none",
-                      borderRadius: "0.5rem",
-                    }}
-                  >
-                    Visit Tool
-                  </Button>
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
+    <Spinner animation="border" variant="primary" />
 
-          {/* RIGHT BOX */}
-          <Col xs={12} lg={8}>
-            <Card
-              className="h-100"
-              style={{
-                borderRadius: "1rem",
-                border: "1px solid #D1C4E9",
-                backgroundColor: "#ffffff",
-              }}
-            >
-              <Card.Body>
-                <h5 className="fw-bold mb-3" style={{ color: "#9369DA" }}>
-                  Overview
-                </h5>
-                <p>{tool.description}</p>
+   </div>
 
-                <h6 className="fw-bold mt-4" style={{ color: "#9369DA" }}>
-                  Tags
-                </h6>
-                <div className="mb-3">
-                  {tool.hashtags?.map((tag, index) => (
-                    <Badge
-                      key={index}
-                      bg="light"
-                      text="dark"
-                      className="me-2 mb-2"
-                      style={{
-                        border: `1px solid #9369DA`,
-                        color: "#9369DA",
-                        padding: "0.5em 0.75em",
-                        borderRadius: "0.75rem",
-                        fontSize: "0.85rem",
-                        backgroundColor: "#F3EFFF",
-                      }}
-                    >
-                      #{tag}
-                    </Badge>
-                  ))}
-                </div>
-
-                <h6 className="fw-bold" style={{ color: "#9369DA" }}>
-                  Keywords
-                </h6>
-                <div className="mb-3">
-                  {tool.keyWords?.map((word, index) => (
-                    <Badge
-                      key={index}
-                      bg="light"
-                      text="dark"
-                      className="me-2 mb-2"
-                      style={{
-                        backgroundColor: "#F2F0FA",
-                        color: "#9369DA",
-                        border: `1px solid #9369DA`,
-                        padding: "0.5em 0.75em",
-                        borderRadius: "0.75rem",
-                        fontSize: "0.85rem",
-                      }}
-                    >
-                      {word}
-                    </Badge>
-                  ))}
-                </div>
-
-                <hr />
-
-                <Row>
-                  <Col xs={12} sm={6}>
-                    <p>
-                      <strong>Saves:</strong> {tool.saves}
-                    </p>
-                  </Col>
-                  <Col xs={12} sm={6}>
-                    <p>
-                      <strong>Created At:</strong>{" "}
-                      {new Date(tool.createdAt).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </Col>
-                  <Col xs={12} sm={6}>
-                    <p>
-                      <strong>Last Updated:</strong>{" "}
-                      {new Date(tool.updatedAt).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </div>
   );
+
+ const {
+
+  title,
+
+  rating,
+
+  categoryTags,
+
+  overview,
+
+  useCases,
+
+  toolUrl,
+
+  dataSharing,
+
+  addedBy,
+
+  image, // Ensure 'image' field is destructured
+
+  features,
+
+  pricing, // Added pricing to destructuring
+
+ } = tool;
+
+ return (
+
+  <Container className="py-5 mt-5">
+
+   <Row className="align-items-start gx-5">
+
+    {/* Left Content - Tool Details */}
+
+    <Col lg={8}>
+
+     {image && (
+
+      <div
+
+       className="mb-5 p-3 bg-light d-flex justify-content-center align-items-center"
+
+       style={{
+
+        borderRadius: "1.5rem", // More rounded corners
+
+        minHeight: "280px", // Ensure a good minimum height
+
+        maxHeight: "350px", // Prevent image container from becoming too tall
+
+        overflow: "hidden", // Hide overflow if image is too big
+
+        boxShadow: "0 8px 20px rgba(0, 0, 0, 0.08)", // Softer, more modern shadow
+
+       }}
+
+      >
+
+       <Image
+
+        src={image}
+
+        alt={title}
+
+        fluid // Makes image responsive
+
+        style={{
+
+         maxHeight: "100%",
+
+         maxWidth: "100%",
+
+         objectFit: "contain", // Ensures image fits within the container without cropping
+
+         borderRadius: "1rem", // Apply some rounding to the image itself
+
+        }}
+
+       />
+
+      </div>
+
+     )}
+
+     <h1 className="fw-bold mb-2 text-dark">
+
+      {title}
+
+      <span className="ms-3 text-warning fs-5 d-inline-flex align-items-center">
+
+       {Array.from({ length: 5 }, (_, i) =>
+
+        i < Math.floor(rating) ? (
+
+         <FaStar key={i} />
+
+        ) : (
+
+         <FaRegStar key={i} />
+
+        )
+
+       )}
+
+       <span className="ms-2 text-muted">({rating}/5)</span>
+
+      </span>
+
+     </h1>
+
+     {/* Tags */}
+
+     <div className="mb-4">
+
+      {categoryTags?.map((tag, idx) => (
+
+       <Badge
+
+        key={idx}
+
+        bg="primary"
+
+        className="me-2 rounded-pill px-3 py-1 text-white"
+
+        style={{ backgroundColor: "#7c3aed" }}
+
+       >
+
+        {tag}
+
+       </Badge>
+
+      ))}
+
+     </div>
+
+     {/* Tabs Navigation */}
+
+     <div className="d-flex gap-4 mb-4 border-bottom pb-2">
+
+      <span className="fw-semibold text-primary border-bottom border-primary border-3 pb-2 cursor-pointer">
+
+       Overview
+
+      </span>
+
+      <span className="fw-semibold text-muted cursor-pointer">
+
+       Features
+
+      </span>
+
+      <span className="fw-semibold text-muted cursor-pointer">
+
+       Reviews
+
+      </span>
+
+      <span className="fw-semibold text-muted cursor-pointer">
+
+       Alternatives
+
+      </span>
+
+     </div>
+
+     {/* Overview Section */}
+
+     <section className="mb-5">
+
+      <h4 className="fw-bold mb-3 text-dark">About {title}</h4>
+
+      <p className="lead text-secondary">{overview}</p>
+
+     </section>
+
+     {/* Features Section */}
+
+     {features && features.length > 0 && (
+
+      <section className="mb-5">
+
+       <h4 className="fw-bold mb-3 text-dark">Key Features</h4>
+
+       <Row>
+
+        {features.map((feature, idx) => (
+
+         <Col md={6} key={idx} className="mb-2">
+
+          <li className="text-secondary list-unstyled">
+
+           {" "}
+
+           {/* Removed default bullet */}
+
+           <span className="me-2 text-primary">●</span> {feature}{" "}
+
+           {/* Custom bullet */}
+
+          </li>
+
+         </Col>
+
+        ))}
+
+       </Row>
+
+      </section>
+
+     )}
+
+     {/* Use Cases Section */}
+
+     {useCases && useCases.length > 0 && (
+
+      <section className="mb-5">
+
+       <h4 className="fw-bold mb-3 text-dark">Common Use Cases</h4>
+
+       <ul>
+
+        {useCases.map((use, idx) => (
+
+         <li key={idx} className="text-secondary mb-1">
+
+          {use}
+
+         </li>
+
+        ))}
+
+       </ul>
+
+      </section>
+
+     )}
+
+    </Col>
+
+    {/* Right Sidebar Card */}
+
+    <Col lg={4}>
+
+     <Card
+
+      className="shadow-lg border-0"
+
+      style={{
+
+       borderRadius: "1.25rem",
+
+       position: "sticky",
+
+       top: "2rem", // Keep 2rem from the top for sticky behavior
+
+      }}
+
+     >
+
+      {/* Card Header for pricing and image if applicable */}
+
+      {image && (
+
+       <div
+
+        className="bg-light p-3 border-bottom d-flex align-items-center"
+
+        style={{ borderRadius: "1.25rem 1.25rem 0 0" }}
+
+       >
+
+        <Image
+
+         src={image}
+
+         alt={title}
+
+         roundedCircle
+
+         style={{ width: "60px", height: "60px", objectFit: "cover" }}
+
+         className="me-3 border"
+
+        />
+
+        <div>
+
+         <h5 className="mb-0 fw-bold">{title}</h5>
+
+         <Badge
+
+          bg="info"
+
+          className="fw-semibold px-2 py-1 rounded-pill"
+
+         >
+
+          {pricing || "N/A"}
+
+         </Badge>
+
+        </div>
+
+       </div>
+
+      )}
+
+      <Card.Body className="p-4">
+
+       {/* If no image in header, show pricing here */}
+
+       {!image && pricing && (
+
+        <div className="mb-3 text-center">
+
+         <h5 className="fw-bold text-dark">Pricing Model</h5>
+
+         <Badge
+
+          bg="info"
+
+          className="fw-semibold fs-6 px-3 py-2 rounded-pill"
+
+         >
+
+          {pricing}
+
+         </Badge>
+
+        </div>
+
+       )}
+
+       <Button
+
+        href={toolUrl}
+
+        target="_blank"
+
+        rel="noopener noreferrer"
+
+        className="w-100 mb-3 fw-bold py-2"
+
+        style={{
+
+         backgroundColor: "#7c3aed",
+
+         border: "none",
+
+         borderRadius: "0.75rem",
+
+         fontSize: "1.1rem",
+
+        }}
+
+       >
+
+        Use Now
+
+       </Button>
+
+       <div className="d-flex justify-content-around mb-4">
+
+        <Button
+
+         variant="outline-primary"
+
+         size="md"
+
+         className="rounded-pill px-3 py-2"
+
+        >
+
+         <FaHeart className="me-2" /> Favorite
+
+        </Button>
+
+        <Button
+
+         variant="outline-primary"
+
+         size="md"
+
+         className="rounded-pill px-3 py-2"
+
+        >
+
+         <FaList className="me-2" /> Playlist
+
+        </Button>
+
+        <Button
+
+         variant="outline-primary"
+
+         size="md"
+
+         className="rounded-pill px-3 py-2"
+
+        >
+
+         <FaShareAlt className="me-2" /> Share
+
+        </Button>
+
+       </div>
+
+       <h5 className="fw-bold mb-3 text-dark">Data Privacy & Sharing</h5>
+
+       <ul className="list-unstyled small mb-4">
+
+        {dataSharing?.noPersonalData && (
+
+         <li className="mb-2 text-success">
+
+          <span className="me-2">✅</span> No personal data required
+
+         </li>
+
+        )}
+
+        {dataSharing?.inputsNotStored && (
+
+         <li className="mb-2 text-success">
+
+          <span className="me-2">✅</span> Inputs not stored
+
+          permanently
+
+         </li>
+
+        )}
+
+        {dataSharing?.usedForTraining && (
+
+         <li className="mb-2 text-warning">
+
+          <span className="me-2">⚠️</span> May use inputs for service
+
+          improvement
+
+         </li>
+
+        )}
+
+        {!dataSharing?.noPersonalData &&
+
+         !dataSharing?.inputsNotStored &&
+
+         !dataSharing?.usedForTraining && (
+
+          <li className="text-muted">
+
+           No specific data sharing information provided.
+
+          </li>
+
+         )}
+
+       </ul>
+
+       <a href="#" className="small text-primary fw-medium d-block mb-4">
+
+        View full privacy details
+
+       </a>
+
+       {addedBy && (
+
+        <div className="mt-4 pt-3 border-top text-muted small">
+
+         <strong className="text-dark">Added by:</strong>{" "}
+
+         {addedBy.fullName} ({addedBy.email})
+
+        </div>
+
+       )}
+
+      </Card.Body>
+
+     </Card>
+
+    </Col>
+
+   </Row>
+
+  </Container>
+
+ );
+
 };
 
 export default ExploreTool;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
