@@ -1,12 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  Form,
-  Button,
-  Container,
-  Spinner,
-  Alert,
-  Card,
-} from "react-bootstrap";
+import { Form, Button, Container, Spinner, Alert, Card } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -15,6 +8,9 @@ const EditTool = () => {
   const [toolData, setToolData] = useState({
     title: "",
     description: "",
+    overview: "",
+    features: "",
+    useCases: "",
     image: "",
     public_id: "",
     toolUrl: "",
@@ -47,6 +43,8 @@ const EditTool = () => {
           ...tool,
           hashtags: tool.hashtags.join(", "),
           keyWords: tool.keyWords ? tool.keyWords.join(", ") : "",
+          features: tool.features?.join(", ") || "",
+          useCases: tool.useCases?.join(", ") || "",
           public_id: tool.imagePublicId || "",
         });
       } catch (err) {
@@ -111,6 +109,8 @@ const EditTool = () => {
         ...toolData,
         hashtags: toolData.hashtags.split(",").map((tag) => tag.trim()),
         keyWords: toolData.keyWords.split(",").map((kw) => kw.trim()),
+        features: toolData.features.split(",").map((f) => f.trim()),
+        useCases: toolData.useCases.split(",").map((u) => u.trim()),
       };
 
       await axios.put(`/api/tool/${id}`, updatedData, {
@@ -122,6 +122,18 @@ const EditTool = () => {
       alert("Failed to update tool. Please try again.");
     }
   };
+
+  const formFields = [
+    { label: "Tool Name *", name: "title" },
+    { label: "Tool URL *", name: "toolUrl" },
+    { label: "Pricing *", name: "pricing", type: "select" },
+    { label: "Description *", name: "description", type: "textarea" },
+    { label: "Overview", name: "overview", type: "textarea" },
+    { label: "Features (comma separated)", name: "features" },
+    { label: "Use Cases (comma separated)", name: "useCases" },
+    { label: "Hashtags (comma separated)", name: "hashtags" },
+    { label: "Keywords (comma separated)", name: "keyWords" },
+  ];
 
   return (
     <div
@@ -140,13 +152,7 @@ const EditTool = () => {
         }}
       >
         <h1
-          style={{
-            fontSize: "2.2rem",
-            fontWeight: "700",
-            marginBottom: "0.5rem",
-            textAlign: "center",
-            color: "#343a40",
-          }}
+          style={{ fontSize: "2.2rem", fontWeight: "700", textAlign: "center" }}
         >
           Edit Tool
         </h1>
@@ -154,8 +160,8 @@ const EditTool = () => {
           style={{
             fontSize: "1rem",
             color: "#6c757d",
-            marginBottom: "2.5rem",
             textAlign: "center",
+            marginBottom: "2rem",
           }}
         >
           Update your AI tool information.
@@ -174,6 +180,7 @@ const EditTool = () => {
 
             <Form onSubmit={handleSubmit}>
               <div style={{ display: "grid", gap: "1.5rem" }}>
+                {/* Image Upload */}
                 <div
                   style={{
                     display: "flex",
@@ -225,30 +232,9 @@ const EditTool = () => {
                   {imageUploading && <Spinner animation="border" size="sm" />}
                 </div>
 
-                {[
-                  { label: "Tool Name *", name: "title", type: "text" },
-                  { label: "Tool URL *", name: "toolUrl", type: "url" },
-                  { label: "Pricing *", name: "pricing", type: "select" },
-                  {
-                    label: "Description *",
-                    name: "description",
-                    type: "textarea",
-                  },
-                  {
-                    label: "Hashtags (comma separated)",
-                    name: "hashtags",
-                    type: "text",
-                  },
-                  {
-                    label: "Keywords (comma separated)",
-                    name: "keyWords",
-                    type: "text",
-                  },
-                ].map((field) => (
+                {formFields.map((field) => (
                   <Form.Group key={field.name}>
-                    <Form.Label style={{ fontWeight: "500", color: "#495057" }}>
-                      {field.label}
-                    </Form.Label>
+                    <Form.Label>{field.label}</Form.Label>
                     {field.type === "textarea" ? (
                       <Form.Control
                         as="textarea"
@@ -256,7 +242,9 @@ const EditTool = () => {
                         name={field.name}
                         value={toolData[field.name]}
                         onChange={handleChange}
-                        required
+                        required={
+                          field.name === "description" || field.name === "title"
+                        }
                       />
                     ) : field.type === "select" ? (
                       <Form.Select
@@ -274,11 +262,10 @@ const EditTool = () => {
                       </Form.Select>
                     ) : (
                       <Form.Control
-                        type={field.type}
+                        type={field.type || "text"}
                         name={field.name}
                         value={toolData[field.name]}
                         onChange={handleChange}
-                        required
                       />
                     )}
                   </Form.Group>
@@ -307,11 +294,6 @@ const EditTool = () => {
                   variant="primary"
                   type="submit"
                   disabled={imageUploading}
-                  style={{
-                    padding: "0.75rem",
-                    fontWeight: "600",
-                    fontSize: "1rem",
-                  }}
                 >
                   Save Changes
                 </Button>
