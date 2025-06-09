@@ -74,6 +74,8 @@ const LoginModal = ({ show, onClose, onSwitch }) => {
       }
 
       dispatch(signInSuccess(data));
+      localStorage.setItem("user", JSON.stringify(data)); // ✅ Save to localStorage
+
       showToast(data.message, "success");
 
       setFormData({ email: "", password: "" }); // Clear form
@@ -133,7 +135,7 @@ const LoginModal = ({ show, onClose, onSwitch }) => {
               OR CONTINUE WITH
             </div>
 
-            <OAuth onClose={onClose}/>
+            <OAuth onClose={onClose} />
 
             <div className="text-center mt-4">
               <small>
