@@ -16,6 +16,10 @@ import { FaStar, FaRegStar, FaShareAlt, FaHeart, FaList } from "react-icons/fa";
 const ExploreTool = () => {
   const { id } = useParams();
   const [tool, setTool] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [commentInput, setCommentInput] = useState("");
+  const [loadingComments, setLoadingComments] = useState(true);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const fetchTool = async () => {
@@ -26,8 +30,61 @@ const ExploreTool = () => {
         console.error("Failed to load tool:", err);
       }
     };
+
+    const fetchComments = async () => {
+      try {
+        const res = await axios.get(`/api/comment/tool/${id}`);
+        console.log("Frontend - Comments response:", res.data); // DEBUG
+        console.log("Frontend - First comment:", res.data.comments[0]); // DEBUG
+        console.log(
+          "Frontend - First comment user:",
+          res.data.comments[0]?.user
+        ); // DEBUG
+        setComments(res.data.comments);
+        setLoadingComments(false);
+      } catch (err) {
+        console.error("Error loading comments:", err);
+        setLoadingComments(false);
+      }
+    };
+
     fetchTool();
+    fetchComments();
   }, [id]);
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    if (!commentInput.trim()) return;
+
+    try {
+      const res = await axios.post(
+        `/api/comment/tool/${id}`,
+        { content: commentInput },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      setComments([res.data.comment, ...comments]);
+      setCommentInput("");
+    } catch (err) {
+      console.error("Error posting comment:", err);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await axios.delete(`/api/comment/${commentId}`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
+      setComments(comments.filter((c) => c._id !== commentId));
+    } catch (err) {
+      console.error("Error deleting comment:", err);
+    }
+  };
 
   if (!tool) {
     return (
@@ -95,7 +152,6 @@ const ExploreTool = () => {
             </span>
           </h1>
 
-          {/* Tags */}
           <div className="mb-4">
             {categoryTags?.map((tag, idx) => (
               <Badge
@@ -109,23 +165,26 @@ const ExploreTool = () => {
             ))}
           </div>
 
-          {/* Tabs */}
           <div className="d-flex gap-4 mb-4 border-bottom pb-2">
             <span className="fw-semibold text-primary border-bottom border-primary border-3 pb-2 cursor-pointer">
               Overview
             </span>
-            <span className="fw-semibold text-muted cursor-pointer">Features</span>
-            <span className="fw-semibold text-muted cursor-pointer">Reviews</span>
-            <span className="fw-semibold text-muted cursor-pointer">Alternatives</span>
+            <span className="fw-semibold text-muted cursor-pointer">
+              Features
+            </span>
+            <span className="fw-semibold text-muted cursor-pointer">
+              Reviews
+            </span>
+            <span className="fw-semibold text-muted cursor-pointer">
+              Alternatives
+            </span>
           </div>
 
-          {/* Overview */}
           <section className="mb-5">
             <h4 className="fw-bold mb-3 text-dark">About {title}</h4>
             <p className="lead text-secondary">{overview}</p>
           </section>
 
-          {/* Features */}
           {features && features.length > 0 && (
             <section className="mb-5">
               <h4 className="fw-bold mb-3 text-dark">Key Features</h4>
@@ -141,7 +200,6 @@ const ExploreTool = () => {
             </section>
           )}
 
-          {/* Use Cases */}
           {useCases && useCases.length > 0 && (
             <section className="mb-5">
               <h4 className="fw-bold mb-3 text-dark">Common Use Cases</h4>
@@ -154,6 +212,58 @@ const ExploreTool = () => {
               </ul>
             </section>
           )}
+
+          {/* COMMENTS SECTION */}
+          <section className="mb-5">
+            <h4 className="fw-bold mb-3 text-dark">💬 Comments</h4>
+
+            {user ? (
+              <form onSubmit={handleAddComment} className="mb-4">
+                <textarea
+                  className="form-control mb-2"
+                  rows="3"
+                  placeholder="Write a comment..."
+                  value={commentInput}
+                  onChange={(e) => setCommentInput(e.target.value)}
+                />
+                <Button type="submit" className="btn btn-primary">
+                  Post Comment
+                </Button>
+              </form>
+            ) : (
+              <p className="text-muted">Login to post a comment.</p>
+            )}
+
+            {loadingComments ? (
+              <Spinner animation="border" variant="primary" />
+            ) : comments.length === 0 ? (
+              <p className="text-muted">No comments yet.</p>
+            ) : (
+              comments.map((c) => (
+                <div
+                  key={c._id}
+                  className="border p-3 mb-3 rounded bg-light position-relative"
+                >
+                  <p className="mb-1">{c.content}</p>
+                  <small className="text-muted">
+                    by{" "}
+                    {c.user?.fullName || c.user?.email?.split("@")[0] || "User"}{" "}
+                    on {new Date(c.createdAt).toLocaleDateString()}
+                  </small>
+                  {user?._id === c.user?._id && (
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      className="position-absolute end-0 top-0 m-2"
+                      onClick={() => handleDeleteComment(c._id)}
+                    >
+                      Delete
+                    </Button>
+                  )}
+                </div>
+              ))
+            )}
+          </section>
         </Col>
 
         {/* Right Sidebar */}
@@ -176,7 +286,10 @@ const ExploreTool = () => {
                 />
                 <div>
                   <h5 className="mb-0 fw-bold">{title}</h5>
-                  <Badge bg="info" className="fw-semibold px-2 py-1 rounded-pill">
+                  <Badge
+                    bg="info"
+                    className="fw-semibold px-2 py-1 rounded-pill"
+                  >
                     {pricing || "N/A"}
                   </Badge>
                 </div>
@@ -244,7 +357,8 @@ const ExploreTool = () => {
                 )}
                 {dataSharing?.inputsNotStored && (
                   <li className="mb-2 text-success">
-                    <span className="me-2">✅</span> Inputs not stored permanently
+                    <span className="me-2">✅</span> Inputs not stored
+                    permanently
                   </li>
                 )}
                 {dataSharing?.usedForTraining && (

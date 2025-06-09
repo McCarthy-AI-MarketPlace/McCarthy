@@ -33,29 +33,27 @@ router.delete("/:id", verifyJWT, deleteTool);
 // 🟢 Basic Tool Access
 router.get("/", getTools); // All tools
 router.get("/search", searchTools); // Keyword search
-router.get("/my-tools/:userId", getUserTools); // User's tools
-router.get("/:id", getToolById); // Basic tool by ID
 
-// 🔵 Extra Tool Info (Details, Privacy, Explore)
-router.get("/details/:id", getToolDetailsById); // Full tool overview + useCases
-router.get("/privacy/:id", getToolPrivacyInfo); // Data sharing/privacy info
-router.get("/explore/all", exploreTools); // Smart filter/search
-
-// 🔵 Categorized & Sorted Tools
+// 🔵 SPECIFIC ROUTES FIRST - These must come before /:id
 router.get("/featured", getFeaturedTools);
 router.get("/editors-choice", getEditorsChoiceTools);
 router.get("/latest", getLatestTools);
 router.get("/popular", getPopularTools);
-
-// 🔵 Filter by Tags & Use Cases
-router.get("/tag/:tag", getToolsByTag);
-router.get("/use-case/:useCase", getToolsByUseCase);
-
-// 🔵 All Metadata Lists
+router.get("/explore/all", exploreTools); // Smart filter/search
 router.get("/all-tags/list", getAllTags);
 router.get("/all-usecases/list", getAllUseCases);
 
+// 🔵 Routes with parameters but specific patterns
+router.get("/my-tools/:userId", getUserTools); // User's tools
+router.get("/details/:id", getToolDetailsById); // Full tool overview + useCases
+router.get("/privacy/:id", getToolPrivacyInfo); // Data sharing/privacy info
+router.get("/tag/:tag", getToolsByTag);
+router.get("/use-case/:useCase", getToolsByUseCase);
+
 // 🔵 Save Counter
 router.patch("/:id/save", incrementSaves);
+
+// 🟢 GENERIC ROUTES LAST - This catches everything else
+router.get("/:id", getToolById); // Basic tool by ID - MUST BE LAST
 
 export default router;
