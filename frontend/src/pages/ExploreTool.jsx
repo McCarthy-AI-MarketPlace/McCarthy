@@ -34,12 +34,6 @@ const ExploreTool = () => {
     const fetchComments = async () => {
       try {
         const res = await axios.get(`/api/comment/tool/${id}`);
-        console.log("Frontend - Comments response:", res.data); // DEBUG
-        console.log("Frontend - First comment:", res.data.comments[0]); // DEBUG
-        console.log(
-          "Frontend - First comment user:",
-          res.data.comments[0]?.user
-        ); // DEBUG
         setComments(res.data.comments);
         setLoadingComments(false);
       } catch (err) {
@@ -165,18 +159,10 @@ const ExploreTool = () => {
             ))}
           </div>
 
+          {/* Only Overview tab shown now */}
           <div className="d-flex gap-4 mb-4 border-bottom pb-2">
             <span className="fw-semibold text-primary border-bottom border-primary border-3 pb-2 cursor-pointer">
               Overview
-            </span>
-            <span className="fw-semibold text-muted cursor-pointer">
-              Features
-            </span>
-            <span className="fw-semibold text-muted cursor-pointer">
-              Reviews
-            </span>
-            <span className="fw-semibold text-muted cursor-pointer">
-              Alternatives
             </span>
           </div>
 
@@ -212,6 +198,12 @@ const ExploreTool = () => {
               </ul>
             </section>
           )}
+
+          {/* Placeholder for Similar AI Tools */}
+          <section className="mb-5">
+            <h4 className="fw-bold mb-3 text-dark"> Similar AI Tools</h4>
+            <p className="text-muted">Coming soon...</p>
+          </section>
 
           {/* COMMENTS SECTION */}
           <section className="mb-5">
@@ -357,8 +349,7 @@ const ExploreTool = () => {
                 )}
                 {dataSharing?.inputsNotStored && (
                   <li className="mb-2 text-success">
-                    <span className="me-2">✅</span> Inputs not stored
-                    permanently
+                    <span className="me-2">✅</span> Inputs not stored permanently
                   </li>
                 )}
                 {dataSharing?.usedForTraining && (
