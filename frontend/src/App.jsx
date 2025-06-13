@@ -16,6 +16,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToolInfo from "./pages/ToolInfo";
 import ExploreTool from "./pages/ExploreTool";
+import AIChat from "./pages/AiChat";
 
 export default function App() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/explore" element={<Explore />} />
         <Route path="/edit-tool/:id" element={<EditTool />} />
         <Route path="/chatgpt" element={<ToolInfo />} />
+        <Route path="/aichat" element={<AIChat/>}/>
 
         <Route
           path="/profile"
