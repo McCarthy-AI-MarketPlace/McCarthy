@@ -45,3 +45,5 @@ build/
 
 # Temporary files
 *.local
+
+frontend/dist/
