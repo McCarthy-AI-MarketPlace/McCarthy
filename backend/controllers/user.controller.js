@@ -59,6 +59,7 @@ export const login = asyncHandler(async (req, res) => {
   if (!isPasswordCorrect) {
     throw new ApiError(401, "Invalid password");
   }
+  
   const accessToken = user.generateAccessToken();
 
   const options = {
