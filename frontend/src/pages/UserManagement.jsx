@@ -38,6 +38,7 @@ export default function UserManagement() {
       try {
         const res = await axios.get("/api/user/all", {
           headers: { Authorization: `Bearer ${currentUser.token}` },
+          withCredentials: true,
         });
         setAllUsers(res.data.data);
         setUsers(res.data.data.slice(0, usersPerPage));
@@ -58,6 +59,7 @@ export default function UserManagement() {
         { userId },
         {
           headers: { Authorization: `Bearer ${currentUser.token}` },
+          withCredentials: true,
         }
       );
       setUsers(
@@ -92,6 +94,7 @@ export default function UserManagement() {
     try {
       await axios.delete(`/api/user/delete/${userId}`, {
         headers: { Authorization: `Bearer ${currentUser.token}` },
+        withCredentials: true,
       });
       setUsers(users.filter((user) => user._id !== userId));
       setAllUsers(allUsers.filter((user) => user._id !== userId));

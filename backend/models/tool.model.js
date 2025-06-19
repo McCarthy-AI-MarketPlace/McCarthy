@@ -64,10 +64,10 @@ const toolSchema = new mongoose.Schema(
       type: Number,
       default: 4.8,
     },
-    reviews: [reviewSchema], // ✅ Embedded sub-documents
+    reviews: [reviewSchema], 
     alternatives: [
       {
-        type: String, // You can change this to ObjectId if referencing other tools
+        type: String, 
       },
     ],
     tags: [

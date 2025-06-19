@@ -1,4 +1,3 @@
-// models/comment.model.js
 import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema(
@@ -19,7 +18,7 @@ const commentSchema = new mongoose.Schema(
     },
     parentComment: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Comment", // for threaded replies
+      ref: "Comment", 
       default: null,
     },
   },

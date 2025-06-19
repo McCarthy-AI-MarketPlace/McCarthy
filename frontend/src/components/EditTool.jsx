@@ -36,6 +36,7 @@ const EditTool = () => {
         const token = localStorage.getItem("accessToken");
         const res = await axios.get(`/api/tool/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
         });
         const tool = res.data.data;
 
@@ -115,6 +116,7 @@ const EditTool = () => {
 
       await axios.put(`/api/tool/${id}`, updatedData, {
         headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
       });
 
       navigate("/my-tools");

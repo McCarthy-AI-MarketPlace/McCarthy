@@ -14,6 +14,7 @@ export const logoutUser = createAsyncThunk(
       const res = await fetch('/api/user/logout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: "include",
       });
 
       if (!res.ok) {

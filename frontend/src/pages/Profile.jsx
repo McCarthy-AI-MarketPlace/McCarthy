@@ -72,6 +72,7 @@ export default function Profile() {
       const res = await fetch("/api/upload", {
         method: "POST",
         body: formDataForUpload,
+        credentials: "include",
       });
 
       if (!res.ok) {
@@ -133,6 +134,7 @@ export default function Profile() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 

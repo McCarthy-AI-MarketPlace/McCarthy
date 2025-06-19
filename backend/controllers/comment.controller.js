@@ -1,14 +1,12 @@
 import Comment from "../models/comment.model.js";
 import Tool from "../models/tool.model.js";
 
-// ✅ Create a comment
 export const createComment = async (req, res) => {
   try {
     const { toolId } = req.params;
     const { content, parentComment } = req.body;
     const userId = req.user._id;
 
-    // Check if tool exists
     const tool = await Tool.findById(toolId);
     if (!tool) return res.status(404).json({ message: "Tool not found" });
 
@@ -27,7 +25,6 @@ export const createComment = async (req, res) => {
   }
 };
 
-// ✅ Get all comments for a tool
 export const getCommentsByTool = async (req, res) => {
   try {
     const { toolId } = req.params;
@@ -42,7 +39,6 @@ export const getCommentsByTool = async (req, res) => {
   }
 };
 
-// ✅ Delete a comment (only author or admin should be allowed)
 export const deleteComment = async (req, res) => {
   try {
     const { commentId } = req.params;
@@ -52,7 +48,6 @@ export const deleteComment = async (req, res) => {
 
     if (!comment) return res.status(404).json({ message: "Comment not found" });
 
-    // Optional: Check if user is the owner of comment
     if (comment.user.toString() !== userId.toString()) {
       return res.status(403).json({ message: "Unauthorized" });
     }

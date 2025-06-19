@@ -38,27 +38,27 @@ const PublishTool = () => {
   const [uploadError, setUploadError] = useState(null);
   const fileInputRef = useRef(null);
 
-  useEffect(() => {
-    let objectURL;
+  // useEffect(() => {
+  //   let objectURL;
 
-    const fetchLogo = async () => {
-      try {
-        const res = await axios.get("/api/images/logo", {
-          responseType: "blob",
-        });
-        objectURL = URL.createObjectURL(res.data);
-        setLogoUrl(objectURL);
-      } catch (error) {
-        console.error("Failed to fetch logo image", error);
-      }
-    };
+  //   const fetchLogo = async () => {
+  //     try {
+  //       const res = await axios.get("/api/images/logo", {
+  //         responseType: "blob",
+  //       });
+  //       objectURL = URL.createObjectURL(res.data);
+  //       setLogoUrl(objectURL);
+  //     } catch (error) {
+  //       console.error("Failed to fetch logo image", error);
+  //     }
+  //   };
 
-    fetchLogo();
+  //   fetchLogo();
 
-    return () => {
-      if (objectURL) URL.revokeObjectURL(objectURL);
-    };
-  }, []);
+  //   return () => {
+  //     if (objectURL) URL.revokeObjectURL(objectURL);
+  //   };
+  // }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -82,6 +82,7 @@ const PublishTool = () => {
       const res = await fetch("/api/upload", {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -138,6 +139,7 @@ const PublishTool = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        withCredentials: true,
       });
 
       alert("Tool published successfully.");
