@@ -17,6 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ToolInfo from "./pages/ToolInfo";
 import ExploreTool from "./pages/ExploreTool";
 import AIChat from "./pages/AiChat";
+import ChatInterface from "./components/ChatInterface";
 
 export default function App() {
   return (
@@ -39,9 +40,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/developer" element={<Developer />} />
         <Route path="/explore" element={<Explore />} />
-        <Route path="/edit-tool/:id" element={<EditTool />} />
         <Route path="/chatgpt" element={<ToolInfo />} />
-        <Route path="/aichat" element={<AIChat/>}/>
+        <Route path="/aichat" element={<AIChat />} />
 
         <Route
           path="/profile"
@@ -59,12 +59,28 @@ export default function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/use-tool/:toolId"
+          element={
+            <PrivateRoute>
+              <ChatInterface />
+            </PrivateRoute>
+          }
+        />
         {/* Admin-only routes */}
         <Route
           path="/publish"
           element={
             <PrivateRoute adminOnly={true}>
               <Publish />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-tool/:id"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <EditTool />
             </PrivateRoute>
           }
         />

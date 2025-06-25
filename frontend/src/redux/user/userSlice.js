@@ -23,7 +23,7 @@ export const logoutUser = createAsyncThunk(
       }
 
       dispatch(signoutSuccess());
-      return true;
+      return true; 
     } catch (err) {
       return rejectWithValue(err.message);
     }

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 const EditTool = () => {
   const [toolData, setToolData] = useState({
     title: "",
+    subtitle: "",
     description: "",
     overview: "",
     features: "",
@@ -17,6 +18,9 @@ const EditTool = () => {
     hashtags: "",
     keyWords: "",
     pricing: "",
+    modelEndpoint: "",
+    model: "",
+    apiKey: "",
     isFeatured: false,
     isEditorsChoice: false,
   });
@@ -42,8 +46,8 @@ const EditTool = () => {
 
         setToolData({
           ...tool,
-          hashtags: tool.hashtags.join(", "),
-          keyWords: tool.keyWords ? tool.keyWords.join(", ") : "",
+          hashtags: tool.hashtags?.join(", ") || "",
+          keyWords: tool.keyWords?.join(", ") || "",
           features: tool.features?.join(", ") || "",
           useCases: tool.useCases?.join(", ") || "",
           public_id: tool.imagePublicId || "",
@@ -127,6 +131,7 @@ const EditTool = () => {
 
   const formFields = [
     { label: "Tool Name *", name: "title" },
+    { label: "Subtitle", name: "subtitle" },
     { label: "Tool URL *", name: "toolUrl" },
     { label: "Pricing *", name: "pricing", type: "select" },
     { label: "Description *", name: "description", type: "textarea" },
@@ -135,27 +140,15 @@ const EditTool = () => {
     { label: "Use Cases (comma separated)", name: "useCases" },
     { label: "Hashtags (comma separated)", name: "hashtags" },
     { label: "Keywords (comma separated)", name: "keyWords" },
+    { label: "Model Endpoint", name: "modelEndpoint" },
+    { label: "Model Name", name: "model" },
+    { label: "API Key", name: "apiKey" },
   ];
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        marginTop: "3rem",
-        backgroundColor: "#f5f7fa",
-      }}
-    >
-      <Container
-        style={{
-          flex: 1,
-          padding: "2.5rem 1rem",
-          maxWidth: "900px",
-          margin: "auto",
-        }}
-      >
-        <h1
-          style={{ fontSize: "2.2rem", fontWeight: "700", textAlign: "center" }}
-        >
+    <div style={{ minHeight: "100vh", marginTop: "3rem", backgroundColor: "#f5f7fa" }}>
+      <Container style={{ flex: 1, padding: "2.5rem 1rem", maxWidth: "900px", margin: "auto" }}>
+        <h1 style={{ fontSize: "2.2rem", fontWeight: "700", textAlign: "center" }}>
           Edit Tool
         </h1>
         <p
@@ -169,13 +162,7 @@ const EditTool = () => {
           Update your AI tool information.
         </p>
 
-        <Card
-          style={{
-            borderRadius: "10px",
-            boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
-            border: "none",
-          }}
-        >
+        <Card style={{ borderRadius: "10px", boxShadow: "0 4px 20px rgba(0,0,0,0.05)", border: "none" }}>
           <Card.Body style={{ padding: "2rem" }}>
             {fetchError && <Alert variant="danger">{fetchError}</Alert>}
             {uploadError && <Alert variant="danger">{uploadError}</Alert>}
@@ -183,13 +170,7 @@ const EditTool = () => {
             <Form onSubmit={handleSubmit}>
               <div style={{ display: "grid", gap: "1.5rem" }}>
                 {/* Image Upload */}
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                   <div
                     style={{
                       height: "160px",
@@ -209,11 +190,7 @@ const EditTool = () => {
                       <img
                         src={toolData.image}
                         alt="Tool"
-                        style={{
-                          height: "100%",
-                          width: "100%",
-                          objectFit: "cover",
-                        }}
+                        style={{ height: "100%", width: "100%", objectFit: "cover" }}
                       />
                     ) : (
                       <p style={{ color: "#adb5bd" }}>Upload Tool Image</p>
@@ -221,12 +198,7 @@ const EditTool = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        opacity: 0,
-                        cursor: "pointer",
-                      }}
+                      style={{ position: "absolute", inset: 0, opacity: 0, cursor: "pointer" }}
                       onChange={handleImageChange}
                       ref={fileInputRef}
                     />
@@ -244,9 +216,7 @@ const EditTool = () => {
                         name={field.name}
                         value={toolData[field.name]}
                         onChange={handleChange}
-                        required={
-                          field.name === "description" || field.name === "title"
-                        }
+                        required={["description", "title"].includes(field.name)}
                       />
                     ) : field.type === "select" ? (
                       <Form.Select
@@ -264,7 +234,7 @@ const EditTool = () => {
                       </Form.Select>
                     ) : (
                       <Form.Control
-                        type={field.type || "text"}
+                        type="text"
                         name={field.name}
                         value={toolData[field.name]}
                         onChange={handleChange}
@@ -292,11 +262,7 @@ const EditTool = () => {
                   </>
                 )}
 
-                <Button
-                  variant="primary"
-                  type="submit"
-                  disabled={imageUploading}
-                >
+                <Button variant="primary" type="submit" disabled={imageUploading}>
                   Save Changes
                 </Button>
               </div>

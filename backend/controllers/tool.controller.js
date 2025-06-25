@@ -3,7 +3,6 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
-// 🟢 Create Tool
 export const createTool = asyncHandler(async (req, res) => {
   const currentUser = req.user;
   if (!currentUser || !currentUser.isAdmin) {
@@ -20,7 +19,6 @@ export const createTool = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, "Tool created successfully", newTool));
 });
 
-// 🟢 Update Tool
 export const updateTool = asyncHandler(async (req, res) => {
   const tool = await Tool.findById(req.params.id);
   if (!tool) return res.status(404).json(new ApiError(404, "Tool not found"));
@@ -38,7 +36,6 @@ export const updateTool = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, updatedTool));
 });
 
-// 🟢 Delete Tool
 export const deleteTool = asyncHandler(async (req, res) => {
   const tool = await Tool.findById(req.params.id);
   if (!tool)
@@ -55,13 +52,11 @@ export const deleteTool = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, "Tool deleted successfully"));
 });
 
-// 🟢 Get All Tools
 export const getTools = asyncHandler(async (req, res) => {
   const tools = await Tool.find().populate("user", "fullName email");
   res.status(200).json(new ApiResponse(200, tools));
 });
 
-// 🟢 Get Tool by ID
 export const getToolById = asyncHandler(async (req, res) => {
   const tool = await Tool.findById(req.params.id);
   if (!tool)
@@ -70,7 +65,6 @@ export const getToolById = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, tool));
 });
 
-// 🔵 Get Full Tool Details (Overview, UseCases, DataSharing, etc.)
 export const getToolDetailsById = asyncHandler(async (req, res) => {
   const tool = await Tool.findById(req.params.id).populate(
     "user",
@@ -101,7 +95,6 @@ export const getToolDetailsById = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, response));
 });
 
-// 🟢 Get Tools by User
 export const getUserTools = asyncHandler(async (req, res) => {
   const userId = req.params.userId;
   if (!userId) throw new ApiError(400, "User ID is required");
@@ -113,19 +106,16 @@ export const getUserTools = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, tools));
 });
 
-// 🔵 Get Featured Tools
 export const getFeaturedTools = asyncHandler(async (req, res) => {
   const tools = await Tool.find({ isFeatured: true });
   res.status(200).json(new ApiResponse(200, tools));
 });
 
-// 🔵 Get Editors' Choice Tools
 export const getEditorsChoiceTools = asyncHandler(async (req, res) => {
   const tools = await Tool.find({ isEditorsChoice: true });
   res.status(200).json(new ApiResponse(200, tools));
 });
 
-// 🔵 Increment Saves
 export const incrementSaves = asyncHandler(async (req, res) => {
   const tool = await Tool.findById(req.params.id);
   if (!tool)
@@ -137,19 +127,16 @@ export const incrementSaves = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, "Saves count incremented", tool));
 });
 
-// 🔵 Get Latest Tools
 export const getLatestTools = asyncHandler(async (req, res) => {
   const tools = await Tool.find().sort({ createdAt: -1 }).limit(10);
   res.status(200).json(new ApiResponse(200, tools));
 });
 
-// 🔵 Get Popular Tools
 export const getPopularTools = asyncHandler(async (req, res) => {
   const tools = await Tool.find().sort({ saves: -1 }).limit(10);
   res.status(200).json(new ApiResponse(200, tools));
 });
 
-// 🔍 Search Tools
 export const searchTools = asyncHandler(async (req, res) => {
   const query = req.query.q;
   const regex = new RegExp(query, "i");
@@ -164,28 +151,24 @@ export const searchTools = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, tools));
 });
 
-// 🔵 Get Tools by Tag
 export const getToolsByTag = asyncHandler(async (req, res) => {
   const tag = req.params.tag;
   const tools = await Tool.find({ tags: { $in: [tag] } });
   res.status(200).json(new ApiResponse(200, tools));
 });
 
-// 🔵 Get Tools by UseCase
 export const getToolsByUseCase = asyncHandler(async (req, res) => {
   const useCase = req.params.useCase;
   const tools = await Tool.find({ useCases: { $in: [useCase] } });
   res.status(200).json(new ApiResponse(200, tools));
 });
 
-// 🔵 Get All Unique Tags
 export const getAllTags = asyncHandler(async (req, res) => {
   const tools = await Tool.find({}, "tags");
   const allTags = [...new Set(tools.flatMap((tool) => tool.tags || []))];
   res.status(200).json(new ApiResponse(200, allTags));
 });
 
-// 🔵 Get All Unique UseCases
 export const getAllUseCases = asyncHandler(async (req, res) => {
   const tools = await Tool.find({}, "useCases");
   const allUseCases = [
@@ -194,7 +177,6 @@ export const getAllUseCases = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, allUseCases));
 });
 
-// 🔵 Get Tool Privacy Info
 export const getToolPrivacyInfo = asyncHandler(async (req, res) => {
   const tool = await Tool.findById(req.params.id, "dataSharing");
   if (!tool)
@@ -202,7 +184,6 @@ export const getToolPrivacyInfo = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, tool.dataSharing));
 });
 
-// 🔵 Explore Tools (Search, Filter, Sort Combined)
 export const exploreTools = asyncHandler(async (req, res) => {
   const { q, tag, useCase, sortBy } = req.query;
   let query = {};

@@ -8,6 +8,7 @@ import userRoutes from "./routes/user.routes.js";
 import toolRoutes from "./routes/tool.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
 import commentRoutes from "./routes/comment.routes.js";
+import chatRoutes from "./routes/chat.routes.js";
 
 dotenv.config();
 const mongoURI = process.env.MONGO_URI;
@@ -40,6 +41,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/tool", toolRoutes);
 app.use("/api", uploadRoutes);
 app.use("/api/comment", commentRoutes);
+app.use("/api/chat", chatRoutes );
 
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "frontend", "dist")));

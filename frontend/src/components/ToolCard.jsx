@@ -183,8 +183,10 @@ const ToolCard = ({ tool }) => {
 
           <div className="d-flex justify-content-between align-items-center mt-auto">
             <Button
-              href={tool.toolUrl}
-              target="_blank"
+              onClick={() => {
+                navigate("/use-tool/" + tool._id);
+              }}
+              // target="_blank"
               rel="noopener noreferrer"
               style={{
                 backgroundColor: "#6c63ff",
@@ -195,7 +197,7 @@ const ToolCard = ({ tool }) => {
                 boxShadow: "0 2px 5px rgba(138, 94, 253, 0.7)",
                 color: "white",
               }}
-              onClick={(e) => e.stopPropagation()}
+              // onClick={(e) => e.stopPropagation()}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = "#5a52e0";
                 e.currentTarget.style.backgroundImage =

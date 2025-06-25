@@ -32,6 +32,9 @@ const PublishTool = () => {
     useCases: "",
     isFeatured: false,
     isEditorsChoice: false,
+    apiKey: "",
+    modelEndpoint: "",
+    model: "",
   });
 
   const [uploading, setUploading] = useState(false);
@@ -157,7 +160,11 @@ const PublishTool = () => {
         useCases: "",
         isFeatured: false,
         isEditorsChoice: false,
+        apiKey: "",
+        modelEndpoint: "",
+        model: "",
       });
+
       setUploadError(null);
     } catch (error) {
       setUploadError(error.response?.data?.message || "Error publishing tool");
@@ -340,6 +347,39 @@ const PublishTool = () => {
                   value={toolData.keyWords}
                   onChange={handleChange}
                   required
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Model Endpoint</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="modelEndpoint"
+                  value={toolData.modelEndpoint}
+                  onChange={handleChange}
+                  placeholder="e.g., https://api.openai.com/v1/chat/completions"
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Model Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="model"
+                  value={toolData.model}
+                  onChange={handleChange}
+                  placeholder="e.g., gpt-4o"
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>API Key</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="apiKey"
+                  value={toolData.apiKey}
+                  onChange={handleChange}
+                  placeholder="Optional API Key (e.g., sk-...)"
                 />
               </Form.Group>
 

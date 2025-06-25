@@ -104,6 +104,18 @@ const toolSchema = new mongoose.Schema(
       inputsNotStored: { type: Boolean, default: true },
       usedForTraining: { type: Boolean, default: true },
     },
+    apiKey: {
+      type: String,
+      // required: true,
+    },
+    modelEndpoint: {
+      type: String,
+      // required: true,
+    },
+    model: {
+      type: String,
+      // required: true,
+    },
   },
   { timestamps: true }
 );
