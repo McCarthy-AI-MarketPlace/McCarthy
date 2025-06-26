@@ -22,7 +22,7 @@ const ChatInterface = () => {
   useEffect(() => {
     const fetchTool = async () => {
       try {
-        const res = await axios.get(`/api/tool/${toolId}`, {});
+        const res = await axios.get(`/api/tool/${toolId}`);
         setTool(res.data.data);
       } catch (err) {
         console.error("Failed to fetch tool", err);
@@ -58,7 +58,8 @@ const ChatInterface = () => {
       const aiMessage = {
         role: "assistant",
         content:
-          res.data?.data?.response?.parts?.[0]?.text || "No response received.",
+          res.data?.data?.response?.parts?.[0]?.text ||
+          "No response received.",
       };
 
       setMessages((prev) => [...prev, aiMessage]);
@@ -91,38 +92,51 @@ const ChatInterface = () => {
   }, [messages]);
 
   return (
-    <Container fluid className="p-4 mt-5" style={{ maxWidth: "900px" }}>
-      <Card className="shadow-sm">
-        <Card.Header className="bg-white d-flex align-items-center">
+    <Container fluid className="p-4 mt-4 d-flex justify-content-center" style={{ backgroundColor: "#f3f0ff", minHeight: "100vh" }}>
+      <Card
+        className="shadow-lg w-100"
+        style={{ maxWidth: "900px", borderRadius: "20px", backgroundColor: "#ffffff" }}
+      >
+        <Card.Header
+          className="d-flex align-items-center px-4 py-3 border-0"
+          style={{
+            background: "linear-gradient(to right, #e6e0f8, #f6f0ff)",
+            borderTopLeftRadius: "20px",
+            borderTopRightRadius: "20px",
+          }}
+        >
           <div>
-            <h5 className="mb-1">{tool?.title || "Loading Tool..."}</h5>
+            <h5 className="mb-1 fw-bold text-dark">{tool?.title || "Loading Tool..."}</h5>
             <small className="text-muted">{tool?.subtitle}</small>
           </div>
         </Card.Header>
 
         <Card.Body
+          ref={chatRef}
+          className="px-4 py-3"
           style={{
             height: "70vh",
             overflowY: "auto",
-            backgroundColor: "#f8f9fa",
+            backgroundColor: "#f6f0ff",
+            borderBottom: "2px solid #e2d9f3",
           }}
-          ref={chatRef}
         >
           {messages.map((msg, index) => (
             <Row
               key={index}
               className="mb-3"
-              style={{
-                justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
-              }}
+              style={{ justifyContent: msg.role === "user" ? "flex-end" : "flex-start" }}
             >
-              <Col xs={10}>
+              <Col xs={10} md={8}>
                 <div
+                  className={`p-3 rounded-4 shadow-sm ${
+                    msg.role === "user" ? "bg-primary text-white" : "bg-white border"
+                  }`}
                   style={{
-                    background: msg.role === "user" ? "#d0ebff" : "#e9ecef",
-                    padding: "10px 15px",
-                    borderRadius: "10px",
                     whiteSpace: "pre-wrap",
+                    wordWrap: "break-word",
+                    fontSize: "0.95rem",
+                    lineHeight: "1.6",
                   }}
                 >
                   {msg.content}
@@ -131,32 +145,41 @@ const ChatInterface = () => {
             </Row>
           ))}
           {loading && (
-            <Row>
-              <Col xs={12}>
-                <Spinner animation="border" size="sm" className="me-2" />
-                Typing...
+            <Row className="mb-2">
+              <Col xs={12} className="d-flex align-items-center gap-2">
+                <Spinner animation="border" size="sm" variant="secondary" />
+                <span className="text-muted">Typing...</span>
               </Col>
             </Row>
           )}
         </Card.Body>
 
-        <Card.Footer className="bg-white">
+        <Card.Footer
+          className="px-4 py-3 border-0"
+          style={{
+            backgroundColor: "#eae4ff",
+            borderBottomLeftRadius: "20px",
+            borderBottomRightRadius: "20px",
+          }}
+        >
           <Form onSubmit={(e) => e.preventDefault()}>
-            <Row className="align-items-center">
+            <Row className="g-3 align-items-center">
               <Col xs={10}>
                 <Form.Control
                   as="textarea"
                   rows={1}
                   placeholder="Type your message..."
+                  className="rounded-pill px-4 py-2 shadow-sm border border-secondary"
+                  style={{ resize: "none", backgroundColor: "#fdfcff" }}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  style={{ resize: "none" }}
                 />
               </Col>
               <Col xs={2} className="text-end">
                 <Button
-                  variant="primary"
+                  variant="secondary"
+                  className="w-100 rounded-pill py-2 shadow-sm fw-semibold"
                   onClick={sendMessage}
                   disabled={loading || !input.trim()}
                 >
@@ -172,3 +195,4 @@ const ChatInterface = () => {
 };
 
 export default ChatInterface;
+
