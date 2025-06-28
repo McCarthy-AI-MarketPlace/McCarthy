@@ -12,20 +12,30 @@ import {
   Image,
 } from "react-bootstrap";
 import { FaStar, FaRegStar, FaShareAlt, FaHeart, FaList } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const ExploreTool = () => {
   const { id } = useParams();
   const [tool, setTool] = useState(null);
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
+  const [ratingInput, setRatingInput] = useState(null);
   const [loadingComments, setLoadingComments] = useState(true);
+  const [userRating, setUserRating] = useState(null);
   const user = JSON.parse(localStorage.getItem("user"));
+  const [reviewInput, setReviewInput] = useState("");
+
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     const fetchTool = async () => {
       try {
         const res = await axios.get(`/api/tool/${id}`);
         setTool(res.data.data);
+        const currentUserRating = res.data.data.reviews?.find(
+          (review) => review.user._id === user?._id
+        );
+        setUserRating(currentUserRating ? currentUserRating.rating : null);
       } catch (err) {
         console.error("Failed to load tool:", err);
       }
@@ -44,7 +54,7 @@ const ExploreTool = () => {
 
     fetchTool();
     fetchComments();
-  }, [id]);
+  }, [id, user?._id]);
 
   const handleAddComment = async (e) => {
     e.preventDefault();
@@ -73,10 +83,49 @@ const ExploreTool = () => {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
+        withCredentials: true,
       });
       setComments(comments.filter((c) => c._id !== commentId));
     } catch (err) {
       console.error("Error deleting comment:", err);
+    }
+  };
+
+  const handleRateTool = async () => {
+    if (ratingInput === null) return;
+
+    try {
+      await axios.post(
+        `/api/review/${id}`,
+        { rating: ratingInput, comment: reviewInput || "" },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+          withCredentials: true,
+        }
+      );
+      const res = await axios.get(`/api/tool/${id}`);
+      setTool(res.data.data);
+      setUserRating(ratingInput);
+    } catch (err) {
+      console.error("Error posting rating:", err);
+    }
+  };
+
+  const handleDeleteRating = async () => {
+    try {
+      await axios.delete(`/api/review/${id}`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+        withCredentials: true,
+      });
+      const res = await axios.get(`/api/tool/${id}`);
+      setTool(res.data.data);
+      setUserRating(null);
+    } catch (err) {
+      console.error("Error deleting rating:", err);
     }
   };
 
@@ -199,12 +248,6 @@ const ExploreTool = () => {
             </section>
           )}
 
-          {/* Placeholder for Similar AI Tools */}
-          <section className="mb-5">
-            <h4 className="fw-bold mb-3 text-dark"> Similar AI Tools</h4>
-            <p className="text-muted">Coming soon...</p>
-          </section>
-
           {/* COMMENTS SECTION */}
           <section className="mb-5">
             <h4 className="fw-bold mb-3 text-dark">💬 Comments</h4>
@@ -242,7 +285,7 @@ const ExploreTool = () => {
                     {c.user?.fullName || c.user?.email?.split("@")[0] || "User"}{" "}
                     on {new Date(c.createdAt).toLocaleDateString()}
                   </small>
-                  {user?._id === c.user?._id && (
+                  {c.user.email === currentUser?.data?.email && (
                     <Button
                       variant="danger"
                       size="sm"
@@ -257,6 +300,46 @@ const ExploreTool = () => {
             )}
           </section>
         </Col>
+
+        {/* RATINGS & REVIEWS SECTION */}
+        <section className="mb-5">
+          <h4 className="fw-bold mb-3 text-dark">⭐ Ratings & Reviews</h4>
+          {tool.reviews && tool.reviews.length > 0 ? (
+            tool.reviews.map((review) => (
+              <Card key={review._id} className="mb-3">
+                <Card.Body>
+                  <div className="d-flex align-items-center mb-2">
+                    <strong className="me-3">{review.name || "User"}</strong>
+                    <div className="text-warning">
+                      {Array.from({ length: 5 }, (_, i) =>
+                        i < review.rating ? (
+                          <FaStar key={i} />
+                        ) : (
+                          <FaRegStar key={i} />
+                        )
+                      )}
+                    </div>
+                  </div>
+                  <p>{review.comment || "No comment provided."}</p>
+                  <small className="text-muted">
+                    {new Date(review.createdAt).toLocaleDateString()}
+                  </small>
+                  {review.user === currentUser?.data?._id && (
+                    <Button
+                      onClick={handleDeleteRating}
+                      variant="danger"
+                      className="mt-2 w-100"
+                    >
+                       Delete
+                    </Button>
+                  )}
+                </Card.Body>
+              </Card>
+            ))
+          ) : (
+            <p className="text-muted">No reviews yet.</p>
+          )}
+        </section>
 
         {/* Right Sidebar */}
         <Col lg={4}>
@@ -298,6 +381,44 @@ const ExploreTool = () => {
                   >
                     {pricing}
                   </Badge>
+                </div>
+              )}
+
+              {/* Rating Input */}
+              {user && (
+                <div className="my-4">
+                  <h5 className="fw-bold mb-3 text-dark">Your Rating</h5>
+
+                  {/* Star Rating Input */}
+                  <div className="d-flex gap-2 mb-2">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <FaStar
+                        key={i}
+                        className={`cursor-pointer ${
+                          i < (userRating || ratingInput)
+                            ? "text-warning"
+                            : "text-muted"
+                        }`}
+                        onClick={() => setRatingInput(i + 1)}
+                      />
+                    ))}
+                  </div>
+
+                  <textarea
+                    className="form-control mb-2"
+                    rows="3"
+                    placeholder="Write your review..."
+                    value={reviewInput}
+                    onChange={(e) => setReviewInput(e.target.value)}
+                  />
+
+                  <Button
+                    onClick={userRating ? handleDeleteRating : handleRateTool}
+                    variant="primary"
+                    className="mt-2 w-100"
+                  >
+                    {userRating ? "Delete Rating" : "Submit Rating & Review"}
+                  </Button>
                 </div>
               )}
 
@@ -349,7 +470,8 @@ const ExploreTool = () => {
                 )}
                 {dataSharing?.inputsNotStored && (
                   <li className="mb-2 text-success">
-                    <span className="me-2">✅</span> Inputs not stored permanently
+                    <span className="me-2">✅</span> Inputs not stored
+                    permanently
                   </li>
                 )}
                 {dataSharing?.usedForTraining && (
