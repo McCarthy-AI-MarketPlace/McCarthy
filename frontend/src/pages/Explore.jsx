@@ -12,9 +12,11 @@ import {
   Card,
   ListGroup,
   Modal,
+  Placeholder,
 } from "react-bootstrap";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export default function Explore() {
   const [tools, setTools] = useState([]);
@@ -23,14 +25,20 @@ export default function Explore() {
   const [categoryFilters, setCategoryFilters] = useState([]);
   const [pricingFilters, setPricingFilters] = useState([]);
   const [showFilterModal, setShowFilterModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
   const { search } = useLocation();
   const queryParams = new URLSearchParams(search);
   const paramSearchQuery = queryParams.get("query");
 
-  const pricingOptions = ["Free", "Freemium", "Premium", "Free Trial", "Pay Per Use"];
-
+  const pricingOptions = [
+    "Free",
+    "Freemium",
+    "Premium",
+    "Free Trial",
+    "Pay Per Use",
+  ];
   const primaryPurple = "#6c63ff";
   const lightPurple = "#f0f0ff";
   const darkText = "#333";
@@ -46,10 +54,13 @@ export default function Explore() {
 
   const fetchTools = async () => {
     try {
+      setLoading(true);
       const response = await axios.get("/api/tool");
       setTools(response.data.data);
     } catch (error) {
       console.error("Error fetching tools:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,8 +72,10 @@ export default function Explore() {
       filtered = filtered.filter(
         (tool) =>
           tool.title.toLowerCase().includes(q) ||
-          (tool.hashtags && tool.hashtags.some((tag) => tag.toLowerCase().includes(q))) ||
-          (tool.keyWords && tool.keyWords.some((kw) => kw.toLowerCase().includes(q)))
+          (tool.hashtags &&
+            tool.hashtags.some((tag) => tag.toLowerCase().includes(q))) ||
+          (tool.keyWords &&
+            tool.keyWords.some((kw) => kw.toLowerCase().includes(q)))
       );
     }
 
@@ -71,8 +84,10 @@ export default function Explore() {
       filtered = filtered.filter((tool) =>
         lower.some(
           (cat) =>
-            (tool.keyWords && tool.keyWords.some((kw) => kw.toLowerCase() === cat)) ||
-            (tool.hashtags && tool.hashtags.some((tag) => tag.toLowerCase() === cat))
+            (tool.keyWords &&
+              tool.keyWords.some((kw) => kw.toLowerCase() === cat)) ||
+            (tool.hashtags &&
+              tool.hashtags.some((tag) => tag.toLowerCase() === cat))
         )
       );
     }
@@ -81,8 +96,7 @@ export default function Explore() {
       const lowerPricing = pricingFilters.map((p) => p.toLowerCase());
       filtered = filtered.filter(
         (tool) =>
-          tool.pricing &&
-          lowerPricing.includes(tool.pricing.toLowerCase())
+          tool.pricing && lowerPricing.includes(tool.pricing.toLowerCase())
       );
     }
 
@@ -91,13 +105,17 @@ export default function Explore() {
 
   const handleCategoryChange = (category) => {
     setCategoryFilters((prev) =>
-      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
     );
   };
 
   const handlePricingChange = (pricing) => {
     setPricingFilters((prev) =>
-      prev.includes(pricing) ? prev.filter((p) => p !== pricing) : [...prev, pricing]
+      prev.includes(pricing)
+        ? prev.filter((p) => p !== pricing)
+        : [...prev, pricing]
     );
   };
 
@@ -117,13 +135,39 @@ export default function Explore() {
     filterTools();
   }, [searchQuery, categoryFilters, pricingFilters, tools]);
 
+  const renderSkeletons = () =>
+    Array.from({ length: 6 }).map((_, i) => (
+      <Card
+        key={i}
+        className="mb-4 shadow-sm rounded-4 p-3"
+        style={{ height: "180px" }}
+      >
+        <Card.Body>
+          <Placeholder as={Card.Title} animation="wave">
+            <Placeholder xs={7} className="mb-2" />
+          </Placeholder>
+          <Placeholder as={Card.Text} animation="wave">
+            <Placeholder xs={5} /> <Placeholder xs={3} /> <br />
+            <Placeholder xs={4} />
+          </Placeholder>
+        </Card.Body>
+      </Card>
+    ));
+
   return (
     <Container style={{ marginTop: "5rem", padding: "2rem 0" }}>
       <div style={{ textAlign: "center", marginBottom: "3rem" }}>
         <h1 style={{ fontSize: "3rem", fontWeight: "bold", color: darkText }}>
           Explore AI Tools
         </h1>
-        <p style={{ fontSize: "1.25rem", color: mutedText, maxWidth: "600px", margin: "0 auto" }}>
+        <p
+          style={{
+            fontSize: "1.25rem",
+            color: mutedText,
+            maxWidth: "600px",
+            margin: "0 auto",
+          }}
+        >
           Discover the perfect AI tools for your specific needs
         </p>
       </div>
@@ -179,10 +223,13 @@ export default function Explore() {
         </Form>
       </div>
 
-      {/* Desktop Layout */}
       <Row>
+        {/* Sidebar */}
         <Col lg={3} className="d-none d-lg-block mb-4">
-          <Card className="shadow-sm border-0 rounded-4" style={{ padding: "1.5rem" }}>
+          <Card
+            className="shadow-sm border-0 rounded-4"
+            style={{ padding: "1.5rem" }}
+          >
             <Card.Body style={{ padding: "0" }}>
               <Form onSubmit={handleSearchSubmit} className="mb-4">
                 <div
@@ -206,7 +253,11 @@ export default function Explore() {
                     }}
                     className="flex-grow-1"
                   />
-                  <Button variant="link" type="submit" style={{ color: mutedText }}>
+                  <Button
+                    variant="link"
+                    type="submit"
+                    style={{ color: mutedText }}
+                  >
                     <Search size={20} />
                   </Button>
                 </div>
@@ -220,7 +271,13 @@ export default function Explore() {
 
               {/* Pricing Filters */}
               <div>
-                <h5 style={{ color: darkText, fontWeight: "bold", marginBottom: "1rem" }}>
+                <h5
+                  style={{
+                    color: darkText,
+                    fontWeight: "bold",
+                    marginBottom: "1rem",
+                  }}
+                >
                   Pricing
                 </h5>
                 <ListGroup variant="flush">
@@ -264,19 +321,37 @@ export default function Explore() {
           </Card>
         </Col>
 
+        {/* Main Content */}
         <Col lg={9}>
-          <ToolList tools={filteredTools} userToken={localStorage.getItem("accessToken")} />
-          {filteredTools.length === 0 && (
-            <div className="text-center mt-5" style={{ color: mutedText }}>
-              <h4>No tools found matching your criteria.</h4>
-              <p>Try adjusting your search query or filters.</p>
-            </div>
+          {loading ? (
+            renderSkeletons()
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <ToolList
+                tools={filteredTools}
+                userToken={localStorage.getItem("accessToken")}
+              />
+              {filteredTools.length === 0 && (
+                <div className="text-center mt-5" style={{ color: mutedText }}>
+                  <h4>No tools found matching your criteria.</h4>
+                  <p>Try adjusting your search query or filters.</p>
+                </div>
+              )}
+            </motion.div>
           )}
         </Col>
       </Row>
 
       {/* Mobile Filter Modal */}
-      <Modal show={showFilterModal} onHide={() => setShowFilterModal(false)} centered>
+      <Modal
+        show={showFilterModal}
+        onHide={() => setShowFilterModal(false)}
+        centered
+      >
         <Modal.Header closeButton>
           <Modal.Title>Filter Tools</Modal.Title>
         </Modal.Header>
