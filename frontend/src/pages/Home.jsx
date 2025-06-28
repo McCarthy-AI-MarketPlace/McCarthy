@@ -25,6 +25,8 @@ import {
 } from "react-icons/fa";
 
 import ToolCard from "../components/ToolCard";
+import ToolCardSkeleton from "../components/ToolCardSkeleton";
+import SkeletonLoader from "../components/SkeletonLoader";
 import FixedLogos from "../components/FixedLogos";
 import { useNavigate } from "react-router-dom";
 
@@ -122,7 +124,7 @@ export default function Home() {
     fetchTools();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <SkeletonLoader />;
   if (error) return <div>{error}</div>;
 
   return (
@@ -355,19 +357,21 @@ export default function Home() {
           </div>
 
           <Row xs={1} md={3} className="g-4">
-            {trendingTools?.map((tool, idx) => (
-              <ToolCard
-                tool={{
-                  _id: tool._id,
-                  icon: tool.image,
-                  name: tool.title,
-                  description: tool.description,
-                  tags: tool.hashtags,
-                  toolUrl: tool.toolUrl,
-                }}
-                key={idx}
-              />
-            ))}
+            {loading
+              ? [...Array(6)].map((_, idx) => <ToolCardSkeleton key={idx} />)
+              : trendingTools?.map((tool, idx) => (
+                  <ToolCard
+                    tool={{
+                      _id: tool._id,
+                      icon: tool.image,
+                      name: tool.title,
+                      description: tool.description,
+                      tags: tool.hashtags,
+                      toolUrl: tool.toolUrl,
+                    }}
+                    key={idx}
+                  />
+                ))}
           </Row>
         </Container>
       </section>
