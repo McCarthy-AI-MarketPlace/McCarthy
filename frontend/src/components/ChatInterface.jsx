@@ -57,9 +57,7 @@ const ChatInterface = () => {
 
       const aiMessage = {
         role: "assistant",
-        content:
-          res.data?.data?.response?.parts?.[0]?.text ||
-          "No response received.",
+        content: res.data?.data?.response || "No response received.",
       };
 
       setMessages((prev) => [...prev, aiMessage]);
@@ -92,10 +90,18 @@ const ChatInterface = () => {
   }, [messages]);
 
   return (
-    <Container fluid className="p-4 mt-4 d-flex justify-content-center" style={{ backgroundColor: "#f3f0ff", minHeight: "100vh" }}>
+    <Container
+      fluid
+      className="p-4 mt-4 d-flex justify-content-center"
+      style={{ backgroundColor: "#f3f0ff", minHeight: "100vh" }}
+    >
       <Card
         className="shadow-lg w-100"
-        style={{ maxWidth: "900px", borderRadius: "20px", backgroundColor: "#ffffff" }}
+        style={{
+          maxWidth: "900px",
+          borderRadius: "20px",
+          backgroundColor: "#ffffff",
+        }}
       >
         <Card.Header
           className="d-flex align-items-center px-4 py-3 border-0"
@@ -106,7 +112,9 @@ const ChatInterface = () => {
           }}
         >
           <div>
-            <h5 className="mb-1 fw-bold text-dark">{tool?.title || "Loading Tool..."}</h5>
+            <h5 className="mb-1 fw-bold text-dark">
+              {tool?.title || "Loading Tool..."}
+            </h5>
             <small className="text-muted">{tool?.subtitle}</small>
           </div>
         </Card.Header>
@@ -125,12 +133,16 @@ const ChatInterface = () => {
             <Row
               key={index}
               className="mb-3"
-              style={{ justifyContent: msg.role === "user" ? "flex-end" : "flex-start" }}
+              style={{
+                justifyContent: msg.role === "user" ? "flex-end" : "flex-start",
+              }}
             >
               <Col xs={10} md={8}>
                 <div
                   className={`p-3 rounded-4 shadow-sm ${
-                    msg.role === "user" ? "bg-primary text-white" : "bg-white border"
+                    msg.role === "user"
+                      ? "bg-primary text-white"
+                      : "bg-white border"
                   }`}
                   style={{
                     whiteSpace: "pre-wrap",
@@ -195,4 +207,3 @@ const ChatInterface = () => {
 };
 
 export default ChatInterface;
-
