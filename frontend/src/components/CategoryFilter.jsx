@@ -12,7 +12,6 @@ const CategoryFilter = ({ tools, categoryFilters, onCategoryChange }) => {
   };
 
   const categoryGroups = {
-    "Content Creation": ["Copy Writing", "Script & Story generation", "SEO & Keyword Research"],
     "Text": [
       "Text Generation", "Copy Writing", "Paraphrasing", "Summarization", "Email Writing",
       "Grammar Checking", "Story Writing", "Prompt Generation", "Translation"
@@ -20,8 +19,6 @@ const CategoryFilter = ({ tools, categoryFilters, onCategoryChange }) => {
     "Image": [
       "Text - Image", "Image Editing", "Image Upscaling", "Backend Removal", "Photo Restoration"
     ],
-    "Logo Design": [],
-    "3D Modeling & Visual": [],
     "Video": [
       "Text - Video", "Video editing", "Caption Subtitles", "Face Swap/Deep Fake", "Lip sink",
       "Ai Dubbing", "Short Content Generation(Instagram/yt/tik tok)"
@@ -29,27 +26,7 @@ const CategoryFilter = ({ tools, categoryFilters, onCategoryChange }) => {
     "Audio": [
       "Text - Speech", "Voice cloning", "Speech - text", "Noise removal", "Music generation", "Voice generation"
     ],
-    "Code": [
-      "Code generation", "Code Testing", "Bug Fixing", "API Generators"
-    ],
-    "No Code Tools": [
-      "Website generator", "App Testing", "Software Generator"
-    ],
-    "Business": [
-      "Proposal writing", "Business plan generation", "Pitch deck generation"
-    ],
-    "Productivity": [
-      "Task automation", "Meeting summaries", "Calendar assistants", "Daily planners", "Email drafting"
-    ],
-    "Marketing": [
-      "Ad copy generation", "Social media captions", "Hashtag generators",
-      "SEO/SEM optimization", "Email campaign tools", "Influencer outreach tools"
-    ],
-    "Research & Chatbots": [
-      "PDF summarization", "Data extraction", "Fact checking", "Research assistance",
-      "Academic writing", "Citation generation", "Question answering"
-    ],
-    "AI agents & Automation": [
+     "AI agents & Automation": [
       "Workflow automation", "Custom agent builders",
       "AI Customer support (Chatbots, callbots)", "AI sales agents"
     ],
@@ -57,19 +34,49 @@ const CategoryFilter = ({ tools, categoryFilters, onCategoryChange }) => {
       "Data visualization", "Dashboard generation", "Predictive analytics",
       "Business intelligence", "Text analytics", "Sentiment analysis"
     ],
+    "Business": [
+      "Proposal writing", "Business plan generation", "Pitch deck generation"
+    ],
+    "Code": [
+      "Code generation", "Code Testing", "Bug Fixing", "API Generators"
+    ],
+    "Content Creation": ["Copy Writing", "Script & Story generation", "SEO & Keyword Research"],
     "Design": [
       "UI/UX design", "Logo/Icon generators", "Infographic tools"
     ],
     "Education": ["AI tutors"],
-    "Legal": ["Contract analysis", "Legal document drafting"],
     "Finance": [
       "Invoice generators", "Budget planners", "Expense trackers",
       "Financial report drafting", "Tax document analyzers", "Cash flow forecasting"
     ],
+    "HR": ["Resume screeners", "Onboarding assistants"],
+    "Legal": ["Contract analysis", "Legal document drafting"],
+    "Logo Design": [],
+    "Marketing": [
+      "Ad copy generation", "Social media captions", "Hashtag generators",
+      "SEO/SEM optimization", "Email campaign tools", "Influencer outreach tools"
+    ],
+    
+    "No Code Tools": [
+      "Website generator", "App Testing", "Software Generator"
+    ],
+    
+    "Productivity": [
+      "Task automation", "Meeting summaries", "Calendar assistants", "Daily planners", "Email drafting"
+    ],
+    
+    "Research & Chatbots": [
+      "PDF summarization", "Data extraction", "Fact checking", "Research assistance",
+      "Academic writing", "Citation generation", "Question answering"
+    ],
+   
+    
     "Real Estate": [
       "Interior design generators", "3D Modelling & Rendering", "Listing optimization"
     ],
-    "HR": ["Resume screeners", "Onboarding assistants"]
+
+    "3D Modeling & Visual": []
+    
   };
 
   const primaryPurple = "#6c63ff";
