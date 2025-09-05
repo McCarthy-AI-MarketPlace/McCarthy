@@ -15,11 +15,10 @@ class ChatService {
   async getChatHistory() {
     if (!this.session) {
       await this.getOrCreateSession();
-      return [];
     }
 
-    return await this.session.populate("messages").then(() => {
-      return this.session.messages.map((message) => ({
+    return await this.session.populate("messages").then((res) => {
+      return res.toJSON().messages.map((message) => ({
         role: message.role,
         content: message.content,
       }));
@@ -30,8 +29,16 @@ class ChatService {
     if (!this.session) {
       await this.getOrCreateSession();
     }
-    this.session.messages.push(Message(message));
+    
+    // Create new message document
+    const newMessage = new Message(message);
+    await newMessage.save();
+    
+    // Add message reference to session and save
+    this.session.messages.push(newMessage._id);
     await this.session.save();
+    
+    return newMessage;
   }
   async getOrCreateSession() {
     if (!this.sessionId) {
