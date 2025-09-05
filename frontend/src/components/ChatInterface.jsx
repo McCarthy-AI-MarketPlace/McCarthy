@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ChatInterface = () => {
   const { toolId } = useParams();
@@ -17,8 +18,10 @@ const ChatInterface = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const chatRef = useRef();
+  const [sessionId, setSessionId] = useState(null);
 
+  const chatRef = useRef();
+  const { currentUser } = useSelector((state) => state.user);
   useEffect(() => {
     const fetchTool = async () => {
       try {
@@ -39,7 +42,7 @@ const ChatInterface = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setLoading(true);
-
+    console.log(currentUser);
     try {
       const res = await axios.post(
         "/api/chat",
@@ -51,15 +54,14 @@ const ChatInterface = () => {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
+            "X-User-Id": currentUser.data._id,
+            "X-Session-Id": sessionId,
           },
         }
       );
 
-      const aiMessage = {
-        role: "assistant",
-        content: res.data?.data?.response || "No response received.",
-      };
-
+      const aiMessage = res.data?.data?.response || "No response received.";
+      setSessionId(res.data?.data?.sessionId);
       setMessages((prev) => [...prev, aiMessage]);
     } catch (err) {
       console.error("Error during chat:", err);

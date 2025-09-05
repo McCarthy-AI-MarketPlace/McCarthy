@@ -35,33 +35,35 @@ const PublishTool = () => {
     apiKey: "",
     modelEndpoint: "",
     model: "",
+    openAiCompatible: false,
+    streamingResponse: false,  
   });
 
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const fileInputRef = useRef(null);
 
-  // useEffect(() => {
-  //   let objectURL;
+  useEffect(() => {
+    let objectURL;
 
-  //   const fetchLogo = async () => {
-  //     try {
-  //       const res = await axios.get("/api/images/logo", {
-  //         responseType: "blob",
-  //       });
-  //       objectURL = URL.createObjectURL(res.data);
-  //       setLogoUrl(objectURL);
-  //     } catch (error) {
-  //       console.error("Failed to fetch logo image", error);
-  //     }
-  //   };
+    const fetchLogo = async () => {
+      try {
+        const res = await axios.get("/api/images/logo", {
+          responseType: "blob",
+        });
+        objectURL = URL.createObjectURL(res.data);
+        setLogoUrl(objectURL);
+      } catch (error) {
+        console.error("Failed to fetch logo image", error);
+      }
+    };
 
-  //   fetchLogo();
+    fetchLogo();
 
-  //   return () => {
-  //     if (objectURL) URL.revokeObjectURL(objectURL);
-  //   };
-  // }, []);
+    return () => {
+      if (objectURL) URL.revokeObjectURL(objectURL);
+    };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -163,6 +165,8 @@ const PublishTool = () => {
         apiKey: "",
         modelEndpoint: "",
         model: "",
+        openAiCompatible: false,
+        streamingResponse: false,  
       });
 
       setUploadError(null);
@@ -358,6 +362,30 @@ const PublishTool = () => {
                   value={toolData.modelEndpoint}
                   onChange={handleChange}
                   placeholder="e.g., https://api.openai.com/v1/chat/completions"
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>OpenAI Compatible</Form.Label>
+                <Form.Check
+                  type="switch"
+                  label="OpenAI Compatible"
+                  name="openAiCompatible"
+                  checked={toolData.openAiCompatible}
+                  onChange={handleChange}
+                  className="mb-2"
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label>Streaming Response</Form.Label>
+                <Form.Check
+                  type="switch"
+                  label="Streaming Response"
+                  name="streamingResponse"
+                  checked={toolData.streamingResponse}
+                  onChange={handleChange}
+                  className="mb-2"
                 />
               </Form.Group>
 

@@ -115,6 +115,14 @@ const toolSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
+    openAiCompatible: {
+      type: Boolean,
+      default: false,
+    },
+    streamingResponse: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
